@@ -39,7 +39,8 @@
     "status": {
       "active": "Активна",
       "inactive": "Неактивна"
-    }
+    },
+    "edit": "Редактировать программу"
   },
   "categories": {
     "title": "Категории",
@@ -120,6 +121,85 @@
     "registerTab": "Регистрация",
     "logout": "Выйти",
     "logoutPending": "Выход..."
+  },
+  "users": {
+    "title": "Пользователи",
+    "empty": "Пользователи не найдены",
+    "columns": {
+      "name": "Имя",
+      "phone": "Телефон",
+      "email": "Email",
+      "role": "Роль",
+      "status": "Статус",
+      "actions": "Действия"
+    },
+    "roles": {
+      "admin": "Администратор",
+      "volunteer": "Волонтёр",
+      "needy": "Нуждающийся"
+    },
+    "status": {
+      "pending": "Ожидает",
+      "approved": "Одобрен",
+      "blocked": "Заблокирован"
+    }
+  },
+  "tasks": {
+    "title": "Таски",
+    "create": "Создать таску",
+    "createFirst": "Создать первую таску",
+    "empty": "Таски не найдены",
+    "edit": "Редактировать таску",
+    "columns": {
+      "title": "Название",
+      "description": "Описание",
+      "status": "Статус",
+      "priority": "Приоритет",
+      "assignee": "Ответственный",
+      "actions": "Действия"
+    },
+    "status": {
+      "new": "Активная",
+      "inProgress": "В работе",
+      "done": "Выполнена",
+      "canceled": "Отменена"
+    },
+    "priority": {
+      "low": "Низкий",
+      "medium": "Средний",
+      "high": "Высокий"
+    },
+    "form": {
+      "program": "Программа",
+      "needyId": "ID нуждающегося",
+      "type": "Тип помощи",
+      "title": "Название",
+      "description": "Описание",
+      "details": "Дополнительные детали",
+      "points": "Очки",
+      "category": "Категория",
+      "firstResponseMode": "Режим первого отклика",
+      "selectProgram": "Выберите программу",
+      "selectCategory": "Выберите категорию",
+      "typePlaceholder": "Например: Покупки/Доставка",
+      "programRequired": "Программа обязательна",
+      "needyRequired": "ID нуждающегося обязателен",
+      "typeRequired": "Тип помощи обязателен",
+      "titleRequired": "Название обязательно",
+      "titleTooLong": "Название не должно превышать 500 символов",
+      "descriptionRequired": "Описание обязательно"
+    },
+    "delete": {
+      "confirm": "Вы уверены, что хотите удалить таску \"{{name}}\"?"
+    },
+    "toast": {
+      "createSuccess": "Таска успешно создана",
+      "updateSuccess": "Таска успешно обновлена",
+      "deleteSuccess": "Таска успешно удалена",
+      "createError": "Не удалось создать таску",
+      "updateError": "Не удалось обновить таску",
+      "deleteError": "Не удалось удалить таску"
+    }
   }
 }
 

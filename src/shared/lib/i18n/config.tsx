@@ -17,7 +17,7 @@ const translations: Translations = {
 
 interface I18nContextValue {
   language: Language;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string>) => string;
   setLanguage: (language: Language) => void;
 }
 
@@ -55,10 +55,24 @@ function resolveKey(object: TranslationObject, key: string): string {
   return key;
 }
 
-function translate(language: Language, key: string): string {
+function translate(
+  language: Language,
+  key: string,
+  params?: Record<string, string>,
+): string {
   const bundle = translations[language] ?? translations.he;
+  let result = resolveKey(bundle, key);
 
-  return resolveKey(bundle, key);
+  if (params) {
+    Object.entries(params).forEach(([paramKey, paramValue]) => {
+      result = result.replace(
+        new RegExp(`\\{\\{${paramKey}\\}\\}`, 'g'),
+        paramValue,
+      );
+    });
+  }
+
+  return result;
 }
 
 interface I18nProviderProps {
@@ -85,7 +99,8 @@ export function I18nProvider({ children }: I18nProviderProps) {
   const value = useMemo<I18nContextValue>(
     () => ({
       language,
-      t: (key: string) => translate(language, key),
+      t: (key: string, params?: Record<string, string>) =>
+        translate(language, key, params),
       setLanguage,
     }),
     [language],

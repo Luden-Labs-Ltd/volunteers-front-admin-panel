@@ -39,7 +39,8 @@
     "status": {
       "active": "Active",
       "inactive": "Inactive"
-    }
+    },
+    "edit": "Edit program"
   },
   "categories": {
     "title": "Categories",
@@ -120,6 +121,85 @@
     "registerTab": "Register",
     "logout": "Logout",
     "logoutPending": "Logging out..."
+  },
+  "users": {
+    "title": "Users",
+    "empty": "No users found",
+    "columns": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "roles": {
+      "admin": "Admin",
+      "volunteer": "Volunteer",
+      "needy": "Needy"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "blocked": "Blocked"
+    }
+  },
+  "tasks": {
+    "title": "Tasks",
+    "create": "Create task",
+    "createFirst": "Create first task",
+    "empty": "No tasks found",
+    "edit": "Edit task",
+    "columns": {
+      "title": "Title",
+      "description": "Description",
+      "status": "Status",
+      "priority": "Priority",
+      "assignee": "Assignee",
+      "actions": "Actions"
+    },
+    "status": {
+      "new": "Active",
+      "inProgress": "In progress",
+      "done": "Done",
+      "canceled": "Canceled"
+    },
+    "priority": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "form": {
+      "program": "Program",
+      "needyId": "Needy ID",
+      "type": "Help type",
+      "title": "Title",
+      "description": "Description",
+      "details": "Additional details",
+      "points": "Points",
+      "category": "Category",
+      "firstResponseMode": "First response mode",
+      "selectProgram": "Select program",
+      "selectCategory": "Select category",
+      "typePlaceholder": "e.g. Shopping/Delivery",
+      "programRequired": "Program is required",
+      "needyRequired": "Needy ID is required",
+      "typeRequired": "Help type is required",
+      "titleRequired": "Title is required",
+      "titleTooLong": "Title must be at most 500 characters",
+      "descriptionRequired": "Description is required"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete the task \"{{name}}\"?"
+    },
+    "toast": {
+      "createSuccess": "Task created successfully",
+      "updateSuccess": "Task updated successfully",
+      "deleteSuccess": "Task deleted successfully",
+      "createError": "Failed to create task",
+      "updateError": "Failed to update task",
+      "deleteError": "Failed to delete task"
+    }
   }
 }
 

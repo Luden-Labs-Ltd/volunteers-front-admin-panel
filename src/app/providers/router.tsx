@@ -5,6 +5,8 @@ import { AuthPage } from '@/pages/auth/ui';
 import { ProgramsPage } from '@/pages/programs/ui';
 import { CategoriesPage } from '@/pages/categories/ui';
 import { SkillsPage } from '@/pages/skills/ui';
+import { TasksPage } from '@/pages/tasks/ui';
+import { UsersPage } from '@/pages/users/ui';
 import { PrivateRoute } from './private-route';
 import { getToken } from '@/shared/lib/auth';
 
@@ -47,6 +49,22 @@ export const Router: FC = () => {
           element={
             <PrivateRoute>
               <SkillsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tasks"
+          element={
+            <PrivateRoute>
+              <TasksPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <PrivateRoute>
+              <UsersPage />
             </PrivateRoute>
           }
         />

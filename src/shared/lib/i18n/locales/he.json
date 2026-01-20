@@ -39,7 +39,8 @@
     "status": {
       "active": "פעילה",
       "inactive": "לא פעילה"
-    }
+    },
+    "edit": "עריכת תוכנית"
   },
   "categories": {
     "title": "קטגוריות",
@@ -120,6 +121,85 @@
     "registerTab": "הרשמה",
     "logout": "התנתקות",
     "logoutPending": "מתרחש ניתוק..."
+  },
+  "users": {
+    "title": "משתמשים",
+    "empty": "לא נמצאו משתמשים",
+    "columns": {
+      "name": "שם",
+      "phone": "טלפון",
+      "email": "אימייל",
+      "role": "תפקיד",
+      "status": "סטטוס",
+      "actions": "פעולות"
+    },
+    "roles": {
+      "admin": "מנהל",
+      "volunteer": "מתנדב",
+      "needy": "נזקק"
+    },
+    "status": {
+      "pending": "ממתין",
+      "approved": "מאושר",
+      "blocked": "חסום"
+    }
+  },
+  "tasks": {
+    "title": "משימות",
+    "create": "צור משימה",
+    "createFirst": "צור משימה ראשונה",
+    "empty": "לא נמצאו משימות",
+    "edit": "עריכת משימה",
+    "columns": {
+      "title": "כותרת",
+      "description": "תיאור",
+      "status": "סטטוס",
+      "priority": "עדיפות",
+      "assignee": "אחראי",
+      "actions": "פעולות"
+    },
+    "status": {
+      "new": "פעילה",
+      "inProgress": "בתהליך",
+      "done": "הושלמה",
+      "canceled": "בוטלה"
+    },
+    "priority": {
+      "low": "נמוכה",
+      "medium": "בינונית",
+      "high": "גבוהה"
+    },
+    "form": {
+      "program": "תוכנית",
+      "needyId": "מזהה נזקק",
+      "type": "סוג עזרה",
+      "title": "כותרת",
+      "description": "תיאור",
+      "details": "פרטים נוספים",
+      "points": "נקודות",
+      "category": "קטגוריה",
+      "firstResponseMode": "מצב תגובה ראשונה",
+      "selectProgram": "בחר תוכנית",
+      "selectCategory": "בחר קטגוריה",
+      "typePlaceholder": "לדוגמה: קניות/משלוח",
+      "programRequired": "תוכנית נדרשת",
+      "needyRequired": "מזהה נזקק נדרש",
+      "typeRequired": "סוג עזרה נדרש",
+      "titleRequired": "כותרת נדרשת",
+      "titleTooLong": "הכותרת חייבת להכיל עד 500 תווים",
+      "descriptionRequired": "תיאור נדרש"
+    },
+    "delete": {
+      "confirm": "האם אתה בטוח שברצונך למחוק את המשימה \"{{name}}\"?"
+    },
+    "toast": {
+      "createSuccess": "המשימה נוצרה בהצלחה",
+      "updateSuccess": "המשימה עודכנה בהצלחה",
+      "deleteSuccess": "המשימה נמחקה בהצלחה",
+      "createError": "נכשל ביצירת המשימה",
+      "updateError": "נכשל בעדכון המשימה",
+      "deleteError": "נכשל במחיקת המשימה"
+    }
   }
 }
 
