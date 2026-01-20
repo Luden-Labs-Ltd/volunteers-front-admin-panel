@@ -1,0 +1,125 @@
+{
+  "common": {
+    "appTitle": "פאנל ניהול",
+    "save": "שמור",
+    "saving": "שומר...",
+    "creating": "יוצר...",
+    "deleting": "מוחק...",
+    "delete": "מחק",
+    "deleteConfirmTitle": "אישור מחיקה",
+    "deleteIrreversible": "לא ניתן לבטל פעולה זו.",
+    "cancel": "ביטול",
+    "edit": "ערוך",
+    "close": "סגור",
+    "loading": "טוען..."
+  },
+  "home": {
+    "title": "ברוכים הבאים!",
+    "subtitle": "נהלו את אפליקציית המתנדבים מפאנל זה",
+    "cards": {
+      "programsTitle": "תוכניות",
+      "programsDescription": "נהלו תוכניות התנדבות",
+      "tasksTitle": "משימות",
+      "tasksDescription": "צפו ונהלו משימות",
+      "usersTitle": "משתמשים",
+      "usersDescription": "נהלו מתנדבים ונזקקים"
+    }
+  },
+  "programs": {
+    "title": "תוכניות",
+    "create": "צור תוכנית",
+    "createFirst": "צור תוכנית ראשונה",
+    "empty": "לא נמצאו תוכניות",
+    "columns": {
+      "name": "שם",
+      "description": "תיאור",
+      "status": "סטטוס",
+      "actions": "פעולות"
+    },
+    "status": {
+      "active": "פעילה",
+      "inactive": "לא פעילה"
+    }
+  },
+  "categories": {
+    "title": "קטגוריות",
+    "create": "צור קטגוריה",
+    "createFirst": "צור קטגוריה ראשונה",
+    "empty": "לא נמצאו קטגוריות",
+    "columns": {
+      "icon": "איקון",
+      "name": "שם",
+      "actions": "פעולות"
+    },
+    "edit": "עריכת קטגוריה"
+  },
+  "skills": {
+    "title": "כישורים",
+    "create": "צור כישור",
+    "createFirst": "צור כישור ראשון",
+    "empty": "לא נמצאו כישורים",
+    "emptyFiltered": "לא נמצאו כישורים בקטגוריה שנבחרה",
+    "filterByCategory": "סינון לפי קטגוריה",
+    "allCategories": "כל הקטגוריות",
+    "columns": {
+      "icon": "איקון",
+      "name": "שם",
+      "category": "קטגוריה",
+      "actions": "פעולות"
+    },
+    "edit": "עריכת כישור",
+    "form": {
+      "name": "שם",
+      "category": "קטגוריה",
+      "selectCategory": "בחר קטגוריה",
+      "iconLabel": "SVG אייקון * (תצוגה מקדימה חיה)",
+      "nameRequired": "שם נדרש",
+      "nameTooLong": "השם חייב להכיל עד 255 תווים",
+      "categoryRequired": "קטגוריה נדרשת",
+      "iconRequired": "אייקון SVG נדרש",
+      "iconInvalidFallback": "קוד SVG לא תקין"
+    },
+    "delete": {
+      "confirm": "האם אתה בטוח שברצונך למחוק את הכישור {{name}}?"
+    },
+    "toast": {
+      "createSuccess": "הכישור נוצר בהצלחה",
+      "updateSuccess": "הכישור עודכן בהצלחה",
+      "deleteSuccess": "הכישור נמחק בהצלחה",
+      "createError": "נכשל ביצירת הכישור",
+      "updateError": "נכשל בעדכון הכישור",
+      "deleteError": "נכשל במחיקת הכישור"
+    }
+  },
+  "language": {
+    "he": "עברית",
+    "ru": "רוסית",
+    "en": "אנגלית"
+  },
+  "nav": {
+    "home": "ראשי",
+    "programs": "תוכניות",
+    "categories": "קטגוריות",
+    "skills": "כישורים",
+    "tasks": "משימות",
+    "users": "משתמשים"
+  },
+  "pagination": {
+    "prev": "הקודם",
+    "next": "הבא"
+  },
+  "auth": {
+    "title": "כניסת מנהל",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "login": "התחברות",
+    "register": "הרשמה",
+    "loginDescription": "היכנס לפאנל הניהול",
+    "registerDescription": "צור חשבון מנהל חדש",
+    "loginTab": "התחברות",
+    "registerTab": "הרשמה",
+    "logout": "התנתקות",
+    "logoutPending": "מתרחש ניתוק..."
+  }
+}
+

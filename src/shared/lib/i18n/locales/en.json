@@ -1,0 +1,125 @@
+{
+  "common": {
+    "appTitle": "Admin Panel",
+    "save": "Save",
+    "saving": "Saving...",
+    "creating": "Creating...",
+    "deleting": "Deleting...",
+    "delete": "Delete",
+    "deleteConfirmTitle": "Delete confirmation",
+    "deleteIrreversible": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "close": "Close",
+    "loading": "Loading..."
+  },
+  "home": {
+    "title": "Welcome!",
+    "subtitle": "Manage the volunteer application from this panel",
+    "cards": {
+      "programsTitle": "Programs",
+      "programsDescription": "Manage volunteer programs",
+      "tasksTitle": "Tasks",
+      "tasksDescription": "View and manage tasks",
+      "usersTitle": "Users",
+      "usersDescription": "Manage volunteers and beneficiaries"
+    }
+  },
+  "programs": {
+    "title": "Programs",
+    "create": "Create program",
+    "createFirst": "Create first program",
+    "empty": "No programs found",
+    "columns": {
+      "name": "Name",
+      "description": "Description",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "create": "Create category",
+    "createFirst": "Create first category",
+    "empty": "No categories found",
+    "columns": {
+      "icon": "Icon",
+      "name": "Name",
+      "actions": "Actions"
+    },
+    "edit": "Edit category"
+  },
+  "skills": {
+    "title": "Skills",
+    "create": "Create skill",
+    "createFirst": "Create first skill",
+    "empty": "No skills found",
+    "emptyFiltered": "No skills found in the selected category",
+    "filterByCategory": "Filter by category",
+    "allCategories": "All categories",
+    "columns": {
+      "icon": "Icon",
+      "name": "Name",
+      "category": "Category",
+      "actions": "Actions"
+    },
+    "edit": "Edit skill",
+    "form": {
+      "name": "Name",
+      "category": "Category",
+      "selectCategory": "Select category",
+      "iconLabel": "SVG Icon * (live preview)",
+      "nameRequired": "Name is required",
+      "nameTooLong": "Name must be at most 255 characters",
+      "categoryRequired": "Category is required",
+      "iconRequired": "SVG icon is required",
+      "iconInvalidFallback": "Invalid SVG code"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete the skill {{name}}?"
+    },
+    "toast": {
+      "createSuccess": "Skill created successfully",
+      "updateSuccess": "Skill updated successfully",
+      "deleteSuccess": "Skill deleted successfully",
+      "createError": "Failed to create skill",
+      "updateError": "Failed to update skill",
+      "deleteError": "Failed to delete skill"
+    }
+  },
+  "language": {
+    "he": "עברית",
+    "ru": "Рус",
+    "en": "En"
+  },
+  "nav": {
+    "home": "Home",
+    "programs": "Programs",
+    "categories": "Categories",
+    "skills": "Skills",
+    "tasks": "Tasks",
+    "users": "Users"
+  },
+  "pagination": {
+    "prev": "Prev",
+    "next": "Next"
+  },
+  "auth": {
+    "title": "Admin Login",
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "register": "Register",
+    "loginDescription": "Sign in to the admin panel",
+    "registerDescription": "Create a new administrator account",
+    "loginTab": "Login",
+    "registerTab": "Register",
+    "logout": "Logout",
+    "logoutPending": "Logging out..."
+  }
+}
+

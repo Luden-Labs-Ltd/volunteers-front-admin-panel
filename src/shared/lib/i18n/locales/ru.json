@@ -1,0 +1,125 @@
+{
+  "common": {
+    "appTitle": "Админ-панель",
+    "save": "Сохранить",
+    "saving": "Сохранение...",
+    "creating": "Создание...",
+    "deleting": "Удаление...",
+    "delete": "Удалить",
+    "deleteConfirmTitle": "Подтверждение удаления",
+    "deleteIrreversible": "Это действие нельзя отменить.",
+    "cancel": "Отмена",
+    "edit": "Редактировать",
+    "close": "Закрыть",
+    "loading": "Загрузка..."
+  },
+  "home": {
+    "title": "Добро пожаловать!",
+    "subtitle": "Управляйте волонтерским приложением из этой панели",
+    "cards": {
+      "programsTitle": "Программы",
+      "programsDescription": "Управляйте программами волонтерства",
+      "tasksTitle": "Таски",
+      "tasksDescription": "Просматривайте и управляйте задачами",
+      "usersTitle": "Пользователи",
+      "usersDescription": "Управляйте волонтерами и нуждающимися"
+    }
+  },
+  "programs": {
+    "title": "Программы",
+    "create": "Создать программу",
+    "createFirst": "Создать первую программу",
+    "empty": "Программы не найдены",
+    "columns": {
+      "name": "Название",
+      "description": "Описание",
+      "status": "Статус",
+      "actions": "Действия"
+    },
+    "status": {
+      "active": "Активна",
+      "inactive": "Неактивна"
+    }
+  },
+  "categories": {
+    "title": "Категории",
+    "create": "Создать категорию",
+    "createFirst": "Создать первую категорию",
+    "empty": "Категории не найдены",
+    "columns": {
+      "icon": "Иконка",
+      "name": "Название",
+      "actions": "Действия"
+    },
+    "edit": "Редактировать категорию"
+  },
+  "skills": {
+    "title": "Навыки",
+    "create": "Создать навык",
+    "createFirst": "Создать первый навык",
+    "empty": "Навыки не найдены",
+    "emptyFiltered": "Навыки в выбранной категории не найдены",
+    "filterByCategory": "Фильтр по категории",
+    "allCategories": "Все категории",
+    "columns": {
+      "icon": "Иконка",
+      "name": "Название",
+      "category": "Категория",
+      "actions": "Действия"
+    },
+    "edit": "Редактировать навык",
+    "form": {
+      "name": "Название",
+      "category": "Категория",
+      "selectCategory": "Выберите категорию",
+      "iconLabel": "SVG Иконка * (предпросмотр в реальном времени)",
+      "nameRequired": "Название обязательно",
+      "nameTooLong": "Название не должно превышать 255 символов",
+      "categoryRequired": "Категория обязательна",
+      "iconRequired": "SVG иконка обязательна",
+      "iconInvalidFallback": "Невалидный SVG код"
+    },
+    "delete": {
+      "confirm": "Вы уверены, что хотите удалить навык {{name}}?"
+    },
+    "toast": {
+      "createSuccess": "Навык успешно создан",
+      "updateSuccess": "Навык успешно обновлен",
+      "deleteSuccess": "Навык успешно удален",
+      "createError": "Не удалось создать навык",
+      "updateError": "Не удалось обновить навык",
+      "deleteError": "Не удалось удалить навык"
+    }
+  },
+  "language": {
+    "he": "Ивр",
+    "ru": "Рус",
+    "en": "Англ"
+  },
+  "nav": {
+    "home": "Главная",
+    "programs": "Программы",
+    "categories": "Категории",
+    "skills": "Навыки",
+    "tasks": "Таски",
+    "users": "Пользователи"
+  },
+  "pagination": {
+    "prev": "Назад",
+    "next": "Вперед"
+  },
+  "auth": {
+    "title": "Вход администратора",
+    "email": "Email",
+    "password": "Пароль",
+    "login": "Войти",
+    "register": "Регистрация",
+    "loginDescription": "Войдите в админ-панель",
+    "registerDescription": "Создайте новый аккаунт администратора",
+    "loginTab": "Вход",
+    "registerTab": "Регистрация",
+    "logout": "Выйти",
+    "logoutPending": "Выход..."
+  }
+}
+
