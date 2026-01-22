@@ -125,6 +125,7 @@
   "users": {
     "title": "Users",
     "empty": "No users found",
+    "addNeedy": "Add Needy",
     "columns": {
       "name": "Name",
       "phone": "Phone",
@@ -142,6 +143,29 @@
       "pending": "Pending",
       "approved": "Approved",
       "blocked": "Blocked"
+    }
+  },
+  "needy": {
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "phone": "Phone",
+      "program": "Program",
+      "photo": "Photo (URL)",
+      "about": "About",
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "phoneRequired": "Phone is required",
+      "programRequired": "Program is required",
+      "firstNameTooLong": "First name must not exceed 100 characters",
+      "lastNameTooLong": "Last name must not exceed 100 characters",
+      "phoneExists": "Phone is already used by another user",
+      "selectProgram": "Select program",
+      "noPrograms": "No available programs",
+      "create": "Create",
+      "creating": "Creating...",
+      "createSuccess": "Needy user created successfully",
+      "createError": "Error creating needy user"
     }
   },
   "tasks": {

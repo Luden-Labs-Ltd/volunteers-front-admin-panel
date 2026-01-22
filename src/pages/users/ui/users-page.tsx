@@ -2,9 +2,10 @@ import { FC, useState } from 'react';
 
 import { useUsers } from '@/entities/user';
 import { useI18n } from '@/shared/lib/i18n';
-import { Badge, Card, Pagination, Table } from '@/shared/ui';
+import { Badge, Button, Card, Modal, Pagination, Table } from '@/shared/ui';
 import { paginate } from '@/shared/lib/utils';
 import { Layout } from '@/widgets/layout';
+import { CreateNeedyForm } from '@/features/needy-create';
 import type { User, UserRole, UserStatus } from '@/entities/user';
 
 const ROLE_ORDER: UserRole[] = ['admin', 'volunteer', 'needy'];
@@ -29,8 +30,9 @@ const getStatusVariant = (
 export const UsersPage: FC = () => {
   const { t } = useI18n();
   const [page, setPage] = useState(1);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const { data: users = [], isLoading } = useUsers();
+  const { data: users = [], isLoading, refetch } = useUsers();
 
   const sortedUsers = [...users].sort((a, b) => {
     const statusA = STATUS_ORDER.indexOf(a.status);
@@ -59,6 +61,11 @@ export const UsersPage: FC = () => {
 
   const { data: paginatedUsers, pagination } = paginate(sortedUsers, page, 10);
 
+  const handleCreateSuccess = () => {
+    setIsCreateModalOpen(false);
+    refetch();
+  };
+
   return (
     <Layout>
       <div className="p-4 sm:p-6">
@@ -66,6 +73,9 @@ export const UsersPage: FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">
             {t('users.title')}
           </h1>
+          <Button onClick={() => setIsCreateModalOpen(true)}>
+            {t('users.addNeedy') || 'Добавить нуждающегося'}
+          </Button>
         </div>
 
         {isLoading ? (
@@ -179,6 +189,17 @@ export const UsersPage: FC = () => {
             )}
           </>
         )}
+
+        <Modal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          title={t('users.addNeedy') || 'Добавить нуждающегося'}
+        >
+          <CreateNeedyForm
+            onSuccess={handleCreateSuccess}
+            onCancel={() => setIsCreateModalOpen(false)}
+          />
+        </Modal>
       </div>
     </Layout>
   );
