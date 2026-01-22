@@ -97,7 +97,7 @@ export const SkillsPage: FC = () => {
                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       {t('skills.columns.icon')}
                     </th>
-                    <th className="hidden sm:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       {t('skills.columns.name')}
                     </th>
                     <th className="hidden sm:table-cell px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -114,7 +114,7 @@ export const SkillsPage: FC = () => {
                       <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                         <SvgPreview svgCode={skill.iconSvg} size={32} />
                       </td>
-                      <td className="hidden sm:table-cell px-4 sm:px-6 py-4 whitespace-nowrap">
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
                           {skill.name}
                         </div>
