@@ -9,4 +9,5 @@ export {
   useCreateProgram,
   useUpdateProgram,
   useDeleteProgram,
+  useProgramVolunteers,
 } from './hooks';

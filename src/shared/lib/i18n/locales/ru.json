@@ -11,7 +11,10 @@
     "cancel": "Отмена",
     "edit": "Редактировать",
     "close": "Закрыть",
-    "loading": "Загрузка..."
+    "loading": "Загрузка...",
+    "confirm": "Подтвердить",
+    "emailLabel": "Email:",
+    "phoneLabel": "Телефон:"
   },
   "home": {
     "title": "Добро пожаловать!",
@@ -143,7 +146,13 @@
       "pending": "Ожидает",
       "approved": "Одобрен",
       "blocked": "Заблокирован"
-    }
+    },
+    "assignPrograms": "Назначить на программы",
+    "managePrograms": "Управление программами",
+    "programs": "Программы",
+    "noPrograms": "Нет доступных программ",
+    "programsAssigned": "Программы успешно назначены",
+    "programsError": "Ошибка при назначении программ"
   },
   "needy": {
     "form": {
@@ -222,8 +231,20 @@
       "deleteSuccess": "Таска успешно удалена",
       "createError": "Не удалось создать таску",
       "updateError": "Не удалось обновить таску",
-      "deleteError": "Не удалось удалить таску"
-    }
+      "deleteError": "Не удалось удалить таску",
+      "assignSuccess": "Волонтер успешно назначен",
+      "assignError": "Не удалось назначить волонтера",
+      "unassignSuccess": "Назначение волонтера отменено",
+      "unassignError": "Не удалось отменить назначение"
+    },
+    "assignVolunteer": "Назначить волонтера",
+    "unassignVolunteer": "Убрать волонтера",
+    "assignedVolunteer": "Назначенный волонтер",
+    "selectVolunteer": "Выберите волонтера",
+    "noVolunteers": "Нет доступных волонтеров в этой программе",
+    "replaceVolunteerWarning": "На задачу уже назначен волонтер. Заменить?",
+    "unassignConfirm": "Вы уверены, что хотите убрать волонтера с этой задачи?",
+    "notAssigned": "Не назначен"
   }
 }
 

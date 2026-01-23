@@ -10,4 +10,5 @@ export {
   useCreateProgram,
   useUpdateProgram,
   useDeleteProgram,
+  useProgramVolunteers,
 } from './model';

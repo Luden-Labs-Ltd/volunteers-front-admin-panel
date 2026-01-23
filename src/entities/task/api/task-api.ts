@@ -3,6 +3,7 @@ import type {
   Task,
   CreateTaskRequest,
   UpdateTaskRequest,
+  AssignVolunteerRequest,
 } from '../model/types';
 
 export const taskApi = {
@@ -49,6 +50,28 @@ export const taskApi = {
   delete: async (id: string): Promise<void> => {
     return apiClient.request<void>(`/tasks/${id}`, {
       method: 'DELETE',
+    });
+  },
+
+  /**
+   * Назначить волонтера на задачу (требует Admin роль, JWT токен)
+   */
+  assignVolunteer: async (
+    id: string,
+    data: AssignVolunteerRequest,
+  ): Promise<Task> => {
+    return apiClient.request<Task>(`/tasks/${id}/assign`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  /**
+   * Отменить назначение волонтера с задачи (требует Admin роль, JWT токен)
+   */
+  cancelAssignment: async (id: string): Promise<Task> => {
+    return apiClient.request<Task>(`/tasks/${id}/cancel-assignment`, {
+      method: 'POST',
     });
   },
 };

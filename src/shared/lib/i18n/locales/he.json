@@ -11,7 +11,10 @@
     "cancel": "ביטול",
     "edit": "ערוך",
     "close": "סגור",
-    "loading": "טוען..."
+    "loading": "טוען...",
+    "confirm": "אשר",
+    "emailLabel": "אימייל:",
+    "phoneLabel": "טלפון:"
   },
   "home": {
     "title": "ברוכים הבאים!",
@@ -143,7 +146,13 @@
       "pending": "ממתין",
       "approved": "מאושר",
       "blocked": "חסום"
-    }
+    },
+    "assignPrograms": "הקצה לתוכניות",
+    "managePrograms": "ניהול תוכניות",
+    "programs": "תוכניות",
+    "noPrograms": "אין תוכניות זמינות",
+    "programsAssigned": "תוכניות הוקצו בהצלחה",
+    "programsError": "שגיאה בהקצאת תוכניות"
   },
   "needy": {
     "form": {
@@ -222,8 +231,20 @@
       "deleteSuccess": "המשימה נמחקה בהצלחה",
       "createError": "נכשל ביצירת המשימה",
       "updateError": "נכשל בעדכון המשימה",
-      "deleteError": "נכשל במחיקת המשימה"
-    }
+      "deleteError": "נכשל במחיקת המשימה",
+      "assignSuccess": "המתנדב הוקצה בהצלחה",
+      "assignError": "נכשל בהקצאת מתנדב",
+      "unassignSuccess": "הקצאת המתנדב בוטלה",
+      "unassignError": "נכשל בביטול ההקצאה"
+    },
+    "assignVolunteer": "הקצה מתנדב",
+    "unassignVolunteer": "הסר מתנדב",
+    "assignedVolunteer": "מתנדב מוקצה",
+    "selectVolunteer": "בחר מתנדב",
+    "noVolunteers": "אין מתנדבים זמינים בתוכנית זו",
+    "replaceVolunteerWarning": "מתנדב כבר מוקצה למשימה זו. להחליף?",
+    "unassignConfirm": "האם אתה בטוח שברצונך להסיר את המתנדב מהמשימה הזו?",
+    "notAssigned": "לא מוקצה"
   }
 }
 

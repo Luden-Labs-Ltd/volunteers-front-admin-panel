@@ -119,7 +119,37 @@ export class ApiClient {
       throw error;
     }
 
-    return response.json();
+    // Проверяем, есть ли контент в ответе (для DELETE и других запросов с пустым телом)
+    const contentType = response.headers.get('content-type');
+    const contentLength = response.headers.get('content-length');
+    
+    // Если ответ 204 No Content, возвращаем undefined (нет тела)
+    if (response.status === 204) {
+      return undefined as T;
+    }
+
+    // Если content-length явно 0, возвращаем undefined
+    if (contentLength === '0') {
+      return undefined as T;
+    }
+
+    // Получаем текст ответа для проверки
+    const text = await response.text();
+    
+    // Если текст пустой, возвращаем undefined
+    if (!text || text.trim() === '') {
+      return undefined as T;
+    }
+
+    // Пытаемся распарсить JSON
+    try {
+      return JSON.parse(text) as T;
+    } catch (parseError) {
+      // Если не удалось распарсить JSON (например, невалидный JSON или не JSON контент)
+      // Для void типов возвращаем undefined, для остальных - пробрасываем ошибку
+      // Но обычно если это не JSON, то это ошибка, так что пробрасываем
+      throw new Error(`Failed to parse JSON response: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
+    }
   }
 }
 

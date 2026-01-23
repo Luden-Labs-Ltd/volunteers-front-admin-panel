@@ -13,6 +13,14 @@ export interface Task {
   programId: string;
   needyId: string;
   categoryId?: string;
+  assignedVolunteerId?: string;
+  assignedVolunteer?: {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+  };
   createdAt: string; // ISO 8601 date string
   updatedAt: string; // ISO 8601 date string
 }
@@ -37,3 +45,10 @@ export interface CreateTaskRequest {
  * UpdateTaskRequest соответствует PartialType(CreateTaskDto).
  */
 export interface UpdateTaskRequest extends Partial<CreateTaskRequest> {}
+
+/**
+ * AssignVolunteerRequest для назначения волонтера на задачу.
+ */
+export interface AssignVolunteerRequest {
+  volunteerId: string;
+}

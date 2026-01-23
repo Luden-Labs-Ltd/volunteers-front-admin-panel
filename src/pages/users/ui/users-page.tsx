@@ -6,6 +6,7 @@ import { Badge, Button, Card, Modal, Pagination, Table } from '@/shared/ui';
 import { paginate } from '@/shared/lib/utils';
 import { Layout } from '@/widgets/layout';
 import { CreateNeedyForm } from '@/features/needy-create';
+import { AssignProgramsButton } from '@/features/volunteer-assign-programs';
 import type { User, UserRole, UserStatus } from '@/entities/user';
 
 const ROLE_ORDER: UserRole[] = ['admin', 'volunteer', 'needy'];
@@ -108,6 +109,9 @@ export const UsersPage: FC = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       {t('users.columns.status')}
                     </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      {t('users.columns.actions')}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -141,6 +145,16 @@ export const UsersPage: FC = () => {
                           {t(getStatusKey(user.status))}
                         </Badge>
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          {user.role === 'volunteer' && (
+                            <AssignProgramsButton
+                              volunteerId={user.id}
+                              onSuccess={handleCreateSuccess}
+                            />
+                          )}
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -173,6 +187,14 @@ export const UsersPage: FC = () => {
                         {t(getStatusKey(user.status))}
                       </Badge>
                     </div>
+                    {user.role === 'volunteer' && (
+                      <div className="mt-2">
+                        <AssignProgramsButton
+                          volunteerId={user.id}
+                          onSuccess={handleCreateSuccess}
+                        />
+                      </div>
+                    )}
                   </div>
                 </Card>
               ))}

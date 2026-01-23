@@ -2,21 +2,29 @@ import { FC, useState } from 'react';
 import { useDeleteTask } from '@/entities/task';
 import { useI18n } from '@/shared/lib/i18n';
 import { Button, Modal } from '@/shared/ui';
+import type { TaskStatus } from '@/entities/task';
 
 export interface DeleteTaskButtonProps {
   taskId: string;
   taskTitle: string;
+  taskStatus: TaskStatus;
   onSuccess?: () => void;
 }
 
 export const DeleteTaskButton: FC<DeleteTaskButtonProps> = ({
   taskId,
   taskTitle,
+  taskStatus,
   onSuccess,
 }) => {
   const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const deleteMutation = useDeleteTask();
+
+  // Не показываем кнопку удаления для отмененных задач
+  if (taskStatus === 'cancelled') {
+    return null;
+  }
 
   const handleDelete = async () => {
     try {
@@ -31,7 +39,7 @@ export const DeleteTaskButton: FC<DeleteTaskButtonProps> = ({
   return (
     <>
       <Button
-        variant="outline"
+        variant="ghost"
         size="sm"
         onClick={() => setIsOpen(true)}
         disabled={deleteMutation.isPending}
@@ -62,7 +70,7 @@ export const DeleteTaskButton: FC<DeleteTaskButtonProps> = ({
               {t('common.cancel')}
             </Button>
             <Button
-              variant="default"
+              variant="danger"
               onClick={handleDelete}
               disabled={deleteMutation.isPending}
               className="bg-red-600 hover:bg-red-700"

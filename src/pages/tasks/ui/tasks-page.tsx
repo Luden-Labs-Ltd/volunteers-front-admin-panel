@@ -4,6 +4,8 @@ import { useTasks } from '@/entities/task';
 import { CreateTaskForm } from '@/features/task-create';
 import { EditTaskForm } from '@/features/task-edit';
 import { DeleteTaskButton } from '@/features/task-delete';
+import { AssignVolunteerButton } from '@/features/task-assign-volunteer';
+import { UnassignVolunteerButton } from '@/features/task-unassign-volunteer';
 import { useI18n } from '@/shared/lib/i18n';
 import { Badge, Button, Card, Modal, Pagination, Table } from '@/shared/ui';
 import { paginate } from '@/shared/lib/utils';
@@ -96,6 +98,9 @@ export const TasksPage: FC = () => {
                       {t('tasks.columns.status')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      {t('tasks.assignedVolunteer')}
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       {t('tasks.columns.actions')}
                     </th>
                   </tr>
@@ -118,10 +123,36 @@ export const TasksPage: FC = () => {
                           {t(getStatusKey(task.status))}
                         </Badge>
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {task.assignedVolunteer
+                            ? `${task.assignedVolunteer.firstName || ''} ${task.assignedVolunteer.lastName || ''}`.trim() || task.assignedVolunteer.email || '-'
+                            : t('tasks.notAssigned')}
+                        </div>
+                        {task.assignedVolunteer?.email && (
+                          <div className="text-xs text-gray-500">
+                            {task.assignedVolunteer.email}
+                          </div>
+                        )}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex items-center gap-2">
+                          <AssignVolunteerButton
+                            taskId={task.id}
+                            programId={task.programId}
+                            currentVolunteerId={task.assignedVolunteerId}
+                            taskStatus={task.status}
+                            onSuccess={handleDeleteSuccess}
+                          />
+                          {task.assignedVolunteerId && (
+                            <UnassignVolunteerButton
+                              taskId={task.id}
+                              taskStatus={task.status}
+                              onSuccess={handleDeleteSuccess}
+                            />
+                          )}
                           <Button
-                            variant="outline"
+                            variant="ghost"
                             size="sm"
                             onClick={() => setEditingTask(task)}
                           >
@@ -130,6 +161,7 @@ export const TasksPage: FC = () => {
                           <DeleteTaskButton
                             taskId={task.id}
                             taskTitle={task.title}
+                            taskStatus={task.status}
                             onSuccess={handleDeleteSuccess}
                           />
                         </div>
@@ -160,9 +192,36 @@ export const TasksPage: FC = () => {
                         {t(getStatusKey(task.status))}
                       </Badge>
                     </div>
+                    {task.assignedVolunteer && (
+                      <div className="text-sm text-gray-600">
+                        <div className="font-medium">
+                          {t('tasks.assignedVolunteer')}:{' '}
+                          {`${task.assignedVolunteer.firstName || ''} ${task.assignedVolunteer.lastName || ''}`.trim() || task.assignedVolunteer.email || '-'}
+                        </div>
+                        {task.assignedVolunteer.email && (
+                          <div className="text-xs text-gray-500">
+                            {task.assignedVolunteer.email}
+                          </div>
+                        )}
+                      </div>
+                    )}
                     <div className="flex items-center gap-2 pt-2">
+                      <AssignVolunteerButton
+                        taskId={task.id}
+                        programId={task.programId}
+                        currentVolunteerId={task.assignedVolunteerId}
+                        taskStatus={task.status}
+                        onSuccess={handleDeleteSuccess}
+                      />
+                      {task.assignedVolunteerId && (
+                        <UnassignVolunteerButton
+                          taskId={task.id}
+                          taskStatus={task.status}
+                          onSuccess={handleDeleteSuccess}
+                        />
+                      )}
                       <Button
-                        variant="outline"
+                        variant="ghost"
                         size="sm"
                         onClick={() => setEditingTask(task)}
                         className="flex-1"
@@ -172,6 +231,7 @@ export const TasksPage: FC = () => {
                       <DeleteTaskButton
                         taskId={task.id}
                         taskTitle={task.title}
+                        taskStatus={task.status}
                         onSuccess={handleDeleteSuccess}
                       />
                     </div>

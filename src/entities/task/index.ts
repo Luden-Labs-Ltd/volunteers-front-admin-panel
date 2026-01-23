@@ -1,4 +1,10 @@
-export type { Task, TaskStatus, CreateTaskRequest, UpdateTaskRequest } from './model';
+export type {
+  Task,
+  TaskStatus,
+  CreateTaskRequest,
+  UpdateTaskRequest,
+  AssignVolunteerRequest,
+} from './model';
 export { taskApi } from './api';
 export {
   useTasks,

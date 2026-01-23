@@ -11,7 +11,10 @@
     "cancel": "Cancel",
     "edit": "Edit",
     "close": "Close",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "confirm": "Confirm",
+    "emailLabel": "Email:",
+    "phoneLabel": "Phone:"
   },
   "home": {
     "title": "Welcome!",
@@ -143,7 +146,13 @@
       "pending": "Pending",
       "approved": "Approved",
       "blocked": "Blocked"
-    }
+    },
+    "assignPrograms": "Assign to programs",
+    "managePrograms": "Manage programs",
+    "programs": "Programs",
+    "noPrograms": "No programs available",
+    "programsAssigned": "Programs successfully assigned",
+    "programsError": "Error assigning programs"
   },
   "needy": {
     "form": {
@@ -222,8 +231,20 @@
       "deleteSuccess": "Task deleted successfully",
       "createError": "Failed to create task",
       "updateError": "Failed to update task",
-      "deleteError": "Failed to delete task"
-    }
+      "deleteError": "Failed to delete task",
+      "assignSuccess": "Volunteer assigned successfully",
+      "assignError": "Failed to assign volunteer",
+      "unassignSuccess": "Volunteer assignment cancelled",
+      "unassignError": "Failed to cancel assignment"
+    },
+    "assignVolunteer": "Assign volunteer",
+    "unassignVolunteer": "Remove volunteer",
+    "assignedVolunteer": "Assigned volunteer",
+    "selectVolunteer": "Select volunteer",
+    "noVolunteers": "No available volunteers in this program",
+    "replaceVolunteerWarning": "A volunteer is already assigned to this task. Replace?",
+    "unassignConfirm": "Are you sure you want to remove the volunteer from this task?",
+    "notAssigned": "Not assigned"
   }
 }
 

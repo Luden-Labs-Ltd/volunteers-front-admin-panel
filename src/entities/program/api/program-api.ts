@@ -4,6 +4,7 @@ import type {
   CreateProgramRequest,
   UpdateProgramRequest,
 } from '../model/types';
+import type { User } from '@/entities/user';
 
 export const programApi = {
   /**
@@ -50,5 +51,27 @@ export const programApi = {
     return apiClient.request<void>(`/program/${id}`, {
       method: 'DELETE',
     });
+  },
+
+  /**
+   * Получить список волонтеров программы (требует Admin или Needy роль, JWT токен)
+   */
+  getVolunteers: async (programId: string): Promise<User[]> => {
+    return apiClient.request<User[]>(`/program/${programId}/volunteers`);
+  },
+
+  /**
+   * Назначить волонтера на программу (требует Admin роль, JWT токен)
+   */
+  assignVolunteerToProgram: async (
+    programId: string,
+    volunteerId: string,
+  ): Promise<{ success: boolean; message: string }> => {
+    return apiClient.request<{ success: boolean; message: string }>(
+      `/program/${programId}/assign-volunteer/${volunteerId}`,
+      {
+        method: 'POST',
+      },
+    );
   },
 };

@@ -1,4 +1,10 @@
-export type { Task, TaskStatus, CreateTaskRequest, UpdateTaskRequest } from './types';
+export type {
+  Task,
+  TaskStatus,
+  CreateTaskRequest,
+  UpdateTaskRequest,
+  AssignVolunteerRequest,
+} from './types';
 export {
   useTasks,
   useTask,
