@@ -106,7 +106,8 @@
     "categories": "Categories",
     "skills": "Skills",
     "tasks": "Tasks",
-    "users": "Users"
+    "users": "Users",
+    "cities": "Cities"
   },
   "pagination": {
     "prev": "Prev",
@@ -245,6 +246,39 @@
     "replaceVolunteerWarning": "A volunteer is already assigned to this task. Replace?",
     "unassignConfirm": "Are you sure you want to remove the volunteer from this task?",
     "notAssigned": "Not assigned"
+  },
+  "cities": {
+    "title": "Cities",
+    "create": "Create city",
+    "createFirst": "Create first city",
+    "empty": "No cities available",
+    "columns": {
+      "name": "Name",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "createdAt": "Created at",
+      "actions": "Actions"
+    },
+    "form": {
+      "name": "Name *",
+      "latitude": "Latitude *",
+      "longitude": "Longitude *",
+      "namePlaceholder": "Enter city name",
+      "latitudePlaceholder": "e.g. 32.0853",
+      "longitudePlaceholder": "e.g. 34.7818",
+      "nameRequired": "Name is required",
+      "nameTooLong": "Name must not exceed 100 characters",
+      "latitudeRequired": "Latitude is required",
+      "latitudeInvalid": "Latitude must be between -90 and 90",
+      "longitudeRequired": "Longitude is required",
+      "longitudeInvalid": "Longitude must be between -180 and 180",
+      "create": "Create city",
+      "creating": "Creating..."
+    },
+    "toast": {
+      "createSuccess": "City created successfully",
+      "createError": "Failed to create city"
+    }
   }
 }
 

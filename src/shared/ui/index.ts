@@ -14,3 +14,5 @@ export {
 } from './table';
 export { Pagination } from './pagination';
 export type { PaginationProps } from './pagination';
+export { ImageUpload } from './image-upload';
+export type { ImageUploadProps } from './image-upload';

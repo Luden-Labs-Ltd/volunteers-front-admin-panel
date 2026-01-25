@@ -106,7 +106,8 @@
     "categories": "Категории",
     "skills": "Навыки",
     "tasks": "Таски",
-    "users": "Пользователи"
+    "users": "Пользователи",
+    "cities": "Города"
   },
   "pagination": {
     "prev": "Назад",
@@ -245,6 +246,39 @@
     "replaceVolunteerWarning": "На задачу уже назначен волонтер. Заменить?",
     "unassignConfirm": "Вы уверены, что хотите убрать волонтера с этой задачи?",
     "notAssigned": "Не назначен"
+  },
+  "cities": {
+    "title": "Города",
+    "create": "Создать город",
+    "createFirst": "Создать первый город",
+    "empty": "Нет доступных городов",
+    "columns": {
+      "name": "Название",
+      "latitude": "Широта",
+      "longitude": "Долгота",
+      "createdAt": "Дата создания",
+      "actions": "Действия"
+    },
+    "form": {
+      "name": "Название *",
+      "latitude": "Широта *",
+      "longitude": "Долгота *",
+      "namePlaceholder": "Введите название города",
+      "latitudePlaceholder": "Например: 32.0853",
+      "longitudePlaceholder": "Например: 34.7818",
+      "nameRequired": "Название обязательно",
+      "nameTooLong": "Название не должно превышать 100 символов",
+      "latitudeRequired": "Широта обязательна",
+      "latitudeInvalid": "Широта должна быть от -90 до 90",
+      "longitudeRequired": "Долгота обязательна",
+      "longitudeInvalid": "Долгота должна быть от -180 до 180",
+      "create": "Создать город",
+      "creating": "Создание..."
+    },
+    "toast": {
+      "createSuccess": "Город успешно создан",
+      "createError": "Не удалось создать город"
+    }
   }
 }
 

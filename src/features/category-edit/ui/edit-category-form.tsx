@@ -1,8 +1,8 @@
 import { FC, useState, useEffect } from 'react';
 import { useUpdateCategory, type Category } from '@/entities/category';
-import { Button, Input, Textarea } from '@/shared/ui';
-import { SvgPreview } from '@/features/svg-preview';
-import { validateSvg } from '@/shared/lib/utils';
+import { Button, Input, ImageUpload } from '@/shared/ui';
+import { useUploadImage } from '@/entities/image';
+import { imageApi } from '@/entities/image';
 
 export interface EditCategoryFormProps {
   category: Category;
@@ -16,16 +16,32 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
   onCancel,
 }) => {
   const [name, setName] = useState(category.name);
-  const [iconSvg, setIconSvg] = useState(category.iconSvg);
+  const [imageId, setImageId] = useState<string>(category.imageId || category.image?.id || '');
+  const [imageUrl, setImageUrl] = useState<string>(category.image?.url || '');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const updateMutation = useUpdateCategory();
+  const uploadImageMutation = useUploadImage();
 
   useEffect(() => {
     setName(category.name);
-    setIconSvg(category.iconSvg);
+    setImageId(category.imageId || category.image?.id || '');
+    setImageUrl(category.image?.url || '');
+    setSelectedFile(null);
     setErrors({});
   }, [category]);
+
+  // Загружаем URL изображения если есть imageId
+  useEffect(() => {
+    if (imageId && !imageUrl) {
+      imageApi.getById(imageId).then((image) => {
+        setImageUrl(image.url);
+      }).catch(() => {
+        // Игнорируем ошибки загрузки
+      });
+    }
+  }, [imageId, imageUrl]);
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -36,14 +52,8 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
       newErrors.name = 'Название не должно превышать 255 символов';
     }
 
-    if (!iconSvg.trim()) {
-      newErrors.iconSvg = 'SVG иконка обязательна';
-    } else {
-      const svgValidation = validateSvg(iconSvg);
-      if (!svgValidation.isValid) {
-        newErrors.iconSvg = svgValidation.error || 'Невалидный SVG код';
-      }
-    }
+    // Изображение не обязательно при редактировании (может остаться старое)
+    // Но если выбрано новое, оно должно быть валидным
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -57,11 +67,21 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
     }
 
     try {
+      // Если есть выбранный файл, загружаем его
+      let finalImageId = imageId;
+      if (selectedFile) {
+        const uploadedImage = await uploadImageMutation.mutateAsync({
+          file: selectedFile,
+          folder: 'categories',
+        });
+        finalImageId = uploadedImage.id;
+      }
+
       await updateMutation.mutateAsync({
         id: category.id,
         data: {
           name: name.trim(),
-          iconSvg: iconSvg.trim(),
+          ...(finalImageId ? { imageId: finalImageId } : {}),
         },
       });
       onSuccess();
@@ -88,34 +108,25 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          SVG Иконка * (предпросмотр в реальном времени)
-        </label>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Textarea
-              value={iconSvg}
-              onChange={(e) => {
-                setIconSvg(e.target.value);
-                if (errors.iconSvg) {
-                  setErrors((prev) => ({ ...prev, iconSvg: '' }));
-                }
-              }}
-              error={errors.iconSvg}
-              disabled={updateMutation.isPending}
-              rows={8}
-              placeholder="<svg>...</svg>"
-            />
-          </div>
-          <div className="flex items-center justify-center border border-gray-300 rounded-lg bg-gray-50">
-            <SvgPreview svgCode={iconSvg} size={64} />
-          </div>
-        </div>
-        {errors.iconSvg && (
-          <p className="mt-1 text-sm text-red-600">{errors.iconSvg}</p>
-        )}
-      </div>
+      <ImageUpload
+        label="Изображение категории"
+        value={imageUrl}
+        onChange={(url) => {
+          // Если это URL, сохраняем его для preview
+          if (url && !url.startsWith('data:')) {
+            setImageUrl(url);
+          }
+        }}
+        onFileSelect={(file) => {
+          setSelectedFile(file);
+          if (errors.image) {
+            setErrors((prev) => ({ ...prev, image: '' }));
+          }
+        }}
+        disabled={updateMutation.isPending || uploadImageMutation.isPending}
+        folder="categories"
+        error={errors.image}
+      />
 
       <div className="flex justify-end gap-2 pt-4">
         {onCancel && (
@@ -128,8 +139,8 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
             Отмена
           </Button>
         )}
-        <Button type="submit" disabled={updateMutation.isPending}>
-          {updateMutation.isPending ? 'Сохранение...' : 'Сохранить'}
+        <Button type="submit" disabled={updateMutation.isPending || uploadImageMutation.isPending}>
+          {updateMutation.isPending || uploadImageMutation.isPending ? 'Сохранение...' : 'Сохранить'}
         </Button>
       </div>
     </form>

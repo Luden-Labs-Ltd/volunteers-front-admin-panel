@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { useCreateCity } from '../model';
 import { Button, Input } from '@/shared/ui';
+import { useI18n } from '@/shared/lib/i18n';
 
 export interface CreateCityFormProps {
   onSuccess: () => void;
@@ -11,6 +12,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
+  const { t } = useI18n();
   const [name, setName] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -22,27 +24,27 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = 'Название города обязательно';
+      newErrors.name = t('cities.form.nameRequired') || 'Название обязательно';
     } else if (name.length > 100) {
-      newErrors.name = 'Название не должно превышать 100 символов';
+      newErrors.name = t('cities.form.nameTooLong') || 'Название не должно превышать 100 символов';
     }
 
     const latNum = parseFloat(latitude);
     if (!latitude.trim()) {
-      newErrors.latitude = 'Широта обязательна';
+      newErrors.latitude = t('cities.form.latitudeRequired') || 'Широта обязательна';
     } else if (isNaN(latNum)) {
-      newErrors.latitude = 'Широта должна быть числом';
+      newErrors.latitude = t('cities.form.latitudeInvalid') || 'Широта должна быть числом';
     } else if (latNum < -90 || latNum > 90) {
-      newErrors.latitude = 'Широта должна быть от -90 до 90';
+      newErrors.latitude = t('cities.form.latitudeInvalid') || 'Широта должна быть от -90 до 90';
     }
 
     const lngNum = parseFloat(longitude);
     if (!longitude.trim()) {
-      newErrors.longitude = 'Долгота обязательна';
+      newErrors.longitude = t('cities.form.longitudeRequired') || 'Долгота обязательна';
     } else if (isNaN(lngNum)) {
-      newErrors.longitude = 'Долгота должна быть числом';
+      newErrors.longitude = t('cities.form.longitudeInvalid') || 'Долгота должна быть числом';
     } else if (lngNum < -180 || lngNum > 180) {
-      newErrors.longitude = 'Долгота должна быть от -180 до 180';
+      newErrors.longitude = t('cities.form.longitudeInvalid') || 'Долгота должна быть от -180 до 180';
     }
 
     setErrors(newErrors);
@@ -85,7 +87,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Input
-          label="Название города *"
+          label={t('cities.form.name') || 'Название *'}
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -96,7 +98,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
           error={errors.name}
           required
           disabled={createMutation.isPending}
-          placeholder="Например: Tel Aviv"
+          placeholder={t('cities.form.namePlaceholder') || 'Введите название города'}
           maxLength={100}
         />
       </div>
@@ -104,7 +106,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Input
-            label="Широта (Latitude) *"
+            label={t('cities.form.latitude') || 'Широта *'}
             type="number"
             step="any"
             value={latitude}
@@ -117,16 +119,13 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
             error={errors.latitude}
             required
             disabled={createMutation.isPending}
-            placeholder="32.0853"
+            placeholder={t('cities.form.latitudePlaceholder') || 'Например: 32.0853'}
           />
-          <p className="mt-1 text-xs text-gray-500">
-            Диапазон: от -90 до 90
-          </p>
         </div>
 
         <div>
           <Input
-            label="Долгота (Longitude) *"
+            label={t('cities.form.longitude') || 'Долгота *'}
             type="number"
             step="any"
             value={longitude}
@@ -139,11 +138,8 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
             error={errors.longitude}
             required
             disabled={createMutation.isPending}
-            placeholder="34.7818"
+            placeholder={t('cities.form.longitudePlaceholder') || 'Например: 34.7818'}
           />
-          <p className="mt-1 text-xs text-gray-500">
-            Диапазон: от -180 до 180
-          </p>
         </div>
       </div>
 
@@ -167,11 +163,13 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
             onClick={handleCancel}
             disabled={createMutation.isPending}
           >
-            Отмена
+            {t('common.cancel') || 'Отмена'}
           </Button>
         )}
         <Button type="submit" disabled={createMutation.isPending}>
-          {createMutation.isPending ? 'Создание...' : 'Создать город'}
+          {createMutation.isPending 
+            ? t('cities.form.creating') || 'Создание...' 
+            : t('cities.form.create') || 'Создать город'}
         </Button>
       </div>
     </form>

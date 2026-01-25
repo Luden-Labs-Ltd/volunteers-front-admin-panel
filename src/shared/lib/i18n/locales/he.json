@@ -106,7 +106,8 @@
     "categories": "קטגוריות",
     "skills": "כישורים",
     "tasks": "משימות",
-    "users": "משתמשים"
+    "users": "משתמשים",
+    "cities": "ערים"
   },
   "pagination": {
     "prev": "הקודם",
@@ -245,6 +246,39 @@
     "replaceVolunteerWarning": "מתנדב כבר מוקצה למשימה זו. להחליף?",
     "unassignConfirm": "האם אתה בטוח שברצונך להסיר את המתנדב מהמשימה הזו?",
     "notAssigned": "לא מוקצה"
+  },
+  "cities": {
+    "title": "ערים",
+    "create": "צור עיר",
+    "createFirst": "צור עיר ראשונה",
+    "empty": "אין ערים זמינות",
+    "columns": {
+      "name": "שם",
+      "latitude": "קו רוחב",
+      "longitude": "קו אורך",
+      "createdAt": "תאריך יצירה",
+      "actions": "פעולות"
+    },
+    "form": {
+      "name": "שם *",
+      "latitude": "קו רוחב *",
+      "longitude": "קו אורך *",
+      "namePlaceholder": "הכנס שם עיר",
+      "latitudePlaceholder": "לדוגמה: 32.0853",
+      "longitudePlaceholder": "לדוגמה: 34.7818",
+      "nameRequired": "שם נדרש",
+      "nameTooLong": "השם לא יכול לעלות על 100 תווים",
+      "latitudeRequired": "קו רוחב נדרש",
+      "latitudeInvalid": "קו רוחב חייב להיות בין -90 ל-90",
+      "longitudeRequired": "קו אורך נדרש",
+      "longitudeInvalid": "קו אורך חייב להיות בין -180 ל-180",
+      "create": "צור עיר",
+      "creating": "יוצר..."
+    },
+    "toast": {
+      "createSuccess": "העיר נוצרה בהצלחה",
+      "createError": "נכשל ביצירת העיר"
+    }
   }
 }
 

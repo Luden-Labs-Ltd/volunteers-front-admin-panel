@@ -1,8 +1,7 @@
 import { FC, useState } from 'react';
 import { useCreateCategory } from '@/entities/category';
-import { Button, Input, Textarea } from '@/shared/ui';
-import { SvgPreview } from '@/features/svg-preview';
-import { validateSvg } from '@/shared/lib/utils';
+import { Button, Input, ImageUpload } from '@/shared/ui';
+import { useUploadImage } from '@/entities/image';
 
 export interface CreateCategoryFormProps {
   onSuccess: () => void;
@@ -14,10 +13,13 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
   onCancel,
 }) => {
   const [name, setName] = useState('');
-  const [iconSvg, setIconSvg] = useState('');
+  const [imageId, setImageId] = useState<string>('');
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const createMutation = useCreateCategory();
+  const uploadImageMutation = useUploadImage();
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -28,13 +30,8 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
       newErrors.name = 'Название не должно превышать 255 символов';
     }
 
-    if (!iconSvg.trim()) {
-      newErrors.iconSvg = 'SVG иконка обязательна';
-    } else {
-      const svgValidation = validateSvg(iconSvg);
-      if (!svgValidation.isValid) {
-        newErrors.iconSvg = svgValidation.error || 'Невалидный SVG код';
-      }
+    if (!imageId && !selectedFile) {
+      newErrors.image = 'Изображение обязательно';
     }
 
     setErrors(newErrors);
@@ -49,14 +46,31 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
     }
 
     try {
+      // Если есть выбранный файл, загружаем его
+      let finalImageId = imageId;
+      if (selectedFile) {
+        const uploadedImage = await uploadImageMutation.mutateAsync({
+          file: selectedFile,
+          folder: 'categories',
+        });
+        finalImageId = uploadedImage.id;
+      }
+
+      if (!finalImageId) {
+        setErrors({ image: 'Изображение обязательно' });
+        return;
+      }
+
       await createMutation.mutateAsync({
         name: name.trim(),
-        iconSvg: iconSvg.trim(),
+        imageId: finalImageId,
       });
       onSuccess();
       // Сброс формы
       setName('');
-      setIconSvg('');
+      setImageId('');
+      setImagePreview('');
+      setSelectedFile(null);
       setErrors({});
     } catch (error) {
       // Ошибка обрабатывается в хуке
@@ -81,34 +95,23 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          SVG Иконка * (предпросмотр в реальном времени)
-        </label>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Textarea
-              value={iconSvg}
-              onChange={(e) => {
-                setIconSvg(e.target.value);
-                if (errors.iconSvg) {
-                  setErrors((prev) => ({ ...prev, iconSvg: '' }));
-                }
-              }}
-              error={errors.iconSvg}
-              disabled={createMutation.isPending}
-              rows={8}
-              placeholder="<svg>...</svg>"
-            />
-          </div>
-          <div className="flex items-center justify-center border border-gray-300 rounded-lg bg-gray-50">
-            <SvgPreview svgCode={iconSvg} size={64} />
-          </div>
-        </div>
-        {errors.iconSvg && (
-          <p className="mt-1 text-sm text-red-600">{errors.iconSvg}</p>
-        )}
-      </div>
+      <ImageUpload
+        label="Изображение категории *"
+        value={imagePreview}
+        onChange={(url) => {
+          // Сохраняем preview URL
+          setImagePreview(url);
+        }}
+        onFileSelect={(file) => {
+          setSelectedFile(file);
+          if (errors.image) {
+            setErrors((prev) => ({ ...prev, image: '' }));
+          }
+        }}
+        disabled={createMutation.isPending || uploadImageMutation.isPending}
+        folder="categories"
+        error={errors.image}
+      />
 
       <div className="flex justify-end gap-2 pt-4">
         {onCancel && (
@@ -121,8 +124,8 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
             Отмена
           </Button>
         )}
-        <Button type="submit" disabled={createMutation.isPending}>
-          {createMutation.isPending ? 'Создание...' : 'Создать'}
+        <Button type="submit" disabled={createMutation.isPending || uploadImageMutation.isPending}>
+          {createMutation.isPending || uploadImageMutation.isPending ? 'Создание...' : 'Создать'}
         </Button>
       </div>
     </form>
