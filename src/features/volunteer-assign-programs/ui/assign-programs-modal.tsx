@@ -113,10 +113,9 @@ export const AssignProgramsModal: FC<AssignProgramsModalProps> = ({
                     key={program.id}
                     className={`
                       flex items-center p-3 rounded-lg border-2 cursor-pointer transition-colors
-                      ${
-                        isSelected
-                          ? 'border-primary-500 bg-primary-50'
-                          : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                      ${isSelected
+                        ? 'border-primary-500 bg-primary-50'
+                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                       }
                     `}
                   >

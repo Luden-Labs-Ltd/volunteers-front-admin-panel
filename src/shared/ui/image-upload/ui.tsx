@@ -93,7 +93,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
           {label}
         </label>
       )}
-      
+
       <div className="space-y-2">
         <input
           ref={fileInputRef}
@@ -143,8 +143,8 @@ export const ImageUpload: FC<ImageUploadProps> = ({
               disabled
                 ? 'border-gray-200 bg-gray-50 cursor-not-allowed'
                 : error
-                ? 'border-red-300 hover:border-red-400'
-                : 'border-gray-300 hover:border-primary-400 hover:bg-primary-50'
+                  ? 'border-red-300 hover:border-red-400'
+                  : 'border-gray-300 hover:border-primary-400 hover:bg-primary-50'
             )}
           >
             <div className="space-y-2">

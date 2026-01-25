@@ -76,15 +76,15 @@ export const CitiesPage: FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-500">
-                          {typeof city.latitude === 'number' 
-                            ? city.latitude.toFixed(6) 
+                          {typeof city.latitude === 'number'
+                            ? city.latitude.toFixed(6)
                             : Number(city.latitude || 0).toFixed(6)}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-500">
-                          {typeof city.longitude === 'number' 
-                            ? city.longitude.toFixed(6) 
+                          {typeof city.longitude === 'number'
+                            ? city.longitude.toFixed(6)
                             : Number(city.longitude || 0).toFixed(6)}
                         </div>
                       </td>
