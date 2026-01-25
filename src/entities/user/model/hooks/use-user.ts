@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { userApi } from '../../api';
-import type { User } from '../types';
+import type { UserWithRoleData } from '../types';
 
 export function useUser(id: string) {
-  return useQuery<User>({
+  return useQuery<UserWithRoleData>({
     queryKey: ['user', id],
     queryFn: () => userApi.getById(id),
     enabled: Boolean(id),

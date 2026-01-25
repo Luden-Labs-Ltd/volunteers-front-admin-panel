@@ -63,7 +63,7 @@ export const DeleteProgramButton: FC<DeleteProgramButtonProps> = ({
               Отмена
             </Button>
             <Button
-              variant="default"
+              variant="primary"
               onClick={handleDelete}
               disabled={deleteMutation.isPending}
               className="bg-red-600 hover:bg-red-700"

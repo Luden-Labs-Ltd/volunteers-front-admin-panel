@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { cityApi } from '../../api';
+import { cityApi } from '@/entities/city';
 import type { CreateCityRequest, City } from '../types';
 import { showToast } from '@/shared/lib/toast';
 
@@ -12,7 +12,7 @@ export function useCreateCity() {
       queryClient.invalidateQueries({ queryKey: ['cities'] });
       showToast.success('Город успешно создан');
     },
-    onError: (error) => {
+    onError: (error: unknown) => {
       let message = 'Не удалось создать город';
       
       if (error instanceof Error) {
@@ -21,9 +21,9 @@ export function useCreateCity() {
         typeof error === 'object' &&
         error !== null &&
         'message' in error &&
-        typeof error.message === 'string'
+        typeof (error as { message: unknown }).message === 'string'
       ) {
-        message = error.message;
+        message = (error as { message: string }).message;
       }
       
       showToast.error(message);

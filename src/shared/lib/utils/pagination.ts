@@ -39,8 +39,6 @@ export function paginate<T>(
       limit,
       total,
       totalPages,
-      hasNextPage: page < totalPages,
-      hasPreviousPage: page > 1,
     },
   };
 }

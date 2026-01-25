@@ -56,9 +56,9 @@ export const AssignProgramsModal: FC<AssignProgramsModalProps> = ({
     const toAdd = programs.filter(
       (p) => selectedProgramIds.has(p.id) && !currentProgramIds.includes(p.id),
     );
-    const toRemove = programs.filter(
-      (p) => !selectedProgramIds.has(p.id) && currentProgramIds.includes(p.id),
-    );
+    // const toRemove = programs.filter(
+    //   (p) => !selectedProgramIds.has(p.id) && currentProgramIds.includes(p.id),
+    // );
 
     try {
       // Добавляем новые назначения

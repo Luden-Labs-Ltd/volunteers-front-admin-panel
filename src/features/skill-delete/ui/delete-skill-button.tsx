@@ -64,7 +64,7 @@ export const DeleteSkillButton: FC<DeleteSkillButtonProps> = ({
               {t('common.cancel')}
             </Button>
             <Button
-              variant="default"
+              variant="primary"
               onClick={handleDelete}
               disabled={deleteMutation.isPending}
               className="bg-red-600 hover:bg-red-700"

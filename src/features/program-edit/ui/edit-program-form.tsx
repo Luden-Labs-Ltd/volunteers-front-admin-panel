@@ -1,7 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { useUpdateProgram, type Program } from '@/entities/program';
 import { Button, Input, Textarea } from '@/shared/ui';
-import { Modal } from '@/shared/ui/modal';
 
 export interface EditProgramFormProps {
   program: Program;

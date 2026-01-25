@@ -153,7 +153,39 @@
     "programs": "תוכניות",
     "noPrograms": "אין תוכניות זמינות",
     "programsAssigned": "תוכניות הוקצו בהצלחה",
-    "programsError": "שגיאה בהקצאת תוכניות"
+    "programsError": "שגיאה בהקצאת תוכניות",
+    "details": {
+      "title": "פרטי משתמש",
+      "basicInfo": "מידע בסיסי",
+      "about": "אודות",
+      "createdAt": "תאריך יצירה",
+      "actions": "פעולות",
+      "profileInfo": "מידע פרופיל",
+      "city": "עיר",
+      "points": "נקודות",
+      "completedTasks": "משימות שהושלמו",
+      "rating": "דירוג",
+      "skills": "כישורים",
+      "program": "תוכנית",
+      "programs": "תוכניות",
+      "editProgram": "ערוך",
+      "editPrograms": "ערוך",
+      "selectProgram": "בחר תוכנית",
+      "noPrograms": "אין תוכניות",
+      "noProgramsAvailable": "אין תוכניות זמינות",
+      "address": "כתובת"
+    },
+    "actions": {
+      "viewDetails": "פרטים",
+      "approve": "אשר",
+      "block": "חסום",
+      "setPending": "החזר לממתין"
+    },
+    "statusUpdated": "סטטוס המשתמש עודכן בהצלחה",
+    "statusUpdateError": "שגיאה בעדכון הסטטוס",
+    "programsUpdated": "תוכניות עודכנו בהצלחה",
+    "programsUpdateError": "שגיאה בעדכון תוכניות",
+    "notFound": "משתמש לא נמצא"
   },
   "needy": {
     "form": {

@@ -7,6 +7,7 @@ import { paginate } from '@/shared/lib/utils';
 import { Layout } from '@/widgets/layout';
 import { CreateNeedyForm } from '@/features/needy-create';
 import { AssignProgramsButton } from '@/features/volunteer-assign-programs';
+import { UserDetailsModal } from '@/features/user-details';
 import type { User, UserRole, UserStatus } from '@/entities/user';
 
 const ROLE_ORDER: UserRole[] = ['admin', 'volunteer', 'needy'];
@@ -32,6 +33,7 @@ export const UsersPage: FC = () => {
   const { t } = useI18n();
   const [page, setPage] = useState(1);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   const { data: users = [], isLoading, refetch } = useUsers();
 
@@ -64,6 +66,10 @@ export const UsersPage: FC = () => {
 
   const handleCreateSuccess = () => {
     setIsCreateModalOpen(false);
+    refetch();
+  };
+
+  const handleUserDetailsSuccess = () => {
     refetch();
   };
 
@@ -147,6 +153,13 @@ export const UsersPage: FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={() => setSelectedUserId(user.id)}
+                          >
+                            {t('users.actions.viewDetails') || 'Детали'}
+                          </Button>
                           {user.role === 'volunteer' && (
                             <AssignProgramsButton
                               volunteerId={user.id}
@@ -187,14 +200,21 @@ export const UsersPage: FC = () => {
                         {t(getStatusKey(user.status))}
                       </Badge>
                     </div>
+                    <div className="mt-2 flex gap-2">
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={() => setSelectedUserId(user.id)}
+                      >
+                        {t('users.actions.viewDetails') || 'Детали'}
+                      </Button>
                     {user.role === 'volunteer' && (
-                      <div className="mt-2">
                         <AssignProgramsButton
                           volunteerId={user.id}
                           onSuccess={handleCreateSuccess}
                         />
+                      )}
                       </div>
-                    )}
                   </div>
                 </Card>
               ))}
@@ -222,6 +242,13 @@ export const UsersPage: FC = () => {
             onCancel={() => setIsCreateModalOpen(false)}
           />
         </Modal>
+
+        <UserDetailsModal
+          userId={selectedUserId}
+          isOpen={!!selectedUserId}
+          onClose={() => setSelectedUserId(null)}
+          onSuccess={handleUserDetailsSuccess}
+        />
       </div>
     </Layout>
   );

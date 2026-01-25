@@ -22,7 +22,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
   disabled = false,
   error,
   accept = 'image/*',
-  folder,
+  folder: _folder,
   className,
 }) => {
   const [preview, setPreview] = useState<string | null>(value || null);

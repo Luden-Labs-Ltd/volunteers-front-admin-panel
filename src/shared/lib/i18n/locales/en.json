@@ -153,7 +153,39 @@
     "programs": "Programs",
     "noPrograms": "No programs available",
     "programsAssigned": "Programs successfully assigned",
-    "programsError": "Error assigning programs"
+    "programsError": "Error assigning programs",
+    "details": {
+      "title": "User Details",
+      "basicInfo": "Basic Information",
+      "about": "About",
+      "createdAt": "Created At",
+      "actions": "Actions",
+      "profileInfo": "Profile Information",
+      "city": "City",
+      "points": "Points",
+      "completedTasks": "Completed Tasks",
+      "rating": "Rating",
+      "skills": "Skills",
+      "program": "Program",
+      "programs": "Programs",
+      "editProgram": "Edit",
+      "editPrograms": "Edit",
+      "selectProgram": "Select program",
+      "noPrograms": "No programs",
+      "noProgramsAvailable": "No available programs",
+      "address": "Address"
+    },
+    "actions": {
+      "viewDetails": "View Details",
+      "approve": "Approve",
+      "block": "Block",
+      "setPending": "Set Pending"
+    },
+    "statusUpdated": "User status updated successfully",
+    "statusUpdateError": "Error updating user status",
+    "programsUpdated": "Programs updated successfully",
+    "programsUpdateError": "Error updating programs",
+    "notFound": "User not found"
   },
   "needy": {
     "form": {

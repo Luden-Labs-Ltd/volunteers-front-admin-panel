@@ -6,7 +6,6 @@ import { useI18n } from '@/shared/lib/i18n';
 import { Button, Modal, Pagination, Table } from '@/shared/ui';
 import { paginate } from '@/shared/lib/utils';
 import { Layout } from '@/widgets/layout';
-import type { City } from '@/entities/city';
 
 export const CitiesPage: FC = () => {
   const { t } = useI18n();

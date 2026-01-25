@@ -153,7 +153,39 @@
     "programs": "Программы",
     "noPrograms": "Нет доступных программ",
     "programsAssigned": "Программы успешно назначены",
-    "programsError": "Ошибка при назначении программ"
+    "programsError": "Ошибка при назначении программ",
+    "details": {
+      "title": "Детали пользователя",
+      "basicInfo": "Основная информация",
+      "about": "О пользователе",
+      "createdAt": "Дата создания",
+      "actions": "Действия",
+      "profileInfo": "Информация профиля",
+      "city": "Город",
+      "points": "Баллы",
+      "completedTasks": "Выполнено задач",
+      "rating": "Рейтинг",
+      "skills": "Навыки",
+      "program": "Программа",
+      "programs": "Программы",
+      "editProgram": "Изменить",
+      "editPrograms": "Изменить",
+      "selectProgram": "Выберите программу",
+      "noPrograms": "Нет программ",
+      "noProgramsAvailable": "Нет доступных программ",
+      "address": "Адрес"
+    },
+    "actions": {
+      "viewDetails": "Детали",
+      "approve": "Одобрить",
+      "block": "Заблокировать",
+      "setPending": "Вернуть в ожидание"
+    },
+    "statusUpdated": "Статус пользователя обновлен",
+    "statusUpdateError": "Ошибка обновления статуса",
+    "programsUpdated": "Программы успешно обновлены",
+    "programsUpdateError": "Ошибка обновления программ",
+    "notFound": "Пользователь не найден"
   },
   "needy": {
     "form": {

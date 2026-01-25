@@ -90,7 +90,7 @@ export const Pagination: FC<PaginationProps> = ({
           return (
             <Button
               key={pageNumber}
-              variant={isActive ? 'default' : 'outline'}
+              variant={isActive ? 'primary' : 'outline'}
               size="sm"
               onClick={() => onPageChange(pageNumber)}
               className={cn(

@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import { useCreateProgram } from '@/entities/program';
 import { Button, Input, Textarea } from '@/shared/ui';
-import { Modal } from '@/shared/ui/modal';
 
 export interface CreateProgramFormProps {
   onSuccess: () => void;

@@ -83,7 +83,7 @@ export const CategoriesPage: FC = () => {
                   {paginatedCategories.map((category) => (
                     <tr key={category.id} className="hover:bg-gray-50">
                       <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
-                        <SvgPreview svgCode={category.iconSvg} size={32} />
+                        <SvgPreview svgCode={category.iconSvg || ''} size={32} />
                       </td>
                       <td className="hidden sm:table-cell px-4 sm:px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">

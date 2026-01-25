@@ -160,7 +160,7 @@ export class ApiClient {
     }
 
     // Проверяем, есть ли контент в ответе (для DELETE и других запросов с пустым телом)
-    const contentType = response.headers.get('content-type');
+    // const contentType = response.headers.get('content-type');
     const contentLength = response.headers.get('content-length');
     
     // Если ответ 204 No Content, возвращаем undefined (нет тела)
