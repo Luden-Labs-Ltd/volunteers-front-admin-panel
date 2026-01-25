@@ -10,3 +10,15 @@ export interface City {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CreateCityRequest {
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface UpdateCityRequest {
+  name?: string;
+  latitude?: number;
+  longitude?: number;
+}
