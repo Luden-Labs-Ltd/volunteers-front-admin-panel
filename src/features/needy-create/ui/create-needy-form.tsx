@@ -3,6 +3,7 @@ import { useCreateNeedy } from '../model';
 import { usePrograms } from '@/entities/program';
 import { Button, Input, Select, Textarea } from '@/shared/ui';
 import { useI18n } from '@/shared/lib/i18n';
+import { useGetCities } from '@/entities/city';
 
 export interface CreateNeedyFormProps {
   onSuccess: () => void;
@@ -18,12 +19,15 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [programId, setProgramId] = useState('');
+  const [cityId, setCityId] = useState('');
+  const [address, setAddress] = useState('');
   const [photo, setPhoto] = useState('');
   const [about, setAbout] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const createMutation = useCreateNeedy();
   const { data: programs = [], isLoading: programsLoading } = usePrograms();
+  const { data: cities = [], isLoading: citiesLoading } = useGetCities();
 
   // Фильтруем только активные программы
   const activePrograms = programs.filter((program) => program.isActive);
@@ -56,6 +60,19 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
         t('needy.form.programRequired') || 'Программа обязательна';
     }
 
+    if (!cityId) {
+      newErrors.cityId =
+        t('needy.form.cityRequired') || 'Город обязателен';
+    }
+
+    if (!address.trim()) {
+      newErrors.address =
+        t('needy.form.addressRequired') || 'Адрес обязателен';
+    } else if (address.length > 500) {
+      newErrors.address =
+        t('needy.form.addressTooLong') || 'Адрес не должен превышать 500 символов';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -73,6 +90,8 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
         lastName: lastName.trim(),
         phone: phone.trim(),
         programId,
+        cityId,
+        address: address.trim(),
         photo: photo.trim() || undefined,
         about: about.trim() || undefined,
         role: 'needy',
@@ -84,15 +103,25 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
       setLastName('');
       setPhone('');
       setProgramId('');
+      setCityId('');
+      setAddress('');
       setPhoto('');
       setAbout('');
       setErrors({});
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Обработка ошибки уникальности телефона
       if (
-        error?.response?.data?.message?.includes('already exists') ||
-        error?.response?.data?.message?.includes('уже существует')
+        error instanceof Error &&
+        'response' in error &&
+        error.response &&
+        typeof error.response === 'object' &&
+        'data' in error.response &&
+        error.response.data &&
+        typeof error.response.data === 'object' &&
+        'message' in error.response.data &&
+        typeof error.response.data.message === 'string' &&
+        (error.response.data.message.includes('already exists') ||
+          error.response.data.message.includes('уже существует'))
       ) {
         setErrors({
           phone:
@@ -185,6 +214,49 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
           {t('needy.form.noPrograms') || 'Нет доступных программ'}
         </p>
       )}
+
+      <Select
+        label={t('needy.form.city') || 'Город *'}
+        value={cityId}
+        onChange={(e) => {
+          setCityId(e.target.value);
+          if (errors.cityId) {
+            setErrors((prev) => ({ ...prev, cityId: '' }));
+          }
+        }}
+        error={errors.cityId}
+        required
+        disabled={createMutation.isPending || citiesLoading}
+        options={[
+          { value: '', label: t('needy.form.selectCity') || 'Выберите город' },
+          ...cities.map((city) => ({
+            value: city.id,
+            label: city.name,
+          })),
+        ]}
+      />
+
+      {cities.length === 0 && !citiesLoading && (
+        <p className="text-sm text-gray-500">
+          {t('needy.form.noCities') || 'Нет доступных городов'}
+        </p>
+      )}
+
+      <Input
+        label={t('needy.form.address') || 'Адрес *'}
+        value={address}
+        onChange={(e) => {
+          setAddress(e.target.value);
+          if (errors.address) {
+            setErrors((prev) => ({ ...prev, address: '' }));
+          }
+        }}
+        error={errors.address}
+        required
+        disabled={createMutation.isPending}
+        placeholder={t('needy.form.addressPlaceholder') || 'Введите адрес'}
+        maxLength={500}
+      />
 
       <Input
         label={t('needy.form.photo') || 'Фото (URL)'}

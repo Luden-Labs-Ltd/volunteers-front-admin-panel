@@ -1,6 +1,7 @@
 import { apiClient } from '@/shared/api';
 import type {
   User,
+  UserWithRoleData,
   CreateUserRequest,
   UpdateUserRequest,
 } from '../model/types';
@@ -14,17 +15,17 @@ export const userApi = {
   },
 
   /**
-   * Получить пользователя по ID
+   * Получить пользователя по ID (с данными роли)
    */
-  async getById(id: string): Promise<User> {
-    return apiClient.request<User>(`/user/${id}`);
+  async getById(id: string): Promise<UserWithRoleData> {
+    return apiClient.request<UserWithRoleData>(`/user/${id}`);
   },
 
   /**
    * Создать пользователя (админский вызов, требует JWT)
    */
-  async create(data: CreateUserRequest): Promise<User> {
-    return apiClient.request<User>('/user', {
+  async create(data: CreateUserRequest): Promise<UserWithRoleData> {
+    return apiClient.request<UserWithRoleData>('/user', {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -33,8 +34,8 @@ export const userApi = {
   /**
    * Обновить пользователя
    */
-  async update(id: string, data: UpdateUserRequest): Promise<User> {
-    return apiClient.request<User>(`/user/${id}`, {
+  async update(id: string, data: UpdateUserRequest): Promise<UserWithRoleData> {
+    return apiClient.request<UserWithRoleData>(`/user/${id}`, {
       method: 'PATCH',
       body: JSON.stringify(data),
     });

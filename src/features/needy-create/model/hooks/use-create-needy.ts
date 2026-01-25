@@ -20,11 +20,23 @@ export function useCreateNeedy() {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success(t('needy.form.createSuccess') || 'Нуждающийся успешно создан');
     },
-    onError: (error: any) => {
-      const message =
-        error?.response?.data?.message ||
-        t('needy.form.createError') ||
-        'Ошибка при создании нуждающегося';
+    onError: (error: unknown) => {
+      let message = t('needy.form.createError') || 'Ошибка при создании нуждающегося';
+      
+      if (
+        error instanceof Error &&
+        'response' in error &&
+        error.response &&
+        typeof error.response === 'object' &&
+        'data' in error.response &&
+        error.response.data &&
+        typeof error.response.data === 'object' &&
+        'message' in error.response.data &&
+        typeof error.response.data.message === 'string'
+      ) {
+        message = error.response.data.message;
+      }
+      
       toast.error(message);
     },
   });
