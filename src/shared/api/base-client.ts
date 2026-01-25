@@ -20,12 +20,16 @@ export class ApiClient {
     this.isRefreshing = true;
     this.refreshPromise = (async () => {
       try {
-        const accessToken = getToken();
-        const refreshToken = getRefreshToken();
+        let accessToken = getToken();
+        let refreshToken = getRefreshToken();
 
         if (!accessToken || !refreshToken) {
           throw new Error('No tokens available');
         }
+
+        // Убираем префикс "Bearer " если он есть (токены должны храниться без префикса)
+        accessToken = accessToken.replace(/^Bearer\s+/i, '');
+        refreshToken = refreshToken.replace(/^Bearer\s+/i, '');
 
         const response = await fetch(`${this.baseUrl}/auth/admin/refresh`, {
           method: 'POST',
@@ -39,13 +43,46 @@ export class ApiClient {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to refresh tokens');
+          const errorText = await response.text();
+          let errorMessage = 'Failed to refresh tokens';
+          
+          try {
+            const errorData = JSON.parse(errorText);
+            errorMessage = errorData.message || errorMessage;
+          } catch {
+            if (errorText) {
+              errorMessage = errorText;
+            }
+          }
+
+          // Логируем ошибку для отладки
+          if (import.meta.env.DEV) {
+            console.error('❌ Refresh token failed:', {
+              status: response.status,
+              statusText: response.statusText,
+              message: errorMessage,
+            });
+          }
+
+          throw new Error(errorMessage);
         }
 
         const data = await response.json();
+        
+        if (!data.accessToken || !data.refreshToken) {
+          throw new Error('Invalid response: missing tokens');
+        }
+
         setToken(data.accessToken);
         setRefreshToken(data.refreshToken);
+
+        if (import.meta.env.DEV) {
+          console.log('✓ Tokens refreshed successfully');
+        }
       } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('❌ Refresh token error:', error);
+        }
         clearTokens();
         // Перенаправление на страницу авторизации
         if (typeof window !== 'undefined') {
@@ -80,22 +117,25 @@ export class ApiClient {
 
     // Обработка 401 ошибки - попытка обновить токены
     if (response.status === 401 && token) {
-      try {
-        await this.refreshTokens();
-        
-        // Повторяем запрос с новым токеном
-        const newToken = getToken();
-        if (newToken) {
-          headers.Authorization = `Bearer ${newToken}`;
-        }
+      // Проверяем, что это не запрос на refresh токен (чтобы избежать бесконечного цикла)
+      if (endpoint !== '/auth/admin/refresh') {
+        try {
+          await this.refreshTokens();
+          
+          // Повторяем запрос с новым токеном
+          const newToken = getToken();
+          if (newToken) {
+            headers.Authorization = `Bearer ${newToken}`;
+          }
 
-        response = await fetch(`${this.baseUrl}${endpoint}`, {
-          ...options,
-          headers,
-        });
-      } catch (error) {
-        // Если refresh не удался, токены уже очищены и произошел редирект
-        throw error;
+          response = await fetch(`${this.baseUrl}${endpoint}`, {
+            ...options,
+            headers,
+          });
+        } catch (error) {
+          // Если refresh не удался, токены уже очищены и произошел редирект
+          throw error;
+        }
       }
     }
 
