@@ -60,9 +60,9 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                     showToast.successKey(t, 'users.statusUpdated');
                     onSuccess?.();
                 },
-                onError: (error: any) => {
+                onError: (error: Error | unknown) => {
                     const message =
-                        error?.message || t('users.statusUpdateError') || 'Ошибка обновления статуса';
+                        (error instanceof Error ? error.message : undefined) || t('users.statusUpdateError') || 'Ошибка обновления статуса';
                     showToast.error(message);
                 },
             },
@@ -81,9 +81,9 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                         setIsEditingPrograms(false);
                         onSuccess?.();
                     },
-                    onError: (error: any) => {
+                    onError: (error: Error | unknown) => {
                         const message =
-                            error?.message || t('users.programsUpdateError') || 'Ошибка обновления программы';
+                            (error instanceof Error ? error.message : undefined) || t('users.programsUpdateError') || 'Ошибка обновления программы';
                         showToast.error(message);
                     },
                 },
@@ -98,7 +98,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                         setIsEditingPrograms(false);
                         onSuccess?.();
                     },
-                    onError: (error: any) => {
+                    onError: (error: Error | unknown) => {
                         const message =
                             error?.message || t('users.programsUpdateError') || 'Ошибка обновления программ';
                         showToast.error(message);

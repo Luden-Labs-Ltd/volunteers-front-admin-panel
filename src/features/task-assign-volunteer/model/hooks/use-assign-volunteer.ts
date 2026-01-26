@@ -15,9 +15,9 @@ export function useAssignVolunteer() {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       showToast.successKey(t, 'tasks.toast.assignSuccess');
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       const message =
-        error?.response?.data?.message ||
+        (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
         t('tasks.toast.assignError') ||
         'Ошибка при назначении волонтера';
       showToast.error(message);

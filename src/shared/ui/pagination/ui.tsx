@@ -17,11 +17,11 @@ export const Pagination: FC<PaginationProps> = ({
   onPageChange,
   className,
 }) => {
+  const { t } = useI18n();
+
   if (totalPages <= 1) {
     return null;
   }
-
-  const { t } = useI18n();
 
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];

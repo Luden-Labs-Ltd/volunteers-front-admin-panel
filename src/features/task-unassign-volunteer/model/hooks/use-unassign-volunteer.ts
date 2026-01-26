@@ -13,9 +13,9 @@ export function useUnassignVolunteer() {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       showToast.successKey(t, 'tasks.toast.unassignSuccess');
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       const message =
-        error?.response?.data?.message ||
+        (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
         t('tasks.toast.unassignError') ||
         'Ошибка при отмене назначения';
       showToast.error(message);

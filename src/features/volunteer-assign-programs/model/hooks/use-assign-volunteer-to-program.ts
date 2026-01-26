@@ -21,9 +21,9 @@ export function useAssignVolunteerToProgram() {
       queryClient.invalidateQueries({ queryKey: ['program'] });
       showToast.successKey(t, 'users.programsAssigned');
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       const message =
-        error?.response?.data?.message ||
+        (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
         t('users.programsError') ||
         'Ошибка при назначении программы';
       showToast.error(message);
