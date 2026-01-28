@@ -27,15 +27,24 @@ export function paginate<T>(
   limit: number,
 ): PaginationResult<T> {
   const total = items.length;
-  const totalPages = Math.ceil(total / limit);
-  const startIndex = (page - 1) * limit;
+  const totalPages = total === 0 ? 0 : Math.ceil(total / limit);
+
+  // Гарантируем корректный номер страницы:
+  // - минимум 1
+  // - не больше общего количества страниц
+  // Это позволяет автоматически "отскакивать" на предыдущую страницу,
+  // если после удаления элементов текущая страница стала пустой.
+  const safePage =
+    totalPages === 0 ? 1 : Math.min(Math.max(page, 1), totalPages);
+
+  const startIndex = (safePage - 1) * limit;
   const endIndex = startIndex + limit;
   const data = items.slice(startIndex, endIndex);
 
   return {
     data,
     pagination: {
-      page,
+      page: safePage,
       limit,
       total,
       totalPages,
