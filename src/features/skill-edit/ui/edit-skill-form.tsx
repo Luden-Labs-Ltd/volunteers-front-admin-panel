@@ -49,13 +49,14 @@ export const EditSkillForm: FC<EditSkillFormProps> = ({
 
     if (!iconSvg.trim()) {
       newErrors.iconSvg = t('skills.form.iconRequired');
-    } else {
-      const svgValidation = validateSvg(iconSvg);
-      if (!svgValidation.isValid) {
-        newErrors.iconSvg =
-          svgValidation.error || t('skills.form.iconInvalidFallback');
-      }
-    }
+    } 
+    // else {
+    //   const svgValidation = validateSvg(iconSvg);
+    //   if (!svgValidation.isValid) {
+    //     newErrors.iconSvg =
+    //       svgValidation.error || t('skills.form.iconInvalidFallback');
+    //   }
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
