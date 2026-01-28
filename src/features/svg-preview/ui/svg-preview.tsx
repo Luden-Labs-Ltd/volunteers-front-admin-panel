@@ -24,7 +24,7 @@ export const SvgPreview: FC<SvgPreviewProps> = ({
         )}
         style={{ width: size, height: size }}
       >
-        Нет иконки
+        {svgCode}
       </div>
     );
   }

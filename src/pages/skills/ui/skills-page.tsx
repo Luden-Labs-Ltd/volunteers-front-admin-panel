@@ -7,7 +7,7 @@ import { DeleteSkillButton } from '@/features/skill-delete';
 import { EditSkillForm } from '@/features/skill-edit';
 import { useI18n } from '@/shared/lib/i18n';
 import { Button, Modal, Pagination, Select, Table } from '@/shared/ui';
-import { paginate, validateSvg } from '@/shared/lib/utils';
+import { paginate } from '@/shared/lib/utils';
 import { SvgPreview } from '@/features/svg-preview';
 import { Layout } from '@/widgets/layout';
 import type { Skill } from '@/entities/skill';
@@ -111,18 +111,9 @@ export const SkillsPage: FC = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {paginatedSkills.map((skill) => {
 
-                    const svgValidation = validateSvg(skill.iconSvg);
-
-
                     return <tr key={skill.id} className="hover:bg-gray-50">
                       <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
-                        {svgValidation.isValid ? (
-                          <SvgPreview svgCode={skill.iconSvg} size={64} />
-                        ) : (
-                          <div>
-                            {skill.iconSvg}
-                          </div>
-                        )}
+                        <SvgPreview svgCode={skill.iconSvg} size={64} />
                       </td>
                       <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">

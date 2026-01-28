@@ -3,7 +3,6 @@ import { useCreateSkill } from '@/entities/skill';
 import { useCategories } from '@/entities/category';
 import { SvgPreview } from '@/features/svg-preview';
 import { useI18n } from '@/shared/lib/i18n';
-import { validateSvg } from '@/shared/lib/utils';
 import { Button, Input, Select, Textarea } from '@/shared/ui';
 
 export interface CreateSkillFormProps {
@@ -76,10 +75,6 @@ export const CreateSkillForm: FC<CreateSkillFormProps> = ({
     }
   };
 
-
-
-  const svgValidation = validateSvg(iconSvg);
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -142,13 +137,7 @@ export const CreateSkillForm: FC<CreateSkillFormProps> = ({
             />
           </div>
           <div className="flex items-center justify-center border border-gray-300 rounded-lg bg-gray-50">
-            {svgValidation.isValid ? (
             <SvgPreview svgCode={iconSvg} size={64} />
-            ) : (
-              <div>
-                {iconSvg}
-              </div>
-            )}
           </div>
         </div>
         {errors.iconSvg && (
