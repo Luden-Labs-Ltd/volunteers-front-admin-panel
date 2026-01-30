@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { useDeleteProgram } from '@/entities/program';
 import { Button, Modal } from '@/shared/ui';
+import { DEFAULT_PROGRAM_ID } from '@/shared/config/constants';
 
 export interface DeleteProgramButtonProps {
   programId: string;
@@ -15,6 +16,11 @@ export const DeleteProgramButton: FC<DeleteProgramButtonProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const deleteMutation = useDeleteProgram();
+
+  // Скрываем кнопку удаления для дефолтной программы
+  if (programId === DEFAULT_PROGRAM_ID) {
+    return null;
+  }
 
   const handleDelete = async () => {
     try {
