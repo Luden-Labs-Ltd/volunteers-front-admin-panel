@@ -1,3 +1,5 @@
+import type { User } from '@/entities/user';
+
 export interface City {
   id: string;
   name: string;
@@ -9,6 +11,7 @@ export interface City {
   };
   createdAt: string;
   updatedAt: string;
+  volunteers?: User[];
 }
 
 export interface CreateCityRequest {

@@ -356,7 +356,10 @@
     "toast": {
       "createSuccess": "העיר נוצרה בהצלחה",
       "createError": "נכשל ביצירת העיר"
-    }
+    },
+    "viewVolunteers": "מתנדבים ({{count}})",
+    "volunteers": "מתנדבים ב-{{city}}",
+    "noVolunteers": "אין מתנדבים רשומים בעיר זו"
   },
   "notFound": {
     "message": "הדף לא נמצא",

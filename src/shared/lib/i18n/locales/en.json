@@ -356,7 +356,10 @@
     "toast": {
       "createSuccess": "City created successfully",
       "createError": "Failed to create city"
-    }
+    },
+    "viewVolunteers": "Volunteers ({{count}})",
+    "volunteers": "Volunteers in {{city}}",
+    "noVolunteers": "No registered volunteers in this city"
   },
   "notFound": {
     "message": "Page not found",

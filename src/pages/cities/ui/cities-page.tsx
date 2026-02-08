@@ -6,11 +6,14 @@ import { useI18n } from '@/shared/lib/i18n';
 import { Button, Modal, Pagination, Table } from '@/shared/ui';
 import { paginate } from '@/shared/lib/utils';
 import { Layout } from '@/widgets/layout';
+import type { City } from '@/entities/city';
+import type { User } from '@/entities/user';
 
 export const CitiesPage: FC = () => {
   const { t } = useI18n();
   const [page, setPage] = useState(1);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
 
   const { data: cities = [], isLoading, refetch } = useGetCities();
 
@@ -64,6 +67,9 @@ export const CitiesPage: FC = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       {t('cities.columns.createdAt')}
                     </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      {t('cities.columns.actions')}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -92,6 +98,15 @@ export const CitiesPage: FC = () => {
                         <div className="text-sm text-gray-500">
                           {new Date(city.createdAt).toLocaleDateString('ru-RU')}
                         </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setSelectedCity(city)}
+                        >
+                          {t('cities.viewVolunteers', { count: String(city.volunteers?.length || 0) })}
+                        </Button>
                       </td>
                     </tr>
                   ))}
@@ -122,6 +137,62 @@ export const CitiesPage: FC = () => {
             onCancel={() => setIsCreateModalOpen(false)}
           />
         </Modal>
+
+        {/* Модальное окно со списком волонтеров */}
+        {selectedCity && (
+          <Modal
+            isOpen={!!selectedCity}
+            onClose={() => setSelectedCity(null)}
+            title={t('cities.volunteers', { city: selectedCity.name })}
+            size="lg"
+          >
+            <div className="space-y-4">
+              {!selectedCity.volunteers || selectedCity.volunteers.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  {t('cities.noVolunteers')}
+                </div>
+              ) : (
+                <div className="max-h-96 overflow-y-auto">
+                  <Table>
+                    <thead>
+                      <tr className="bg-gray-50">
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                          {t('users.columns.name')}
+                        </th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                          {t('users.columns.email')}
+                        </th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                          {t('users.columns.phone')}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {selectedCity.volunteers.map((volunteer: User) => (
+                        <tr key={volunteer.id}>
+                          <td className="px-4 py-2 text-sm">
+                            {`${volunteer.firstName || ''} ${volunteer.lastName || ''}`.trim() || '-'}
+                          </td>
+                          <td className="px-4 py-2 text-sm text-gray-500">
+                            {volunteer.email || '-'}
+                          </td>
+                          <td className="px-4 py-2 text-sm text-gray-500">
+                            {volunteer.phone || '-'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              )}
+              <div className="flex justify-end pt-4 border-t">
+                <Button variant="ghost" onClick={() => setSelectedCity(null)}>
+                  {t('common.close')}
+                </Button>
+              </div>
+            </div>
+          </Modal>
+        )}
       </div>
     </Layout>
   );
