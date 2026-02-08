@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { useDeleteCategory } from '@/entities/category';
 import { Button, Modal } from '@/shared/ui';
+import { useI18n } from '@/shared/lib/i18n';
 
 export interface DeleteCategoryButtonProps {
   categoryId: string;
@@ -15,7 +16,7 @@ export const DeleteCategoryButton: FC<DeleteCategoryButtonProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const deleteMutation = useDeleteCategory();
-
+  const { t } = useI18n();
   const handleDelete = async () => {
     try {
       await deleteMutation.mutateAsync(categoryId);
@@ -36,22 +37,21 @@ export const DeleteCategoryButton: FC<DeleteCategoryButtonProps> = ({
         disabled={deleteMutation.isPending}
         className="text-red-600 hover:text-red-700 hover:border-red-700"
       >
-        Удалить
+        {t('common.delete')}
       </Button>
 
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title="Подтверждение удаления"
+        title={t('common.deleteConfirmTitle')}
       >
         <div className="space-y-4">
           <p className="text-gray-700">
-            Вы уверены, что хотите удалить категорию{' '}
+            {t('categories.delete.confirm', { name: categoryName })}
             <strong>{categoryName}</strong>?
           </p>
           <p className="text-sm text-gray-500">
-            Это действие нельзя отменить. Если к категории привязаны навыки,
-            удаление будет невозможно.
+            {t('categories.delete.confirmNote')}
           </p>
 
           <div className="flex justify-end gap-2 pt-4">
@@ -60,7 +60,7 @@ export const DeleteCategoryButton: FC<DeleteCategoryButtonProps> = ({
               onClick={() => setIsOpen(false)}
               disabled={deleteMutation.isPending}
             >
-              Отмена
+              {t('common.cancel')}
             </Button>
             <Button
               variant="primary"
@@ -68,7 +68,7 @@ export const DeleteCategoryButton: FC<DeleteCategoryButtonProps> = ({
               disabled={deleteMutation.isPending}
               className="bg-red-600 hover:bg-red-700"
             >
-              {deleteMutation.isPending ? 'Удаление...' : 'Удалить'}
+              {deleteMutation.isPending ? t('common.deleting') : t('common.delete')}
             </Button>
           </div>
         </div>

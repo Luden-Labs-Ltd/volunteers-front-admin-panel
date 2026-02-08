@@ -129,7 +129,7 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
           error={errors.needyId}
           required
           disabled={createMutation.isPending}
-          placeholder="UUID нуждающегося"
+          placeholder="UUID"
         />
       </div>
 

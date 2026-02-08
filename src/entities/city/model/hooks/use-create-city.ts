@@ -2,31 +2,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { cityApi } from '@/entities/city';
 import type { CreateCityRequest, City } from '../types';
 import { showToast } from '@/shared/lib/toast';
+import { useI18n } from '@/shared/lib/i18n';
 
 export function useCreateCity() {
   const queryClient = useQueryClient();
-
+  const { t } = useI18n();
   return useMutation<City, Error, CreateCityRequest>({
     mutationFn: (data) => cityApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cities'] });
-      showToast.success('Город успешно создан');
+      showToast.success(t('cities.toast.createSuccess'));
     },
-    onError: (error: unknown) => {
-      let message = 'Не удалось создать город';
-      
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (
-        typeof error === 'object' &&
-        error !== null &&
-        'message' in error &&
-        typeof (error as { message: unknown }).message === 'string'
-      ) {
-        message = (error as { message: string }).message;
-      }
-      
-      showToast.error(message);
+    onError: () => {
+      showToast.error(t('cities.toast.createError'));
     },
   });
 }

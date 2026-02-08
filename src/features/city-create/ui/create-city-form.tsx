@@ -145,7 +145,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
         <p className="text-sm text-blue-800 font-medium mb-2">
-          💡 Примеры координат для израильских городов:
+          💡 {t('cities.form.coordinatesExamplesTitle')}
         </p>
         <ul className="text-xs text-blue-700 space-y-1">
           <li>Tel Aviv: 32.0853, 34.7818</li>

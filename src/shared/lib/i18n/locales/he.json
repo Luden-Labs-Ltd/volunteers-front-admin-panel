@@ -16,7 +16,13 @@
     "emailLabel": "אימייל:",
     "phoneLabel": "טלפון:",
     "error": "שגיאה",
-    "unknownError": "אירעה שגיאה לא ידועה"
+    "unknownError": "אירעה שגיאה לא ידועה",
+    "change": "החלף",
+    "clickToSelectImage": "לחץ לבחירת תמונה",
+    "imageFormats": "PNG, JPG, GIF עד 10MB",
+    "create": "צור",
+    "selectImage": "אנא בחר תמונה",
+    "fileSizeMax": "גודל הקובץ לא יכול לעלות על 10MB"
   },
   "home": {
     "title": "ברוכים הבאים!",
@@ -68,7 +74,18 @@
       "name": "שם",
       "actions": "פעולות"
     },
-    "edit": "עריכת קטגוריה"
+    "edit": "עריכת קטגוריה",
+    "form": {
+      "nameLabel": "שם *",
+      "imageLabel": "תמונה *",
+      "nameRequired": "שם נדרש",
+      "nameTooLong": "השם לא יכול לעלות על 255 תווים",
+      "imageRequired": "תמונה נדרשת"
+    },
+    "delete": {
+      "confirm": "האם אתה בטוח שברצונך למחוק את הקטגוריה {{name}}?",
+      "confirmNote": "לא ניתן לבטל פעולה זו. קטגוריות המקושרות לכישורים לא ניתנות למחיקה."
+    }
   },
   "skills": {
     "title": "כישורים",
@@ -227,6 +244,7 @@
       "city": "עיר",
       "selectCity": "בחר עיר",
       "noCities": "אין ערים זמינות",
+      "cityRequired": "עיר חובה",
       "address": "כתובת",
       "addressPlaceholder": "הזן כתובת",
       "addressRequired": "כתובת חובה",
@@ -332,7 +350,8 @@
       "longitudeRequired": "קו אורך נדרש",
       "longitudeInvalid": "קו אורך חייב להיות בין -180 ל-180",
       "create": "צור עיר",
-      "creating": "יוצר..."
+      "creating": "יוצר...",
+      "coordinatesExamplesTitle": "דוגמאות קואורדינטות לערים בישראל:"
     },
     "toast": {
       "createSuccess": "העיר נוצרה בהצלחה",

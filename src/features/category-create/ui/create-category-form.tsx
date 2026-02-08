@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { useCreateCategory } from '@/entities/category';
 import { Button, Input, ImageUpload } from '@/shared/ui';
 import { useUploadImage } from '@/entities/image';
+import { useI18n } from '@/shared/lib/i18n';
 
 export interface CreateCategoryFormProps {
   onSuccess: () => void;
@@ -12,6 +13,7 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
+  const { t } = useI18n();
   const [name, setName] = useState('');
   const [imageId, setImageId] = useState<string>('');
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -25,13 +27,13 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = 'Название обязательно';
+      newErrors.name = t('categories.form.nameRequired');
     } else if (name.length > 255) {
-      newErrors.name = 'Название не должно превышать 255 символов';
+      newErrors.name = t('categories.form.nameTooLong');
     }
 
     if (!imageId && !selectedFile) {
-      newErrors.image = 'Изображение обязательно';
+      newErrors.image = t('categories.form.imageRequired');
     }
 
     setErrors(newErrors);
@@ -57,7 +59,7 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
       }
 
       if (!finalImageId) {
-        setErrors({ image: 'Изображение обязательно' });
+        setErrors({ image: t('categories.form.imageRequired') });
         return;
       }
 
@@ -81,7 +83,7 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Input
-          label="Название *"
+          label={t('categories.form.nameLabel')}
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -96,7 +98,7 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
       </div>
 
       <ImageUpload
-        label="Изображение категории *"
+        label={t('categories.form.imageLabel')}
         value={imagePreview}
         onChange={(url) => {
           // Сохраняем preview URL
@@ -121,11 +123,11 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
             onClick={onCancel}
             disabled={createMutation.isPending}
           >
-            Отмена
+            {t('common.cancel')}
           </Button>
         )}
         <Button type="submit" disabled={createMutation.isPending || uploadImageMutation.isPending}>
-          {createMutation.isPending || uploadImageMutation.isPending ? 'Создание...' : 'Создать'}
+          {createMutation.isPending || uploadImageMutation.isPending ? t('common.creating') : t('common.create')}
         </Button>
       </div>
     </form>

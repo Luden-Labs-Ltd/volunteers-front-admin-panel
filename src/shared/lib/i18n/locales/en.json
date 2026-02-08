@@ -16,7 +16,13 @@
     "emailLabel": "Email:",
     "phoneLabel": "Phone:",
     "error": "Error",
-    "unknownError": "An unknown error occurred"
+    "unknownError": "An unknown error occurred",
+    "change": "Change",
+    "clickToSelectImage": "Click to select image",
+    "imageFormats": "PNG, JPG, GIF up to 10MB",
+    "create": "Create",
+    "selectImage": "Please select an image",
+    "fileSizeMax": "File size must not exceed 10MB"
   },
   "home": {
     "title": "Welcome!",
@@ -68,7 +74,18 @@
       "name": "Name",
       "actions": "Actions"
     },
-    "edit": "Edit category"
+    "edit": "Edit category",
+    "form": {
+      "nameLabel": "Name *",
+      "imageLabel": "Image *",
+      "nameRequired": "Name is required",
+      "nameTooLong": "Name must not exceed 255 characters",
+      "imageRequired": "Image is required"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete the category {{name}}?",
+      "confirmNote": "This action cannot be undone. Categories linked to skills cannot be deleted."
+    }
   },
   "skills": {
     "title": "Skills",
@@ -227,6 +244,7 @@
       "city": "City",
       "selectCity": "Select city",
       "noCities": "No cities available",
+      "cityRequired": "City is required",
       "address": "Address",
       "addressPlaceholder": "Enter address",
       "addressRequired": "Address is required",
@@ -332,7 +350,8 @@
       "longitudeRequired": "Longitude is required",
       "longitudeInvalid": "Longitude must be between -180 and 180",
       "create": "Create city",
-      "creating": "Creating..."
+      "creating": "Creating...",
+      "coordinatesExamplesTitle": "Coordinate examples for Israeli cities:"
     },
     "toast": {
       "createSuccess": "City created successfully",

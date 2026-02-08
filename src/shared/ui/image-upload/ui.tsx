@@ -1,6 +1,7 @@
 import { FC, useState, useRef, useEffect } from 'react';
 import { Button } from '../button';
 import { cn } from '@/shared/lib/utils';
+import { useI18n } from '@/shared/lib/i18n';
 
 export interface ImageUploadProps {
   label?: string;
@@ -25,6 +26,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
   folder: _folder,
   className,
 }) => {
+  const { t } = useI18n();
   const [preview, setPreview] = useState<string | null>(value || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -43,13 +45,13 @@ export const ImageUpload: FC<ImageUploadProps> = ({
 
     // Валидация типа файла
     if (!file.type.startsWith('image/')) {
-      alert('Пожалуйста, выберите изображение');
+      alert(t('common.selectImage'));
       return;
     }
 
     // Валидация размера (макс 10MB)
     if (file.size > 10 * 1024 * 1024) {
-      alert('Размер файла не должен превышать 10MB');
+      alert(t('common.fileSizeMax'));
       return;
     }
 
@@ -121,7 +123,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
                 onClick={handleClick}
                 disabled={disabled}
               >
-                Изменить
+                {t('common.change')}
               </Button>
               <Button
                 type="button"
@@ -131,7 +133,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
                 disabled={disabled}
                 className="text-red-600 hover:text-red-700 hover:border-red-700"
               >
-                Удалить
+                {t('common.delete')}
               </Button>
             </div>
           </div>
@@ -150,10 +152,10 @@ export const ImageUpload: FC<ImageUploadProps> = ({
             <div className="space-y-2">
               <div className="text-4xl">📷</div>
               <div className="text-sm text-gray-600">
-                Нажмите для выбора изображения
+                {t('common.clickToSelectImage')}
               </div>
               <div className="text-xs text-gray-500">
-                PNG, JPG, GIF до 10MB
+                {t('common.imageFormats')}
               </div>
             </div>
           </div>
@@ -161,7 +163,7 @@ export const ImageUpload: FC<ImageUploadProps> = ({
       </div>
 
       {error && (
-        <p className="mt-1 text-sm text-red-600">{error}</p>
+        <p className="mt-1 text-sm text-red-600">{t('common.error')}: {error}</p>
       )}
     </div>
   );
