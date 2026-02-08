@@ -4,12 +4,11 @@ import type { User } from '@/entities/user';
 
 export function useProgramVolunteers(
   programId: string,
-  options?: Omit<UseQueryOptions<User[], Error>, 'queryKey' | 'queryFn' | 'enabled'>,
+  options?: Omit<UseQueryOptions<User[], Error>, 'queryKey' | 'queryFn'>,
 ) {
-  const isEnabled = options?.enabled !== false && !!programId;
-  
   // Исключаем enabled из options, чтобы избежать дублирования
-  const { enabled: _, ...restOptions } = options || {};
+  const { enabled: optionsEnabled, ...restOptions } = options || {};
+  const isEnabled = (optionsEnabled !== false) && !!programId;
   
   return useQuery<User[]>({
     queryKey: ['program', programId, 'volunteers'],
