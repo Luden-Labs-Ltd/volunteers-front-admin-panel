@@ -81,7 +81,7 @@ export const UsersPage: FC = () => {
             {t('users.title')}
           </h1>
           <Button onClick={() => setIsCreateModalOpen(true)}>
-            {t('users.addNeedy') || 'Добавить нуждающегося'}
+            {t('users.addNeedy')}
           </Button>
         </div>
 
@@ -158,7 +158,7 @@ export const UsersPage: FC = () => {
                             size="sm"
                             onClick={() => setSelectedUserId(user.id)}
                           >
-                            {t('users.actions.viewDetails') || 'Детали'}
+                            {t('users.actions.viewDetails')}
                           </Button>
                           {user.role === 'volunteer' && (
                             <AssignProgramsButton
@@ -206,7 +206,7 @@ export const UsersPage: FC = () => {
                         size="sm"
                         onClick={() => setSelectedUserId(user.id)}
                       >
-                        {t('users.actions.viewDetails') || 'Детали'}
+                        {t('users.actions.viewDetails')}
                       </Button>
                     {user.role === 'volunteer' && (
                         <AssignProgramsButton
@@ -235,7 +235,7 @@ export const UsersPage: FC = () => {
         <Modal
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}
-          title={t('users.addNeedy') || 'Добавить нуждающегося'}
+          title={t('users.addNeedy')}
         >
           <CreateNeedyForm
             onSuccess={handleCreateSuccess}

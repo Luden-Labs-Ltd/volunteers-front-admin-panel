@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { useUpdateProgram, type Program } from '@/entities/program';
+import { useI18n } from '@/shared/lib/i18n';
 import { Button, Input, Textarea } from '@/shared/ui';
 
 export interface EditProgramFormProps {
@@ -13,6 +14,7 @@ export const EditProgramForm: FC<EditProgramFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
+  const { t } = useI18n();
   const [name, setName] = useState(program.name);
   const [description, setDescription] = useState(program.description || '');
   const [isActive, setIsActive] = useState(program.isActive);
@@ -31,9 +33,9 @@ export const EditProgramForm: FC<EditProgramFormProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = 'Название обязательно';
+      newErrors.name = t('programs.form.nameRequired');
     } else if (name.length > 255) {
-      newErrors.name = 'Название не должно превышать 255 символов';
+      newErrors.name = t('programs.form.nameTooLong');
     }
 
     setErrors(newErrors);
@@ -66,7 +68,7 @@ export const EditProgramForm: FC<EditProgramFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Input
-          label="Название *"
+          label={t('programs.form.nameLabel')}
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -82,7 +84,7 @@ export const EditProgramForm: FC<EditProgramFormProps> = ({
 
       <div>
         <Textarea
-          label="Описание"
+          label={t('programs.form.descriptionLabel')}
           value={description}
           onChange={(e) => {
             setDescription(e.target.value);
@@ -106,7 +108,7 @@ export const EditProgramForm: FC<EditProgramFormProps> = ({
           className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
         />
         <label htmlFor="isActive" className="text-sm text-gray-700">
-          Программа активна
+          {t('programs.form.isActiveLabel')}
         </label>
       </div>
 
@@ -118,11 +120,11 @@ export const EditProgramForm: FC<EditProgramFormProps> = ({
             onClick={onCancel}
             disabled={updateMutation.isPending}
           >
-            Отмена
+            {t('common.cancel')}
           </Button>
         )}
         <Button type="submit" disabled={updateMutation.isPending}>
-          {updateMutation.isPending ? 'Сохранение...' : 'Сохранить'}
+          {updateMutation.isPending ? t('common.saving') : t('common.save')}
         </Button>
       </div>
     </form>

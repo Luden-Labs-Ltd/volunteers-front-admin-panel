@@ -24,27 +24,27 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = t('cities.form.nameRequired') || 'Название обязательно';
+      newErrors.name = t('cities.form.nameRequired');
     } else if (name.length > 100) {
-      newErrors.name = t('cities.form.nameTooLong') || 'Название не должно превышать 100 символов';
+      newErrors.name = t('cities.form.nameTooLong');
     }
 
     const latNum = parseFloat(latitude);
     if (!latitude.trim()) {
-      newErrors.latitude = t('cities.form.latitudeRequired') || 'Широта обязательна';
+      newErrors.latitude = t('cities.form.latitudeRequired');
     } else if (isNaN(latNum)) {
-      newErrors.latitude = t('cities.form.latitudeInvalid') || 'Широта должна быть числом';
+      newErrors.latitude = t('cities.form.latitudeInvalid');
     } else if (latNum < -90 || latNum > 90) {
-      newErrors.latitude = t('cities.form.latitudeInvalid') || 'Широта должна быть от -90 до 90';
+      newErrors.latitude = t('cities.form.latitudeInvalid');
     }
 
     const lngNum = parseFloat(longitude);
     if (!longitude.trim()) {
-      newErrors.longitude = t('cities.form.longitudeRequired') || 'Долгота обязательна';
+      newErrors.longitude = t('cities.form.longitudeRequired');
     } else if (isNaN(lngNum)) {
-      newErrors.longitude = t('cities.form.longitudeInvalid') || 'Долгота должна быть числом';
+      newErrors.longitude = t('cities.form.longitudeInvalid');
     } else if (lngNum < -180 || lngNum > 180) {
-      newErrors.longitude = t('cities.form.longitudeInvalid') || 'Долгота должна быть от -180 до 180';
+      newErrors.longitude = t('cities.form.longitudeInvalid');
     }
 
     setErrors(newErrors);
@@ -87,7 +87,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Input
-          label={t('cities.form.name') || 'Название *'}
+          label={t('cities.form.name')}
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -98,7 +98,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
           error={errors.name}
           required
           disabled={createMutation.isPending}
-          placeholder={t('cities.form.namePlaceholder') || 'Введите название города'}
+          placeholder={t('cities.form.namePlaceholder')}
           maxLength={100}
         />
       </div>
@@ -106,7 +106,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Input
-            label={t('cities.form.latitude') || 'Широта *'}
+            label={t('cities.form.latitude')}
             type="number"
             step="any"
             value={latitude}
@@ -119,13 +119,13 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
             error={errors.latitude}
             required
             disabled={createMutation.isPending}
-            placeholder={t('cities.form.latitudePlaceholder') || 'Например: 32.0853'}
+            placeholder={t('cities.form.latitudePlaceholder')}
           />
         </div>
 
         <div>
           <Input
-            label={t('cities.form.longitude') || 'Долгота *'}
+            label={t('cities.form.longitude')}
             type="number"
             step="any"
             value={longitude}
@@ -138,7 +138,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
             error={errors.longitude}
             required
             disabled={createMutation.isPending}
-            placeholder={t('cities.form.longitudePlaceholder') || 'Например: 34.7818'}
+            placeholder={t('cities.form.longitudePlaceholder')}
           />
         </div>
       </div>
@@ -163,13 +163,13 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
             onClick={handleCancel}
             disabled={createMutation.isPending}
           >
-            {t('common.cancel') || 'Отмена'}
+            {t('common.cancel')}
           </Button>
         )}
         <Button type="submit" disabled={createMutation.isPending}>
           {createMutation.isPending 
-            ? t('cities.form.creating') || 'Создание...' 
-            : t('cities.form.create') || 'Создать город'}
+            ? t('cities.form.creating')
+            : t('cities.form.create')}
         </Button>
       </div>
     </form>

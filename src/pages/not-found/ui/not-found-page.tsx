@@ -12,10 +12,10 @@ export const NotFoundPage: FC = () => {
       <div className="text-center">
         <h1 className="text-6xl font-bold text-primary mb-4">404</h1>
         <p className="text-xl text-gray-600 mb-8">
-          {t('notFound.message') || 'Страница не найдена'}
+          {t('notFound.message')}
         </p>
         <Button onClick={() => navigate('/')} size="lg">
-          {t('notFound.backHome') || 'Вернуться на главную'}
+          {t('notFound.backHome')}
         </Button>
       </div>
     </div>

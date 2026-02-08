@@ -91,10 +91,10 @@ export const AssignVolunteerModal: FC<AssignVolunteerModalProps> = ({
         ) : error ? (
           <div className="text-center py-8">
             <p className="text-red-500 mb-2">
-              {t('common.error') || 'Ошибка загрузки волонтеров'}
+              {t('common.error')}
             </p>
             <p className="text-sm text-gray-500">
-              {error instanceof Error ? error.message : 'Неизвестная ошибка'}
+              {error instanceof Error ? error.message : t('common.unknownError')}
             </p>
           </div>
         ) : volunteers.length === 0 ? (

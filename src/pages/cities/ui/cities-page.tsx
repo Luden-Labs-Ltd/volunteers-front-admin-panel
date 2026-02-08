@@ -26,24 +26,24 @@ export const CitiesPage: FC = () => {
       <div className="p-4 sm:p-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-900">
-            {t('cities.title') || 'Города'}
+            {t('cities.title')}
           </h1>
           <Button onClick={() => setIsCreateModalOpen(true)}>
-            {t('cities.create') || 'Создать город'}
+            {t('cities.create')}
           </Button>
         </div>
 
         {isLoading ? (
           <div className="text-center py-8 text-gray-500">
-            {t('common.loading') || 'Загрузка...'}
+            {t('common.loading')}
           </div>
         ) : paginatedCities.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 mb-4">
-              {t('cities.empty') || 'Нет доступных городов'}
+              {t('cities.empty')}
             </p>
             <Button onClick={() => setIsCreateModalOpen(true)}>
-              {t('cities.createFirst') || 'Создать первый город'}
+              {t('cities.createFirst')}
             </Button>
           </div>
         ) : (
@@ -53,16 +53,16 @@ export const CitiesPage: FC = () => {
                 <thead>
                   <tr className="bg-gray-50">
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      {t('cities.columns.name') || 'Название'}
+                      {t('cities.columns.name')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      {t('cities.columns.latitude') || 'Широта'}
+                      {t('cities.columns.latitude')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      {t('cities.columns.longitude') || 'Долгота'}
+                      {t('cities.columns.longitude')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      {t('cities.columns.createdAt') || 'Дата создания'}
+                      {t('cities.columns.createdAt')}
                     </th>
                   </tr>
                 </thead>
@@ -115,7 +115,7 @@ export const CitiesPage: FC = () => {
         <Modal
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}
-          title={t('cities.create') || 'Создать город'}
+          title={t('cities.create')}
         >
           <CreateCityForm
             onSuccess={handleCreateSuccess}

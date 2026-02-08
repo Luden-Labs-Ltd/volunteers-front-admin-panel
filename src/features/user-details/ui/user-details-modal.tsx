@@ -60,10 +60,8 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                     showToast.successKey(t, 'users.statusUpdated');
                     onSuccess?.();
                 },
-                onError: (error: Error | unknown) => {
-                    const message =
-                        (error instanceof Error ? error.message : undefined) || t('users.statusUpdateError') || 'Ошибка обновления статуса';
-                    showToast.error(message);
+                onError: () => {
+                    showToast.error(t('users.statusUpdateError'));
                 },
             },
         );
@@ -81,10 +79,8 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                         setIsEditingPrograms(false);
                         onSuccess?.();
                     },
-                    onError: (error: Error | unknown) => {
-                        const message =
-                            (error instanceof Error ? error.message : undefined) || t('users.programsUpdateError') || 'Ошибка обновления программы';
-                        showToast.error(message);
+                    onError: () => {
+                        showToast.error(t('users.programsUpdateError'));
                     },
                 },
             );
@@ -98,10 +94,8 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                         setIsEditingPrograms(false);
                         onSuccess?.();
                     },
-                    onError: (error: Error | unknown) => {
-                        const message =
-                            error?.message || t('users.programsUpdateError') || 'Ошибка обновления программ';
-                        showToast.error(message);
+                    onError: () => {
+                        showToast.error(t('users.programsUpdateError'));
                     },
                 },
             );
@@ -109,10 +103,10 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
     };
 
     return (
-        <Modal isOpen={isOpen && !!userId} onClose={onClose} title={t('users.details.title') || 'Детали пользователя'}>
+        <Modal isOpen={isOpen && !!userId} onClose={onClose} title={t('users.details.title')}>
             {!userId ? (
                 <div className="text-center py-8 text-gray-500">
-                    {t('users.notFound') || 'Пользователь не найден'}
+                    {t('users.notFound')}
                 </div>
             ) : isLoading ? (
                 <div className="text-center py-8 text-gray-500">
@@ -120,14 +114,14 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                 </div>
             ) : !user ? (
                 <div className="text-center py-8 text-gray-500">
-                    {t('users.notFound') || 'Пользователь не найден'}
+                    {t('users.notFound')}
                 </div>
             ) : (
                 <div className="space-y-6">
                     {/* Основная информация */}
                     <div className="space-y-4">
                         <h3 className="text-lg font-semibold text-gray-900">
-                            {t('users.details.basicInfo') || 'Основная информация'}
+                            {t('users.details.basicInfo')}
                         </h3>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
@@ -159,7 +153,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                             {user.createdAt && (
                                 <div>
                                     <p className="text-sm text-gray-500">
-                                        {t('users.details.createdAt') || 'Дата создания'}
+                                        {t('users.details.createdAt')}
                                     </p>
                                     <p className="text-sm font-medium text-gray-900">
                                         {new Date(user.createdAt).toLocaleDateString()}
@@ -173,7 +167,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                     {user.about && (
                         <div>
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                {t('users.details.about') || 'О пользователе'}
+                                {t('users.details.about')}
                             </h3>
                             <p className="text-sm text-gray-700">{user.about}</p>
                         </div>
@@ -183,26 +177,26 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                     {'profile' in user && user.profile && (
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold text-gray-900">
-                                {t('users.details.profileInfo') || 'Информация профиля'}
+                                {t('users.details.profileInfo')}
                             </h3>
                             {user.role === 'volunteer' && (
                                 <div className="grid grid-cols-2 gap-4">
                                     {user.profile.city && (
                                         <div>
-                                            <p className="text-sm text-gray-500">{t('users.details.city') || 'Город'}</p>
+                                            <p className="text-sm text-gray-500">{t('users.details.city')}</p>
                                             <p className="text-sm font-medium text-gray-900">{user.profile.city.name}</p>
                                         </div>
                                     )}
                                     {user.profile.points !== undefined && (
                                         <div>
-                                            <p className="text-sm text-gray-500">{t('users.details.points') || 'Баллы'}</p>
+                                            <p className="text-sm text-gray-500">{t('users.details.points')}</p>
                                             <p className="text-sm font-medium text-gray-900">{user.profile.points}</p>
                                         </div>
                                     )}
                                     {user.profile.completedTasksCount !== undefined && (
                                         <div>
                                             <p className="text-sm text-gray-500">
-                                                {t('users.details.completedTasks') || 'Выполнено задач'}
+                                                {t('users.details.completedTasks')}
                                             </p>
                                             <p className="text-sm font-medium text-gray-900">
                                                 {user.profile.completedTasksCount}
@@ -211,14 +205,14 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                     )}
                                     {user.profile.rating !== null && user.profile.rating !== undefined && (
                                         <div>
-                                            <p className="text-sm text-gray-500">{t('users.details.rating') || 'Рейтинг'}</p>
+                                            <p className="text-sm text-gray-500">{t('users.details.rating')}</p>
                                             <p className="text-sm font-medium text-gray-900">{user.profile.rating}</p>
                                         </div>
                                     )}
                                     <div className="col-span-2">
                                         <div className="flex items-center justify-between mb-1">
                                             <p className="text-sm text-gray-500">
-                                                {t('users.details.programs') || 'Программы'}
+                                                {t('users.details.programs')}
                                             </p>
                                             {!isEditingPrograms && (
                                                 <Button
@@ -226,7 +220,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                     size="sm"
                                                     onClick={() => setIsEditingPrograms(true)}
                                                 >
-                                                    {t('users.details.editPrograms') || 'Изменить'}
+                                                    {t('users.details.editPrograms')}
                                                 </Button>
                                             )}
                                         </div>
@@ -253,7 +247,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                         ))
                                                     ) : (
                                                         <p className="text-sm text-gray-500 p-2">
-                                                            {t('users.details.noProgramsAvailable') || 'Нет доступных программ'}
+                                                            {t('users.details.noProgramsAvailable')}
                                                         </p>
                                                     )}
                                                 </div>
@@ -264,7 +258,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                         onClick={handleSavePrograms}
                                                         disabled={isUpdatingPrograms}
                                                     >
-                                                        {t('common.save') || 'Сохранить'}
+                                                        {t('common.save')}
                                                     </Button>
                                                     <Button
                                                         variant="outline"
@@ -277,7 +271,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                             }
                                                         }}
                                                     >
-                                                        {t('common.cancel') || 'Отмена'}
+                                                        {t('common.cancel')}
                                                     </Button>
                                                 </div>
                                             </div>
@@ -291,7 +285,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                     ))
                                                 ) : (
                                                     <span className="text-sm text-gray-400">
-                                                        {t('users.details.noPrograms') || 'Нет программ'}
+                                                        {t('users.details.noPrograms')}
                                                     </span>
                                                 )}
                                             </div>
@@ -300,7 +294,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                     {user.profile.skills && user.profile.skills.length > 0 && (
                                         <div className="col-span-2">
                                             <p className="text-sm text-gray-500 mb-1">
-                                                {t('users.details.skills') || 'Навыки'}
+                                                {t('users.details.skills')}
                                             </p>
                                             <div className="flex flex-wrap gap-2">
                                                 {user.profile.skills.map((skill) => (
@@ -318,7 +312,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                     <div className="col-span-2">
                                         <div className="flex items-center justify-between mb-1">
                                             <p className="text-sm text-gray-500">
-                                                {t('users.details.program') || 'Программа'}
+                                                {t('users.details.program')}
                                             </p>
                                             {!isEditingPrograms && (
                                                 <Button
@@ -326,7 +320,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                     size="sm"
                                                     onClick={() => setIsEditingPrograms(true)}
                                                 >
-                                                    {t('users.details.editProgram') || 'Изменить'}
+                                                    {t('users.details.editProgram')}
                                                 </Button>
                                             )}
                                         </div>
@@ -336,7 +330,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                     value={selectedProgramId}
                                                     onChange={(e) => setSelectedProgramId(e.target.value)}
                                                     options={[
-                                                        { value: '', label: t('users.details.selectProgram') || 'Выберите программу' },
+                                                        { value: '', label: t('users.details.selectProgram') },
                                                         ...programs.map(p => ({ value: p.id, label: p.name }))
                                                     ]}
                                                 />
@@ -347,7 +341,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                         onClick={handleSavePrograms}
                                                         disabled={isUpdatingPrograms || !selectedProgramId}
                                                     >
-                                                        {t('common.save') || 'Сохранить'}
+                                                        {t('common.save')}
                                                     </Button>
                                                     <Button
                                                         variant="outline"
@@ -360,7 +354,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                             }
                                                         }}
                                                     >
-                                                        {t('common.cancel') || 'Отмена'}
+                                                        {t('common.cancel')}
                                                     </Button>
                                                 </div>
                                             </div>
@@ -372,14 +366,14 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                     </div>
                                     {user.profile.city && (
                                         <div>
-                                            <p className="text-sm text-gray-500">{t('users.details.city') || 'Город'}</p>
+                                            <p className="text-sm text-gray-500">{t('users.details.city')}</p>
                                             <p className="text-sm font-medium text-gray-900">{user.profile.city.name}</p>
                                         </div>
                                     )}
                                     {user.profile.address && (
                                         <div className="col-span-2">
                                             <p className="text-sm text-gray-500">
-                                                {t('users.details.address') || 'Адрес'}
+                                                {t('users.details.address')}
                                             </p>
                                             <p className="text-sm font-medium text-gray-900">{user.profile.address}</p>
                                         </div>
@@ -392,7 +386,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                     {/* Действия со статусом */}
                     <div className="border-t pt-4">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                            {t('users.details.actions') || 'Действия'}
+                            {t('users.details.actions')}
                         </h3>
                         <div className="flex gap-2 flex-wrap">
                             {user.status !== 'approved' && (
@@ -401,7 +395,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                     onClick={() => handleStatusChange('approved')}
                                     disabled={isPending}
                                 >
-                                    {t('users.actions.approve') || 'Одобрить'}
+                                    {t('users.actions.approve')}
                                 </Button>
                             )}
                             {user.status !== 'blocked' && (
@@ -410,7 +404,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                     onClick={() => handleStatusChange('blocked')}
                                     disabled={isPending}
                                 >
-                                    {t('users.actions.block') || 'Заблокировать'}
+                                    {t('users.actions.block')}
                                 </Button>
                             )}
                             {user.status !== 'pending' && (
@@ -419,7 +413,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                     onClick={() => handleStatusChange('pending')}
                                     disabled={isPending}
                                 >
-                                    {t('users.actions.setPending') || 'Вернуть в ожидание'}
+                                    {t('users.actions.setPending')}
                                 </Button>
                             )}
                         </div>

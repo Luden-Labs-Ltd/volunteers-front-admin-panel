@@ -2,22 +2,23 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../api';
 import { clearTokens } from '@/shared/lib/auth';
+import { useI18n } from '@/shared/lib/i18n';
 import { toast } from '@/shared/lib/toast';
 
 export function useLogout() {
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   return useMutation({
     mutationFn: () => authApi.logout(),
     onSuccess: () => {
       clearTokens();
-      toast.success('Вы успешно вышли из системы');
+      toast.success(t('auth.logoutSuccess'));
       navigate('/auth');
     },
-    onError: (error: Error) => {
-      // Даже если запрос не удался, очищаем токены локально
+    onError: () => {
       clearTokens();
-      toast.error(error.message || 'Ошибка при выходе');
+      toast.error(t('auth.logoutError'));
       navigate('/auth');
     },
   });

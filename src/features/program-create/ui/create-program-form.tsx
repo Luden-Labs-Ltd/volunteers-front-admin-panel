@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useCreateProgram } from '@/entities/program';
+import { useI18n } from '@/shared/lib/i18n';
 import { Button, Input, Textarea } from '@/shared/ui';
 
 export interface CreateProgramFormProps {
@@ -11,6 +12,7 @@ export const CreateProgramForm: FC<CreateProgramFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
+  const { t } = useI18n();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isActive, setIsActive] = useState(true);
@@ -22,9 +24,9 @@ export const CreateProgramForm: FC<CreateProgramFormProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = 'Название обязательно';
+      newErrors.name = t('programs.form.nameRequired');
     } else if (name.length > 255) {
-      newErrors.name = 'Название не должно превышать 255 символов';
+      newErrors.name = t('programs.form.nameTooLong');
     }
 
     setErrors(newErrors);
@@ -59,7 +61,7 @@ export const CreateProgramForm: FC<CreateProgramFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Input
-          label="Название *"
+          label={t('programs.form.nameLabel')}
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -75,7 +77,7 @@ export const CreateProgramForm: FC<CreateProgramFormProps> = ({
 
       <div>
         <Textarea
-          label="Описание"
+          label={t('programs.form.descriptionLabel')}
           value={description}
           onChange={(e) => {
             setDescription(e.target.value);
@@ -99,7 +101,7 @@ export const CreateProgramForm: FC<CreateProgramFormProps> = ({
           className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
         />
         <label htmlFor="isActive" className="text-sm text-gray-700">
-          Программа активна
+          {t('programs.form.isActiveLabel')}
         </label>
       </div>
 
@@ -111,11 +113,11 @@ export const CreateProgramForm: FC<CreateProgramFormProps> = ({
             onClick={onCancel}
             disabled={createMutation.isPending}
           >
-            Отмена
+            {t('common.cancel')}
           </Button>
         )}
         <Button type="submit" disabled={createMutation.isPending}>
-          {createMutation.isPending ? 'Создание...' : 'Создать'}
+          {createMutation.isPending ? t('common.creating') : t('programs.create')}
         </Button>
       </div>
     </form>

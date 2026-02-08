@@ -14,7 +14,9 @@
     "loading": "Loading...",
     "confirm": "Confirm",
     "emailLabel": "Email:",
-    "phoneLabel": "Phone:"
+    "phoneLabel": "Phone:",
+    "error": "Error",
+    "unknownError": "An unknown error occurred"
   },
   "home": {
     "title": "Welcome!",
@@ -43,7 +45,18 @@
       "active": "Active",
       "inactive": "Inactive"
     },
-    "edit": "Edit program"
+    "edit": "Edit program",
+    "form": {
+      "nameLabel": "Name *",
+      "descriptionLabel": "Description",
+      "nameRequired": "Name is required",
+      "nameTooLong": "Name must not exceed 255 characters",
+      "isActiveLabel": "Program is active"
+    },
+    "delete": {
+      "confirmMessage": "Are you sure you want to delete the program {{programName}}?",
+      "confirmNote": "This action cannot be undone. If volunteers or beneficiaries are linked to this program, deletion will not be possible."
+    }
   },
   "categories": {
     "title": "Categories",
@@ -124,7 +137,13 @@
     "loginTab": "Login",
     "registerTab": "Register",
     "logout": "Logout",
-    "logoutPending": "Logging out..."
+    "logoutPending": "Logging out...",
+    "logoutSuccess": "You have been logged out successfully",
+    "loginSuccess": "Logged in successfully",
+    "registerSuccess": "Registration successful",
+    "logoutError": "Error logging out",
+    "loginError": "Error logging in",
+    "registerError": "Error during registration"
   },
   "users": {
     "title": "Users",
@@ -194,6 +213,7 @@
       "phone": "Phone",
       "program": "Program",
       "photo": "Photo (URL)",
+      "photoPlaceholder": "https://example.com/photo.jpg",
       "about": "About",
       "firstNameRequired": "First name is required",
       "lastNameRequired": "Last name is required",
@@ -204,6 +224,13 @@
       "phoneExists": "Phone is already used by another user",
       "selectProgram": "Select program",
       "noPrograms": "No available programs",
+      "city": "City",
+      "selectCity": "Select city",
+      "noCities": "No cities available",
+      "address": "Address",
+      "addressPlaceholder": "Enter address",
+      "addressRequired": "Address is required",
+      "addressTooLong": "Address must not exceed 500 characters",
       "create": "Create",
       "creating": "Creating...",
       "createSuccess": "Needy user created successfully",
@@ -311,6 +338,10 @@
       "createSuccess": "City created successfully",
       "createError": "Failed to create city"
     }
+  },
+  "notFound": {
+    "message": "Page not found",
+    "backHome": "Back to home"
   }
 }
 

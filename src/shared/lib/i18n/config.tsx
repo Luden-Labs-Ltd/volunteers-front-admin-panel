@@ -62,6 +62,10 @@ function translate(
 ): string {
   const bundle = translations[language] ?? translations.he;
   let result = resolveKey(bundle, key);
+  // Fallback to Hebrew if key missing in current locale (per FR-006)
+  if (result === key && language !== 'he') {
+    result = resolveKey(translations.he, key);
+  }
 
   if (params) {
     Object.entries(params).forEach(([paramKey, paramValue]) => {

@@ -36,15 +36,15 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!firstName.trim()) {
-      newErrors.firstName = t('needy.form.firstNameRequired') || 'Имя обязательно';
+      newErrors.firstName = t('needy.form.firstNameRequired');
     } else if (firstName.length > 100) {
       newErrors.firstName =
-        t('needy.form.firstNameTooLong') || 'Имя не должно превышать 100 символов';
+        t('needy.form.firstNameTooLong');
     }
 
     if (!lastName.trim()) {
       newErrors.lastName =
-        t('needy.form.lastNameRequired') || 'Фамилия обязательна';
+        t('needy.form.lastNameRequired');
     } else if (lastName.length > 100) {
       newErrors.lastName =
         t('needy.form.lastNameTooLong') ||
@@ -52,25 +52,25 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
     }
 
     if (!phone.trim()) {
-      newErrors.phone = t('needy.form.phoneRequired') || 'Телефон обязателен';
+      newErrors.phone = t('needy.form.phoneRequired');
     }
 
     if (!programId) {
       newErrors.programId =
-        t('needy.form.programRequired') || 'Программа обязательна';
+        t('needy.form.programRequired');
     }
 
     if (!cityId) {
       newErrors.cityId =
-        t('needy.form.cityRequired') || 'Город обязателен';
+        t('needy.form.cityRequired');
     }
 
     if (!address.trim()) {
       newErrors.address =
-        t('needy.form.addressRequired') || 'Адрес обязателен';
+        t('needy.form.addressRequired');
     } else if (address.length > 500) {
       newErrors.address =
-        t('needy.form.addressTooLong') || 'Адрес не должен превышать 500 символов';
+        t('needy.form.addressTooLong');
     }
 
     setErrors(newErrors);
@@ -143,7 +143,7 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <Input
-          label={t('needy.form.firstName') || 'Имя *'}
+          label={t('needy.form.firstName')}
           value={firstName}
           onChange={(e) => {
             setFirstName(e.target.value);
@@ -158,7 +158,7 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
         />
 
         <Input
-          label={t('needy.form.lastName') || 'Фамилия *'}
+          label={t('needy.form.lastName')}
           value={lastName}
           onChange={(e) => {
             setLastName(e.target.value);
@@ -174,7 +174,7 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
       </div>
 
       <Input
-        label={t('needy.form.phone') || 'Телефон *'}
+        label={t('needy.form.phone')}
         value={phone}
         onChange={(e) => {
           setPhone(e.target.value);
@@ -189,7 +189,7 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
       />
 
       <Select
-        label={t('needy.form.program') || 'Программа *'}
+        label={t('needy.form.program')}
         value={programId}
         onChange={(e) => {
           setProgramId(e.target.value);
@@ -201,7 +201,7 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
         required
         disabled={createMutation.isPending || programsLoading}
         options={[
-          { value: '', label: t('needy.form.selectProgram') || 'Выберите программу' },
+          { value: '', label: t('needy.form.selectProgram') },
           ...activePrograms.map((program) => ({
             value: program.id,
             label: program.name,
@@ -211,12 +211,12 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
 
       {activePrograms.length === 0 && !programsLoading && (
         <p className="text-sm text-gray-500">
-          {t('needy.form.noPrograms') || 'Нет доступных программ'}
+          {t('needy.form.noPrograms')}
         </p>
       )}
 
       <Select
-        label={t('needy.form.city') || 'Город *'}
+        label={t('needy.form.city')}
         value={cityId}
         onChange={(e) => {
           setCityId(e.target.value);
@@ -228,7 +228,7 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
         required
         disabled={createMutation.isPending || citiesLoading}
         options={[
-          { value: '', label: t('needy.form.selectCity') || 'Выберите город' },
+          { value: '', label: t('needy.form.selectCity') },
           ...cities.map((city) => ({
             value: city.id,
             label: city.name,
@@ -238,12 +238,12 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
 
       {cities.length === 0 && !citiesLoading && (
         <p className="text-sm text-gray-500">
-          {t('needy.form.noCities') || 'Нет доступных городов'}
+          {t('needy.form.noCities')}
         </p>
       )}
 
       <Input
-        label={t('needy.form.address') || 'Адрес *'}
+        label={t('needy.form.address')}
         value={address}
         onChange={(e) => {
           setAddress(e.target.value);
@@ -254,20 +254,20 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
         error={errors.address}
         required
         disabled={createMutation.isPending}
-        placeholder={t('needy.form.addressPlaceholder') || 'Введите адрес'}
+        placeholder={t('needy.form.addressPlaceholder')}
         maxLength={500}
       />
 
       <Input
-        label={t('needy.form.photo') || 'Фото (URL)'}
+        label={t('needy.form.photo')}
         value={photo}
         onChange={(e) => setPhoto(e.target.value)}
         disabled={createMutation.isPending}
-        placeholder="https://example.com/photo.jpg"
+        placeholder={t('needy.form.photoPlaceholder')}
       />
 
       <Textarea
-        label={t('needy.form.about') || 'Описание'}
+        label={t('needy.form.about')}
         value={about}
         onChange={(e) => setAbout(e.target.value)}
         disabled={createMutation.isPending}
@@ -282,13 +282,13 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
             onClick={handleCancel}
             disabled={createMutation.isPending}
           >
-            {t('common.cancel') || 'Отмена'}
+            {t('common.cancel')}
           </Button>
         )}
         <Button type="submit" disabled={createMutation.isPending}>
           {createMutation.isPending
-            ? t('needy.form.creating') || 'Создание...'
-            : t('needy.form.create') || 'Создать'}
+            ? t('needy.form.creating')
+            : t('needy.form.create')}
         </Button>
       </div>
     </form>

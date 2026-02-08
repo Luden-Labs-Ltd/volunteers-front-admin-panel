@@ -18,10 +18,10 @@ export function useCreateNeedy() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      toast.success(t('needy.form.createSuccess') || 'Нуждающийся успешно создан');
+      toast.success(t('needy.form.createSuccess'));
     },
     onError: (error: unknown) => {
-      let message = t('needy.form.createError') || 'Ошибка при создании нуждающегося';
+      let message = t('needy.form.createError');
       
       if (
         error instanceof Error &&

@@ -14,7 +14,9 @@
     "loading": "Загрузка...",
     "confirm": "Подтвердить",
     "emailLabel": "Email:",
-    "phoneLabel": "Телефон:"
+    "phoneLabel": "Телефон:",
+    "error": "Ошибка",
+    "unknownError": "Произошла неизвестная ошибка"
   },
   "home": {
     "title": "Добро пожаловать!",
@@ -43,7 +45,18 @@
       "active": "Активна",
       "inactive": "Неактивна"
     },
-    "edit": "Редактировать программу"
+    "edit": "Редактировать программу",
+    "form": {
+      "nameLabel": "Название *",
+      "descriptionLabel": "Описание",
+      "nameRequired": "Название обязательно",
+      "nameTooLong": "Название не должно превышать 255 символов",
+      "isActiveLabel": "Программа активна"
+    },
+    "delete": {
+      "confirmMessage": "Вы уверены, что хотите удалить программу {{programName}}?",
+      "confirmNote": "Это действие нельзя отменить. Если к программе привязаны волонтёры или нуждающиеся, удаление будет невозможно."
+    }
   },
   "categories": {
     "title": "Категории",
@@ -124,7 +137,13 @@
     "loginTab": "Вход",
     "registerTab": "Регистрация",
     "logout": "Выйти",
-    "logoutPending": "Выход..."
+    "logoutPending": "Выход...",
+    "logoutSuccess": "Вы успешно вышли из системы",
+    "loginSuccess": "Успешный вход в систему",
+    "registerSuccess": "Регистрация успешна",
+    "logoutError": "Ошибка при выходе",
+    "loginError": "Ошибка при входе в систему",
+    "registerError": "Ошибка при регистрации"
   },
   "users": {
     "title": "Пользователи",
@@ -194,6 +213,7 @@
       "phone": "Телефон",
       "program": "Программа",
       "photo": "Фото (URL)",
+      "photoPlaceholder": "https://example.com/photo.jpg",
       "about": "Описание",
       "firstNameRequired": "Имя обязательно",
       "lastNameRequired": "Фамилия обязательна",
@@ -204,6 +224,13 @@
       "phoneExists": "Телефон уже используется другим пользователем",
       "selectProgram": "Выберите программу",
       "noPrograms": "Нет доступных программ",
+      "city": "Город",
+      "selectCity": "Выберите город",
+      "noCities": "Нет доступных городов",
+      "address": "Адрес",
+      "addressPlaceholder": "Введите адрес",
+      "addressRequired": "Адрес обязателен",
+      "addressTooLong": "Адрес не должен превышать 500 символов",
       "create": "Создать",
       "creating": "Создание...",
       "createSuccess": "Нуждающийся успешно создан",
@@ -311,6 +338,10 @@
       "createSuccess": "Город успешно создан",
       "createError": "Не удалось создать город"
     }
+  },
+  "notFound": {
+    "message": "Страница не найдена",
+    "backHome": "Вернуться на главную"
   }
 }
 

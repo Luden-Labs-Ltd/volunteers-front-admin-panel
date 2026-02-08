@@ -14,7 +14,9 @@
     "loading": "טוען...",
     "confirm": "אשר",
     "emailLabel": "אימייל:",
-    "phoneLabel": "טלפון:"
+    "phoneLabel": "טלפון:",
+    "error": "שגיאה",
+    "unknownError": "אירעה שגיאה לא ידועה"
   },
   "home": {
     "title": "ברוכים הבאים!",
@@ -43,7 +45,18 @@
       "active": "פעילה",
       "inactive": "לא פעילה"
     },
-    "edit": "עריכת תוכנית"
+    "edit": "עריכת תוכנית",
+    "form": {
+      "nameLabel": "שם *",
+      "descriptionLabel": "תיאור",
+      "nameRequired": "שם נדרש",
+      "nameTooLong": "השם לא יכול לעלות על 255 תווים",
+      "isActiveLabel": "התוכנית פעילה"
+    },
+    "delete": {
+      "confirmMessage": "האם אתה בטוח שברצונך למחוק את התוכנית {{programName}}?",
+      "confirmNote": "לא ניתן לבטל פעולה זו. אם מתנדבים או נזקקים מקושרים לתוכנית זו, המחיקה לא תתאפשר."
+    }
   },
   "categories": {
     "title": "קטגוריות",
@@ -124,7 +137,13 @@
     "loginTab": "התחברות",
     "registerTab": "הרשמה",
     "logout": "התנתקות",
-    "logoutPending": "מתרחש ניתוק..."
+    "logoutPending": "מתרחש ניתוק...",
+    "logoutSuccess": "התנתקת בהצלחה",
+    "loginSuccess": "התחברת בהצלחה",
+    "registerSuccess": "ההרשמה הושלמה בהצלחה",
+    "logoutError": "שגיאה בהתנתקות",
+    "loginError": "שגיאה בהתחברות",
+    "registerError": "שגיאה בהרשמה"
   },
   "users": {
     "title": "משתמשים",
@@ -194,6 +213,7 @@
       "phone": "טלפון",
       "program": "תוכנית",
       "photo": "תמונה (URL)",
+      "photoPlaceholder": "https://example.com/photo.jpg",
       "about": "אודות",
       "firstNameRequired": "שם פרטי חובה",
       "lastNameRequired": "שם משפחה חובה",
@@ -204,6 +224,13 @@
       "phoneExists": "טלפון כבר בשימוש על ידי משתמש אחר",
       "selectProgram": "בחר תוכנית",
       "noPrograms": "אין תוכניות זמינות",
+      "city": "עיר",
+      "selectCity": "בחר עיר",
+      "noCities": "אין ערים זמינות",
+      "address": "כתובת",
+      "addressPlaceholder": "הזן כתובת",
+      "addressRequired": "כתובת חובה",
+      "addressTooLong": "כתובת לא יכולה לעלות על 500 תווים",
       "create": "צור",
       "creating": "יוצר...",
       "createSuccess": "נזקק נוצר בהצלחה",
@@ -311,6 +338,10 @@
       "createSuccess": "העיר נוצרה בהצלחה",
       "createError": "נכשל ביצירת העיר"
     }
+  },
+  "notFound": {
+    "message": "הדף לא נמצא",
+    "backHome": "חזרה לדף הבית"
   }
 }
 
