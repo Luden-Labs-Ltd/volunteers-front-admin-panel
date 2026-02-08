@@ -35,17 +35,19 @@ export const AssignVolunteerButton: FC<AssignVolunteerButtonProps> = ({
       >
         {t('tasks.assignVolunteer')}
       </Button>
-      <AssignVolunteerModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        taskId={taskId}
-        programId={programId}
-        currentVolunteerId={currentVolunteerId}
-        onSuccess={() => {
-          setIsOpen(false);
-          onSuccess?.();
-        }}
-      />
+      {isOpen && (
+        <AssignVolunteerModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          taskId={taskId}
+          programId={programId}
+          currentVolunteerId={currentVolunteerId}
+          onSuccess={() => {
+            setIsOpen(false);
+            onSuccess?.();
+          }}
+        />
+      )}
     </>
   );
 };

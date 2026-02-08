@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { usePrograms, programApi } from '@/entities/program';
 import { useMemo } from 'react';
 
@@ -9,8 +9,15 @@ import { useMemo } from 'react';
  * 
  * ВАЖНО: Это временное решение. В будущем лучше создать отдельный endpoint GET /volunteer/:volunteerId/programs
  */
-export function useVolunteerPrograms(volunteerId: string) {
+export function useVolunteerPrograms(
+  volunteerId: string,
+  options?: Omit<UseQueryOptions<Map<string, string[]>, Error>, 'queryKey' | 'queryFn'>,
+) {
   const { data: allPrograms = [], isLoading: programsLoading } = usePrograms();
+
+  // Исключаем enabled из options, чтобы избежать дублирования
+  const { enabled: optionsEnabled, ...restOptions } = options || {};
+  const isEnabled = (optionsEnabled !== false) && allPrograms.length > 0 && !!volunteerId;
 
   // Для каждой программы делаем запрос на получение волонтеров
   // Используем Promise.all для параллельных запросов
@@ -45,8 +52,13 @@ export function useVolunteerPrograms(volunteerId: string) {
 
       return map;
     },
-    enabled: allPrograms.length > 0 && !!volunteerId,
+    enabled: isEnabled,
     staleTime: 2 * 60 * 1000, // 2 минуты
+    gcTime: 10 * 60 * 1000, // 10 минут - время жизни кеша
+    refetchOnMount: false, // Не делать запрос при монтировании, если данные свежие
+    refetchOnWindowFocus: false, // Не делать запрос при фокусе окна
+    refetchOnReconnect: false, // Не делать запрос при переподключении
+    ...restOptions,
   });
 
   // Извлекаем ID программ, где волонтер присутствует
