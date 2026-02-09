@@ -24,15 +24,17 @@ export const AssignProgramsButton: FC<AssignProgramsButtonProps> = ({
       >
         {t('users.managePrograms')}
       </Button>
-      <AssignProgramsModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        volunteerId={volunteerId}
-        onSuccess={() => {
-          setIsOpen(false);
-          onSuccess?.();
-        }}
-      />
+      {isOpen && (
+        <AssignProgramsModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          volunteerId={volunteerId}
+          onSuccess={() => {
+            setIsOpen(false);
+            onSuccess?.();
+          }}
+        />
+      )}
     </>
   );
 };

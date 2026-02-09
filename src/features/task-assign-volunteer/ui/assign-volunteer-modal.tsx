@@ -26,8 +26,10 @@ export const AssignVolunteerModal: FC<AssignVolunteerModalProps> = ({
   const [selectedVolunteerId, setSelectedVolunteerId] = useState<string>('');
   const [showReplaceWarning, setShowReplaceWarning] = useState(false);
 
-  // Получаем волонтеров конкретной программы
-  const { data: volunteers = [], isLoading, error } = useProgramVolunteers(programId);
+  // Получаем волонтеров конкретной программы только когда модальное окно открыто
+  const { data: volunteers = [], isLoading, error } = useProgramVolunteers(programId, {
+    enabled: isOpen && !!programId,
+  });
   const assignMutation = useAssignVolunteer();
 
   // Логируем ошибки для отладки

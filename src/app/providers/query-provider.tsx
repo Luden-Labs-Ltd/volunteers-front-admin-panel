@@ -7,6 +7,8 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
+      gcTime: 10 * 60 * 1000, // 10 минут - время жизни кеша
+      staleTime: 5 * 60 * 1000, // 5 минут - данные считаются свежими
     },
   },
 });

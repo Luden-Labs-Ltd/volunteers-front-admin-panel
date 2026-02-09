@@ -381,7 +381,10 @@
     "toast": {
       "createSuccess": "Город успешно создан",
       "createError": "Не удалось создать город"
-    }
+    },
+    "viewVolunteers": "Волонтеры ({{count}})",
+    "volunteers": "Волонтеры города {{city}}",
+    "noVolunteers": "В этом городе нет зарегистрированных волонтеров"
   },
   "notFound": {
     "message": "Страница не найдена",

@@ -27,7 +27,9 @@ export const AssignProgramsModal: FC<AssignProgramsModalProps> = ({
   const {
     data: currentProgramIds = [],
     isLoading: currentProgramsLoading,
-  } = useVolunteerPrograms(volunteerId);
+  } = useVolunteerPrograms(volunteerId, {
+    enabled: isOpen && !!volunteerId,
+  });
   const assignMutation = useAssignVolunteerToProgram();
 
   // Инициализируем выбранные программы текущими назначениями
