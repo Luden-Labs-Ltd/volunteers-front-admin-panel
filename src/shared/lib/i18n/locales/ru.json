@@ -137,7 +137,8 @@
     "skills": "Навыки",
     "tasks": "Таски",
     "users": "Пользователи",
-    "cities": "Города"
+    "cities": "Города",
+    "cityGroups": "Группы городов"
   },
   "pagination": {
     "prev": "Назад",
@@ -323,6 +324,30 @@
     "replaceVolunteerWarning": "На задачу уже назначен волонтер. Заменить?",
     "unassignConfirm": "Вы уверены, что хотите убрать волонтера с этой задачи?",
     "notAssigned": "Не назначен"
+  },
+  "cityGroups": {
+    "title": "Группы городов",
+    "create": "Создать группу",
+    "createFirst": "Создать первую группу",
+    "empty": "Нет групп городов",
+    "columns": {
+      "name": "Название",
+      "citiesCount": "Города",
+      "actions": "Действия"
+    },
+    "form": {
+      "nameLabel": "Название группы *",
+      "nameRequired": "Название обязательно",
+      "nameTooLong": "Название не должно превышать 255 символов",
+      "citiesLabel": "Города в группе"
+    },
+    "createSuccess": "Группа создана",
+    "updateSuccess": "Группа обновлена",
+    "deleteSuccess": "Группа удалена",
+    "citiesUpdateSuccess": "Состав городов обновлён",
+    "deleteConfirmMessage": "Удалить группу «{{name}}»? Города останутся в системе.",
+    "edit": "Редактировать",
+    "manageCities": "Управление городами"
   },
   "cities": {
     "title": "Города",

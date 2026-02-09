@@ -4,7 +4,6 @@ import { useCategories } from '@/entities/category';
 import { type Skill, useUpdateSkill } from '@/entities/skill';
 import { SvgPreview } from '@/features/svg-preview';
 import { useI18n } from '@/shared/lib/i18n';
-import { validateSvg } from '@/shared/lib/utils';
 import { Button, Input, Select, Textarea } from '@/shared/ui';
 
 export interface EditSkillFormProps {

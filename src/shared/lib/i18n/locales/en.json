@@ -137,7 +137,8 @@
     "skills": "Skills",
     "tasks": "Tasks",
     "users": "Users",
-    "cities": "Cities"
+    "cities": "Cities",
+    "cityGroups": "City groups"
   },
   "pagination": {
     "prev": "Prev",
@@ -323,6 +324,30 @@
     "replaceVolunteerWarning": "A volunteer is already assigned to this task. Replace?",
     "unassignConfirm": "Are you sure you want to remove the volunteer from this task?",
     "notAssigned": "Not assigned"
+  },
+  "cityGroups": {
+    "title": "City groups",
+    "create": "Create group",
+    "createFirst": "Create first group",
+    "empty": "No city groups",
+    "columns": {
+      "name": "Name",
+      "citiesCount": "Cities",
+      "actions": "Actions"
+    },
+    "form": {
+      "nameLabel": "Group name *",
+      "nameRequired": "Name is required",
+      "nameTooLong": "Name must not exceed 255 characters",
+      "citiesLabel": "Cities in group"
+    },
+    "createSuccess": "Group created",
+    "updateSuccess": "Group updated",
+    "deleteSuccess": "Group deleted",
+    "citiesUpdateSuccess": "Cities updated",
+    "deleteConfirmMessage": "Delete group \"{{name}}\"? Cities will remain in the system.",
+    "edit": "Edit",
+    "manageCities": "Manage cities"
   },
   "cities": {
     "title": "Cities",

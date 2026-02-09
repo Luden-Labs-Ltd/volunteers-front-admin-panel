@@ -137,7 +137,8 @@
     "skills": "כישורים",
     "tasks": "משימות",
     "users": "משתמשים",
-    "cities": "ערים"
+    "cities": "ערים",
+    "cityGroups": "קבוצות ערים"
   },
   "pagination": {
     "prev": "הקודם",
@@ -323,6 +324,30 @@
     "replaceVolunteerWarning": "מתנדב כבר מוקצה למשימה זו. להחליף?",
     "unassignConfirm": "האם אתה בטוח שברצונך להסיר את המתנדב מהמשימה הזו?",
     "notAssigned": "לא מוקצה"
+  },
+  "cityGroups": {
+    "title": "קבוצות ערים",
+    "create": "צור קבוצה",
+    "createFirst": "צור קבוצה ראשונה",
+    "empty": "אין קבוצות ערים",
+    "columns": {
+      "name": "שם",
+      "citiesCount": "ערים",
+      "actions": "פעולות"
+    },
+    "form": {
+      "nameLabel": "שם קבוצה *",
+      "nameRequired": "שם חובה",
+      "nameTooLong": "השם לא יעלה על 255 תווים",
+      "citiesLabel": "ערים בקבוצה"
+    },
+    "createSuccess": "הקבוצה נוצרה",
+    "updateSuccess": "הקבוצה עודכנה",
+    "deleteSuccess": "הקבוצה נמחקה",
+    "citiesUpdateSuccess": "הרכב הערים עודכן",
+    "deleteConfirmMessage": "למחוק את הקבוצה \"{{name}}\"? הערים יישארו במערכת.",
+    "edit": "עריכה",
+    "manageCities": "ניהול ערים"
   },
   "cities": {
     "title": "ערים",
