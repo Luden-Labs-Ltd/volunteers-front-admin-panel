@@ -1,8 +1,10 @@
 import { FC, useState } from 'react';
 import { Button, Input } from '@/shared/ui';
 import { useAdminRegister } from '@/entities/auth';
+import { useI18n } from '@/shared/lib/i18n';
 
 export const RegisterForm: FC = () => {
+  const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,29 +24,29 @@ export const RegisterForm: FC = () => {
     const newErrors: typeof errors = {};
 
     if (!email) {
-      newErrors.email = 'Email обязателен';
+      newErrors.email = t('auth.form.emailRequired');
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Некорректный email';
+      newErrors.email = t('auth.form.emailInvalid');
     }
 
     if (!password) {
-      newErrors.password = 'Пароль обязателен';
+      newErrors.password = t('auth.form.passwordRequired');
     } else if (password.length < 6) {
-      newErrors.password = 'Пароль должен быть не менее 6 символов';
+      newErrors.password = t('auth.form.passwordMinLength');
     }
 
     if (!confirmPassword) {
-      newErrors.confirmPassword = 'Подтверждение пароля обязательно';
+      newErrors.confirmPassword = t('auth.form.confirmPasswordRequired');
     } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'Пароли не совпадают';
+      newErrors.confirmPassword = t('auth.form.passwordsMismatch');
     }
 
     if (!firstName) {
-      newErrors.firstName = 'Имя обязательно';
+      newErrors.firstName = t('auth.form.firstNameRequired');
     }
 
     if (!lastName) {
-      newErrors.lastName = 'Фамилия обязательна';
+      newErrors.lastName = t('auth.form.lastNameRequired');
     }
 
     setErrors(newErrors);
@@ -70,56 +72,56 @@ export const RegisterForm: FC = () => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <Input
-          label="Имя"
+          label={t('auth.form.firstName')}
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           error={errors.firstName}
           disabled={registerMutation.isPending}
-          placeholder="Иван"
+          placeholder={t('auth.form.firstNamePlaceholder')}
           required
         />
 
         <Input
-          label="Фамилия"
+          label={t('auth.form.lastName')}
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           error={errors.lastName}
           disabled={registerMutation.isPending}
-          placeholder="Иванов"
+          placeholder={t('auth.form.lastNamePlaceholder')}
           required
         />
       </div>
 
       <Input
         type="email"
-        label="Email"
+        label={t('auth.form.email')}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         error={errors.email}
         disabled={registerMutation.isPending}
-        placeholder="admin@example.com"
+        placeholder={t('auth.form.emailPlaceholder')}
         required
       />
 
       <Input
         type="password"
-        label="Пароль"
+        label={t('auth.form.password')}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         error={errors.password}
         disabled={registerMutation.isPending}
-        placeholder="••••••••"
+        placeholder={t('auth.form.passwordPlaceholder')}
         required
       />
 
       <Input
         type="password"
-        label="Подтверждение пароля"
+        label={t('auth.form.confirmPassword')}
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
         error={errors.confirmPassword}
         disabled={registerMutation.isPending}
-        placeholder="••••••••"
+        placeholder={t('auth.form.passwordPlaceholder')}
         required
       />
 
@@ -129,7 +131,7 @@ export const RegisterForm: FC = () => {
         className="w-full"
         disabled={registerMutation.isPending}
       >
-        {registerMutation.isPending ? 'Регистрация...' : 'Зарегистрироваться'}
+        {registerMutation.isPending ? t('auth.form.registerPending') : t('auth.form.registerButton')}
       </Button>
     </form>
   );

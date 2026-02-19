@@ -3,6 +3,7 @@ import { useUpdateCategory, type Category } from '@/entities/category';
 import { Button, Input, ImageUpload } from '@/shared/ui';
 import { useUploadImage } from '@/entities/image';
 import { imageApi } from '@/entities/image';
+import { useI18n } from '@/shared/lib/i18n';
 
 export interface EditCategoryFormProps {
   category: Category;
@@ -21,6 +22,7 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const { t } = useI18n();
   const updateMutation = useUpdateCategory();
   const uploadImageMutation = useUploadImage();
 
@@ -47,9 +49,9 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
-      newErrors.name = 'Название обязательно';
+      newErrors.name = t('categories.form.nameRequired');
     } else if (name.length > 255) {
-      newErrors.name = 'Название не должно превышать 255 символов';
+      newErrors.name = t('categories.form.nameTooLong');
     }
 
     // Изображение не обязательно при редактировании (может остаться старое)
@@ -94,7 +96,7 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Input
-          label="Название *"
+          label={t('categories.form.nameLabel')}
           value={name}
           onChange={(e) => {
             setName(e.target.value);
@@ -109,7 +111,7 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
       </div>
 
       <ImageUpload
-        label="Изображение категории"
+        label={t('categories.form.imageLabel')}
         value={imageUrl}
         onChange={(url) => {
           // Если это URL, сохраняем его для preview
@@ -136,11 +138,11 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
             onClick={onCancel}
             disabled={updateMutation.isPending}
           >
-            Отмена
+            {t('common.cancel')}
           </Button>
         )}
         <Button type="submit" disabled={updateMutation.isPending || uploadImageMutation.isPending}>
-          {updateMutation.isPending || uploadImageMutation.isPending ? 'Сохранение...' : 'Сохранить'}
+          {updateMutation.isPending || uploadImageMutation.isPending ? t('common.saving') : t('common.save')}
         </Button>
       </div>
     </form>

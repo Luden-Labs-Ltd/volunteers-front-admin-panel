@@ -46,9 +46,7 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
       newErrors.lastName =
         t('needy.form.lastNameRequired');
     } else if (lastName.length > 100) {
-      newErrors.lastName =
-        t('needy.form.lastNameTooLong') ||
-        'Фамилия не должна превышать 100 символов';
+      newErrors.lastName = t('needy.form.lastNameTooLong');
     }
 
     if (!phone.trim()) {
@@ -123,11 +121,7 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
         (error.response.data.message.includes('already exists') ||
           error.response.data.message.includes('уже существует'))
       ) {
-        setErrors({
-          phone:
-            t('needy.form.phoneExists') ||
-            'Телефон уже используется другим пользователем',
-        });
+        setErrors({ phone: t('needy.form.phoneExists') });
       }
       // Остальные ошибки обрабатываются в хуке через toast
     }
@@ -185,7 +179,7 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
         error={errors.phone}
         required
         disabled={createMutation.isPending}
-        placeholder="+79991234567"
+        placeholder={t('needy.form.phonePlaceholder')}
       />
 
       <Select

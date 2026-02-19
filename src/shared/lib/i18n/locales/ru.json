@@ -22,7 +22,8 @@
     "imageFormats": "PNG, JPG, GIF до 10 МБ",
     "create": "Создать",
     "selectImage": "Пожалуйста, выберите изображение",
-    "fileSizeMax": "Размер файла не должен превышать 10 МБ"
+    "fileSizeMax": "Размер файла не должен превышать 10 МБ",
+    "toggleMenu": "Открыть меню"
   },
   "home": {
     "title": "Добро пожаловать!",
@@ -161,7 +162,30 @@
     "registerSuccess": "Регистрация успешна",
     "logoutError": "Ошибка при выходе",
     "loginError": "Ошибка при входе в систему",
-    "registerError": "Ошибка при регистрации"
+    "registerError": "Ошибка при регистрации",
+    "form": {
+      "email": "Email",
+      "password": "Пароль",
+      "confirmPassword": "Подтверждение пароля",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "emailPlaceholder": "admin@example.com",
+      "passwordPlaceholder": "••••••••",
+      "firstNamePlaceholder": "Иван",
+      "lastNamePlaceholder": "Иванов",
+      "emailRequired": "Email обязателен",
+      "emailInvalid": "Некорректный email",
+      "passwordRequired": "Пароль обязателен",
+      "passwordMinLength": "Пароль должен быть не менее 6 символов",
+      "confirmPasswordRequired": "Подтверждение пароля обязательно",
+      "passwordsMismatch": "Пароли не совпадают",
+      "firstNameRequired": "Имя обязательно",
+      "lastNameRequired": "Фамилия обязательна",
+      "loginButton": "Войти",
+      "loginPending": "Вход...",
+      "registerButton": "Зарегистрироваться",
+      "registerPending": "Регистрация..."
+    }
   },
   "users": {
     "title": "Пользователи",
@@ -229,6 +253,7 @@
       "firstName": "Имя",
       "lastName": "Фамилия",
       "phone": "Телефон",
+      "phonePlaceholder": "+79991234567",
       "program": "Программа",
       "photo": "Фото (URL)",
       "photoPlaceholder": "https://example.com/photo.jpg",
@@ -376,7 +401,11 @@
       "longitudeInvalid": "Долгота должна быть от -180 до 180",
       "create": "Создать город",
       "creating": "Создание...",
-      "coordinatesExamplesTitle": "Примеры координат для израильских городов:"
+      "coordinatesExamplesTitle": "Примеры координат для израильских городов:",
+      "exampleTelAviv": "Тель-Авив: 32.0853, 34.7818",
+      "exampleJerusalem": "Иерусалим: 31.7683, 35.2137",
+      "exampleHaifa": "Хайфа: 32.7940, 34.9896",
+      "exampleBeerSheva": "Беэр-Шева: 31.2530, 34.7915"
     },
     "toast": {
       "createSuccess": "Город успешно создан",

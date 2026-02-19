@@ -148,10 +148,10 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
           💡 {t('cities.form.coordinatesExamplesTitle')}
         </p>
         <ul className="text-xs text-blue-700 space-y-1">
-          <li>Tel Aviv: 32.0853, 34.7818</li>
-          <li>Jerusalem: 31.7683, 35.2137</li>
-          <li>Haifa: 32.7940, 34.9896</li>
-          <li>Be'er Sheva: 31.2530, 34.7915</li>
+          <li>{t('cities.form.exampleTelAviv')}</li>
+          <li>{t('cities.form.exampleJerusalem')}</li>
+          <li>{t('cities.form.exampleHaifa')}</li>
+          <li>{t('cities.form.exampleBeerSheva')}</li>
         </ul>
       </div>
 

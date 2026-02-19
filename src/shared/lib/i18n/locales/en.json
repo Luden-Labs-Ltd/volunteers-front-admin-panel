@@ -22,7 +22,8 @@
     "imageFormats": "PNG, JPG, GIF up to 10MB",
     "create": "Create",
     "selectImage": "Please select an image",
-    "fileSizeMax": "File size must not exceed 10MB"
+    "fileSizeMax": "File size must not exceed 10MB",
+    "toggleMenu": "Toggle menu"
   },
   "home": {
     "title": "Welcome!",
@@ -161,7 +162,30 @@
     "registerSuccess": "Registration successful",
     "logoutError": "Error logging out",
     "loginError": "Error logging in",
-    "registerError": "Error during registration"
+    "registerError": "Error during registration",
+    "form": {
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "emailPlaceholder": "admin@example.com",
+      "passwordPlaceholder": "••••••••",
+      "firstNamePlaceholder": "John",
+      "lastNamePlaceholder": "Doe",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "confirmPasswordRequired": "Confirm password is required",
+      "passwordsMismatch": "Passwords do not match",
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "loginButton": "Log in",
+      "loginPending": "Logging in...",
+      "registerButton": "Register",
+      "registerPending": "Registering..."
+    }
   },
   "users": {
     "title": "Users",
@@ -229,6 +253,7 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "phone": "Phone",
+      "phonePlaceholder": "+1234567890",
       "program": "Program",
       "photo": "Photo (URL)",
       "photoPlaceholder": "https://example.com/photo.jpg",
@@ -376,7 +401,11 @@
       "longitudeInvalid": "Longitude must be between -180 and 180",
       "create": "Create city",
       "creating": "Creating...",
-      "coordinatesExamplesTitle": "Coordinate examples for Israeli cities:"
+      "coordinatesExamplesTitle": "Coordinate examples for Israeli cities:",
+      "exampleTelAviv": "Tel Aviv: 32.0853, 34.7818",
+      "exampleJerusalem": "Jerusalem: 31.7683, 35.2137",
+      "exampleHaifa": "Haifa: 32.7940, 34.9896",
+      "exampleBeerSheva": "Be'er Sheva: 31.2530, 34.7915"
     },
     "toast": {
       "createSuccess": "City created successfully",

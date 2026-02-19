@@ -26,7 +26,7 @@ export const Header: FC<HeaderProps> = ({ onToggleSidebar }) => {
             type="button"
             onClick={onToggleSidebar}
             className="md:hidden p-2 -ml-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500"
-            aria-label="Toggle menu"
+            aria-label={t('common.toggleMenu')}
           >
             <svg
               className="w-6 h-6"

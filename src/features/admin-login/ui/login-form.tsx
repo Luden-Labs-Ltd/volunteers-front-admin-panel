@@ -1,8 +1,10 @@
 import { FC, useState } from 'react';
 import { Button, Input } from '@/shared/ui';
 import { useAdminLogin } from '@/entities/auth';
+import { useI18n } from '@/shared/lib/i18n';
 
 export const LoginForm: FC = () => {
+  const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
@@ -13,15 +15,15 @@ export const LoginForm: FC = () => {
     const newErrors: { email?: string; password?: string } = {};
 
     if (!email) {
-      newErrors.email = 'Email обязателен';
+      newErrors.email = t('auth.form.emailRequired');
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Некорректный email';
+      newErrors.email = t('auth.form.emailInvalid');
     }
 
     if (!password) {
-      newErrors.password = 'Пароль обязателен';
+      newErrors.password = t('auth.form.passwordRequired');
     } else if (password.length < 6) {
-      newErrors.password = 'Пароль должен быть не менее 6 символов';
+      newErrors.password = t('auth.form.passwordMinLength');
     }
 
     setErrors(newErrors);
@@ -42,23 +44,23 @@ export const LoginForm: FC = () => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <Input
         type="email"
-        label="Email"
+        label={t('auth.form.email')}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         error={errors.email}
         disabled={loginMutation.isPending}
-        placeholder="admin@example.com"
+        placeholder={t('auth.form.emailPlaceholder')}
         required
       />
 
       <Input
         type="password"
-        label="Пароль"
+        label={t('auth.form.password')}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         error={errors.password}
         disabled={loginMutation.isPending}
-        placeholder="••••••••"
+        placeholder={t('auth.form.passwordPlaceholder')}
         required
       />
 
@@ -68,7 +70,7 @@ export const LoginForm: FC = () => {
         className="w-full"
         disabled={loginMutation.isPending}
       >
-        {loginMutation.isPending ? 'Вход...' : 'Войти'}
+        {loginMutation.isPending ? t('auth.form.loginPending') : t('auth.form.loginButton')}
       </Button>
     </form>
   );

@@ -22,7 +22,8 @@
     "imageFormats": "PNG, JPG, GIF עד 10MB",
     "create": "צור",
     "selectImage": "אנא בחר תמונה",
-    "fileSizeMax": "גודל הקובץ לא יכול לעלות על 10MB"
+    "fileSizeMax": "גודל הקובץ לא יכול לעלות על 10MB",
+    "toggleMenu": "הצג/הסתר תפריט"
   },
   "home": {
     "title": "ברוכים הבאים!",
@@ -161,7 +162,30 @@
     "registerSuccess": "ההרשמה הושלמה בהצלחה",
     "logoutError": "שגיאה בהתנתקות",
     "loginError": "שגיאה בהתחברות",
-    "registerError": "שגיאה בהרשמה"
+    "registerError": "שגיאה בהרשמה",
+    "form": {
+      "email": "אימייל",
+      "password": "סיסמה",
+      "confirmPassword": "אישור סיסמה",
+      "firstName": "שם פרטי",
+      "lastName": "שם משפחה",
+      "emailPlaceholder": "admin@example.com",
+      "passwordPlaceholder": "••••••••",
+      "firstNamePlaceholder": "יוסי",
+      "lastNamePlaceholder": "כהן",
+      "emailRequired": "אימייל נדרש",
+      "emailInvalid": "אימייל לא תקין",
+      "passwordRequired": "סיסמה נדרשת",
+      "passwordMinLength": "הסיסמה חייבת להכיל לפחות 6 תווים",
+      "confirmPasswordRequired": "אישור סיסמה נדרש",
+      "passwordsMismatch": "הסיסמאות אינן תואמות",
+      "firstNameRequired": "שם פרטי נדרש",
+      "lastNameRequired": "שם משפחה נדרש",
+      "loginButton": "התחבר",
+      "loginPending": "מתחבר...",
+      "registerButton": "הירשם",
+      "registerPending": "נרשם..."
+    }
   },
   "users": {
     "title": "משתמשים",
@@ -229,6 +253,7 @@
       "firstName": "שם פרטי",
       "lastName": "שם משפחה",
       "phone": "טלפון",
+      "phonePlaceholder": "+972501234567",
       "program": "תוכנית",
       "photo": "תמונה (URL)",
       "photoPlaceholder": "https://example.com/photo.jpg",
@@ -376,7 +401,11 @@
       "longitudeInvalid": "קו אורך חייב להיות בין -180 ל-180",
       "create": "צור עיר",
       "creating": "יוצר...",
-      "coordinatesExamplesTitle": "דוגמאות קואורדינטות לערים בישראל:"
+      "coordinatesExamplesTitle": "דוגמאות קואורדינטות לערים בישראל:",
+      "exampleTelAviv": "תל אביב: 32.0853, 34.7818",
+      "exampleJerusalem": "ירושלים: 31.7683, 35.2137",
+      "exampleHaifa": "חיפה: 32.7940, 34.9896",
+      "exampleBeerSheva": "באר שבע: 31.2530, 34.7915"
     },
     "toast": {
       "createSuccess": "העיר נוצרה בהצלחה",
