@@ -10,6 +10,7 @@ import { paginate } from '@/shared/lib/utils';
 import { SvgPreview } from '@/features/svg-preview';
 import { Layout } from '@/widgets/layout';
 import type { Category } from '@/entities/category';
+import { ImagePreview } from '@/features/image-preview';
 
 export const CategoriesPage: FC = () => {
   const { t } = useI18n();
@@ -83,7 +84,7 @@ export const CategoriesPage: FC = () => {
                   {paginatedCategories.map((category) => (
                     <tr key={category.id} className="hover:bg-gray-50">
                       <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
-                        <SvgPreview svgCode={category.iconSvg || ''} size={32} />
+                        <ImagePreview imageUrl={category.image?.url || ''} size={32} />
                       </td>
                       <td className="hidden sm:table-cell px-4 sm:px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
