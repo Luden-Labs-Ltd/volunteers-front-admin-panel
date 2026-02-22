@@ -226,6 +226,8 @@
       "points": "Points",
       "completedTasks": "Completed Tasks",
       "rating": "Rating",
+      "reviews": "Reviews",
+      "noReviews": "No reviews yet",
       "skills": "Skills",
       "program": "Program",
       "programs": "Programs",

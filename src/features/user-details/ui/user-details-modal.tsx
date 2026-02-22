@@ -5,6 +5,7 @@ import { useUser, useUpdateUserStatus, useUpdateUserPrograms } from '@/entities/
 import { usePrograms } from '@/entities/program';
 import type { UserStatus } from '@/entities/user';
 import { showToast } from '@/shared/lib/toast';
+import { useVolunteerRatings } from '@/entities/volunteer-rating';
 
 interface UserDetailsModalProps {
     userId: string | null;
@@ -33,6 +34,10 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
     const { data: programs = [] } = usePrograms();
     const { mutate: updateStatus, isPending } = useUpdateUserStatus();
     const { mutate: updatePrograms, isPending: isUpdatingPrograms } = useUpdateUserPrograms();
+    const { data: ratings = [], isLoading: isRatingsLoading } = useVolunteerRatings(
+        user?.role === 'volunteer' ? user.id : null,
+        isOpen,
+    );
 
     // Состояние для редактирования программ
     const [isEditingPrograms, setIsEditingPrograms] = useState(false);
@@ -303,6 +308,47 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                                     </Badge>
                                                 ))}
                                             </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                            {user.role === 'volunteer' && (
+                                <div className="space-y-2">
+                                    <h4 className="text-sm font-semibold text-gray-900">
+                                        {t('users.details.reviews')}
+                                    </h4>
+                                    {isRatingsLoading ? (
+                                        <p className="text-sm text-gray-500">{t('common.loading')}</p>
+                                    ) : ratings.length === 0 ? (
+                                        <p className="text-sm text-gray-500">
+                                            {t('users.details.noReviews')}
+                                        </p>
+                                    ) : (
+                                        <div className="space-y-2 max-h-56 overflow-y-auto border border-gray-100 rounded-lg p-3">
+                                            {ratings.map((rating) => (
+                                                <div key={rating.id} className="border-b last:border-b-0 pb-2 last:pb-0">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="flex gap-0.5">
+                                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                                <span
+                                                                    key={star}
+                                                                    className={star <= rating.score ? 'text-yellow-500' : 'text-gray-300'}
+                                                                >
+                                                                    ★
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                        <span className="text-xs text-gray-400">
+                                                            {new Date(rating.createdAt).toLocaleDateString()}
+                                                        </span>
+                                                    </div>
+                                                    {rating.comment && (
+                                                        <p className="text-sm text-gray-700 mt-1">
+                                                            {rating.comment}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            ))}
                                         </div>
                                     )}
                                 </div>
