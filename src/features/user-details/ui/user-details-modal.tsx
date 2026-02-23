@@ -32,7 +32,7 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
     const { t } = useI18n();
     const { data: user, isLoading } = useUser(userId || '');
     const { data: programs = [] } = usePrograms();
-    const { mutate: updateStatus, isPending } = useUpdateUserStatus();
+    const { mutate: updateStatus, isPending, error: updateStatusError } = useUpdateUserStatus();
     const { mutate: updatePrograms, isPending: isUpdatingPrograms } = useUpdateUserPrograms();
     const { data: ratings = [], isLoading: isRatingsLoading } = useVolunteerRatings(
         user?.role === 'volunteer' ? user.id : null,
@@ -434,6 +434,14 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
                             {t('users.details.actions')}
                         </h3>
+                        {updateStatusError && (
+                            <div className="mb-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">
+                                {t('users.statusUpdateError')}
+                                <span className="block mt-1 text-gray-600">
+                                  {t('users.statusUpdateRetryHint')}
+                                </span>
+                            </div>
+                        )}
                         <div className="flex gap-2 flex-wrap">
                             {user.status !== 'approved' && (
                                 <Button

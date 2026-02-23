@@ -4,14 +4,24 @@ import type {
   UserWithRoleData,
   CreateUserRequest,
   UpdateUserRequest,
+  UserStatus,
 } from '../model/types';
+
+export interface GetUsersParams {
+  status?: UserStatus;
+}
 
 export const userApi = {
   /**
-   * Получить список пользователей (использует контроллер `UserController` с путем `/user`)
+   * Получить список пользователей (использует контроллер `UserController` с путем `/user`).
+   * Опционально фильтр по статусу (pending, approved, blocked).
    */
-  async getAll(): Promise<User[]> {
-    return apiClient.request<User[]>('/user');
+  async getAll(params?: GetUsersParams): Promise<User[]> {
+    const url =
+      params?.status != null
+        ? `/user?status=${encodeURIComponent(params.status)}`
+        : '/user';
+    return apiClient.request<User[]>(url);
   },
 
   /**

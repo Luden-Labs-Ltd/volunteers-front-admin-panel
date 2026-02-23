@@ -209,6 +209,10 @@
       "approved": "Approved",
       "blocked": "Blocked"
     },
+    "filters": {
+      "all": "All",
+      "status": "Status"
+    },
     "assignPrograms": "Assign to programs",
     "managePrograms": "Manage programs",
     "programs": "Programs",
@@ -242,10 +246,12 @@
       "viewDetails": "View Details",
       "approve": "Approve",
       "block": "Block",
-      "setPending": "Set Pending"
+      "setPending": "Set Pending",
+      "retry": "Retry"
     },
     "statusUpdated": "User status updated successfully",
     "statusUpdateError": "Error updating user status",
+    "statusUpdateRetryHint": "Click the button again to retry.",
     "programsUpdated": "Programs updated successfully",
     "programsUpdateError": "Error updating programs",
     "notFound": "User not found"

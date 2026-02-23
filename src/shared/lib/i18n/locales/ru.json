@@ -209,6 +209,10 @@
       "approved": "Одобрен",
       "blocked": "Заблокирован"
     },
+    "filters": {
+      "all": "Все",
+      "status": "Статус"
+    },
     "assignPrograms": "Назначить на программы",
     "managePrograms": "Управление программами",
     "programs": "Программы",
@@ -242,10 +246,12 @@
       "viewDetails": "Детали",
       "approve": "Одобрить",
       "block": "Заблокировать",
-      "setPending": "Вернуть в ожидание"
+      "setPending": "Вернуть в ожидание",
+      "retry": "Повторить"
     },
     "statusUpdated": "Статус пользователя обновлен",
     "statusUpdateError": "Ошибка обновления статуса",
+    "statusUpdateRetryHint": "Нажмите кнопку ещё раз, чтобы повторить.",
     "programsUpdated": "Программы успешно обновлены",
     "programsUpdateError": "Ошибка обновления программ",
     "notFound": "Пользователь не найден"

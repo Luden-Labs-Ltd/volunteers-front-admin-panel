@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 
 import { useUsers } from '@/entities/user';
 import { useI18n } from '@/shared/lib/i18n';
-import { Badge, Button, Card, Modal, Pagination, Table } from '@/shared/ui';
+import { Badge, Button, Card, Modal, Pagination, Select, Table } from '@/shared/ui';
 import { paginate } from '@/shared/lib/utils';
 import { Layout } from '@/widgets/layout';
 import { CreateNeedyForm } from '@/features/needy-create';
@@ -29,13 +29,24 @@ const getStatusVariant = (
   return 'default';
 };
 
+type StatusFilterValue = UserStatus | 'all';
+
+const STATUS_FILTER_OPTIONS: { value: StatusFilterValue; labelKey: string }[] = [
+  { value: 'all', labelKey: 'users.filters.all' },
+  { value: 'pending', labelKey: 'users.status.pending' },
+  { value: 'approved', labelKey: 'users.status.approved' },
+  { value: 'blocked', labelKey: 'users.status.blocked' },
+];
+
 export const UsersPage: FC = () => {
   const { t } = useI18n();
   const [page, setPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState<StatusFilterValue>('all');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-  const { data: users = [], isLoading, refetch } = useUsers();
+  const statusParam = statusFilter === 'all' ? undefined : statusFilter;
+  const { data: users = [], isLoading, refetch } = useUsers(statusParam);
 
   const sortedUsers = [...users].sort((a, b) => {
     const statusA = STATUS_ORDER.indexOf(a.status);
@@ -76,11 +87,25 @@ export const UsersPage: FC = () => {
   return (
     <Layout>
       <div className="p-4 sm:p-6">
-        <div className="flex justify-between items-center mb-6 gap-[20px]">
+        <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 mb-6">
           <h1 className="text-2xl font-bold text-gray-900">
             {t('users.title')}
           </h1>
-          <Button
+          <div className="flex items-center gap-3">
+            <Select
+              label={t('users.filters.status')}
+              options={STATUS_FILTER_OPTIONS.map((opt) => ({
+                value: opt.value,
+                label: t(opt.labelKey),
+              }))}
+              value={statusFilter}
+              onChange={(e) => {
+                setStatusFilter(e.target.value as StatusFilterValue);
+                setPage(1);
+              }}
+              className="w-40"
+            />
+            <Button
             size="sm"
             onClick={() => setIsCreateModalOpen(true)}
             className="sm:hidden"
@@ -93,6 +118,7 @@ export const UsersPage: FC = () => {
           >
             {t('users.addNeedy')}
           </Button>
+          </div>
         </div>
 
         {isLoading ? (

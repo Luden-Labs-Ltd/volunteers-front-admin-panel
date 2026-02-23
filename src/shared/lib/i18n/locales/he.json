@@ -209,6 +209,10 @@
       "approved": "מאושר",
       "blocked": "חסום"
     },
+    "filters": {
+      "all": "הכל",
+      "status": "סטטוס"
+    },
     "assignPrograms": "הקצה לתוכניות",
     "managePrograms": "ניהול תוכניות",
     "programs": "תוכניות",
@@ -242,10 +246,12 @@
       "viewDetails": "פרטים",
       "approve": "אשר",
       "block": "חסום",
-      "setPending": "החזר לממתין"
+      "setPending": "החזר לממתין",
+      "retry": "נסה שוב"
     },
     "statusUpdated": "סטטוס המשתמש עודכן בהצלחה",
     "statusUpdateError": "שגיאה בעדכון הסטטוס",
+    "statusUpdateRetryHint": "לחץ שוב על הכפתור לניסיון חוזר.",
     "programsUpdated": "תוכניות עודכנו בהצלחה",
     "programsUpdateError": "שגיאה בעדכון תוכניות",
     "notFound": "משתמש לא נמצא"
