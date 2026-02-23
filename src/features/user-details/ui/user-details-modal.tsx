@@ -122,7 +122,6 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                     {t('users.notFound')}
                 </div>
             ) : (
-                <div className="max-h-[70vh] overflow-y-auto -mx-6 px-6">
                 <div className="space-y-6">
                     {/* Основная информация */}
                     <div className="space-y-4">
@@ -465,7 +464,6 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                             )}
                         </div>
                     </div>
-                </div>
                 </div>
             )}
         </Modal>

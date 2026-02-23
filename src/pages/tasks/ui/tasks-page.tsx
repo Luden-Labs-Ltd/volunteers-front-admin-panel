@@ -60,12 +60,15 @@ export const TasksPage: FC = () => {
 
   return (
     <Layout>
-      <div className="p-4 sm:p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">
+      <div className="p-3 sm:p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
             {t('tasks.title')}
           </h1>
-          <Button onClick={() => setIsCreateModalOpen(true)}>
+          <Button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="w-full sm:w-auto min-h-[44px] sm:min-h-0"
+          >
             {t('tasks.create')}
           </Button>
         </div>
@@ -85,7 +88,7 @@ export const TasksPage: FC = () => {
           <>
             {/* Desktop Table View */}
             <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden">
-              <Table>
+              <Table className="min-w-[640px]">
                 <thead>
                   <tr className="bg-gray-50">
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -172,17 +175,17 @@ export const TasksPage: FC = () => {
               </Table>
             </div>
 
-            {/* Mobile Card View */}
-            <div className="md:hidden space-y-4">
+            {/* Mobile / Tablet Card View */}
+            <div className="md:hidden space-y-3 sm:space-y-4">
               {paginatedTasks.map((task: Task) => (
-                <Card key={task.id} className="p-4">
+                <Card key={task.id} className="p-3 sm:p-4 overflow-hidden">
                   <div className="space-y-3">
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-900">
+                    <div className="min-w-0">
+                      <h3 className="text-sm sm:text-base font-semibold text-gray-900 break-words">
                         {task.title}
                       </h3>
                       {task.description && (
-                        <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                        <p className="text-sm text-gray-500 mt-1 line-clamp-2 break-words">
                           {task.description}
                         </p>
                       )}
@@ -193,47 +196,51 @@ export const TasksPage: FC = () => {
                       </Badge>
                     </div>
                     {task.assignedVolunteer && (
-                      <div className="text-sm text-gray-600">
-                        <div className="font-medium">
+                      <div className="text-sm text-gray-600 min-w-0">
+                        <div className="font-medium break-words">
                           {t('tasks.assignedVolunteer')}:{' '}
                           {`${task.assignedVolunteer.firstName || ''} ${task.assignedVolunteer.lastName || ''}`.trim() || task.assignedVolunteer.email || '-'}
                         </div>
                         {task.assignedVolunteer.email && (
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-gray-500 truncate">
                             {task.assignedVolunteer.email}
                           </div>
                         )}
                       </div>
                     )}
-                    <div className="flex items-center gap-2 pt-2">
-                      <AssignVolunteerButton
-                        taskId={task.id}
-                        programId={task.programId}
-                        currentVolunteerId={task.assignedVolunteerId}
-                        taskStatus={task.status}
-                        onSuccess={handleDeleteSuccess}
-                      />
-                      {task.assignedVolunteerId && (
-                        <UnassignVolunteerButton
+                    <div className="flex flex-col sm:flex-row gap-2 pt-2 border-t border-gray-100">
+                      <div className="flex flex-wrap gap-2">
+                        <AssignVolunteerButton
                           taskId={task.id}
+                          programId={task.programId}
+                          currentVolunteerId={task.assignedVolunteerId}
                           taskStatus={task.status}
                           onSuccess={handleDeleteSuccess}
                         />
-                      )}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setEditingTask(task)}
-                        className="flex-1"
-                      >
-                        {t('common.edit')}
-                      </Button>
-                      <DeleteTaskButton
-                        taskId={task.id}
-                        taskTitle={task.title}
-                        taskStatus={task.status}
-                        onSuccess={handleDeleteSuccess}
-                      />
+                        {task.assignedVolunteerId && (
+                          <UnassignVolunteerButton
+                            taskId={task.id}
+                            taskStatus={task.status}
+                            onSuccess={handleDeleteSuccess}
+                          />
+                        )}
+                      </div>
+                      <div className="flex gap-2 flex-1 min-w-0">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setEditingTask(task)}
+                          className="flex-1 min-h-[44px] sm:min-h-0"
+                        >
+                          {t('common.edit')}
+                        </Button>
+                        <DeleteTaskButton
+                          taskId={task.id}
+                          taskTitle={task.title}
+                          taskStatus={task.status}
+                          onSuccess={handleDeleteSuccess}
+                        />
+                      </div>
                     </div>
                   </div>
                 </Card>

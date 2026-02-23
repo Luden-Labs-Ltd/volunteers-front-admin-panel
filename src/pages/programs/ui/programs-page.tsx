@@ -41,7 +41,17 @@ export const ProgramsPage: FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">
             {t('programs.title')}
           </h1>
-          <Button onClick={() => setIsCreateModalOpen(true)}>
+          <Button
+            size="sm"
+            onClick={() => setIsCreateModalOpen(true)}
+            className="sm:hidden"
+          >
+            {t('programs.create')}
+          </Button>
+          <Button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="hidden sm:inline-flex"
+          >
             {t('programs.create')}
           </Button>
         </div>
@@ -53,7 +63,17 @@ export const ProgramsPage: FC = () => {
         ) : paginatedPrograms.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 mb-4">{t('programs.empty')}</p>
-            <Button onClick={() => setIsCreateModalOpen(true)}>
+            <Button
+              size="sm"
+              onClick={() => setIsCreateModalOpen(true)}
+              className="sm:hidden"
+            >
+              {t('programs.createFirst')}
+            </Button>
+            <Button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="hidden sm:inline-flex"
+            >
               {t('programs.createFirst')}
             </Button>
           </div>

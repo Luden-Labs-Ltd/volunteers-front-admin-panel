@@ -76,11 +76,21 @@ export const UsersPage: FC = () => {
   return (
     <Layout>
       <div className="p-4 sm:p-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6 gap-[20px]">
           <h1 className="text-2xl font-bold text-gray-900">
             {t('users.title')}
           </h1>
-          <Button onClick={() => setIsCreateModalOpen(true)}>
+          <Button
+            size="sm"
+            onClick={() => setIsCreateModalOpen(true)}
+            className="sm:hidden"
+          >
+            {t('users.addNeedy')}
+          </Button>
+          <Button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="hidden sm:inline-flex"
+          >
             {t('users.addNeedy')}
           </Button>
         </div>

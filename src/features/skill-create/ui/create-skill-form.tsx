@@ -133,7 +133,7 @@ export const CreateSkillForm: FC<CreateSkillFormProps> = ({
               error={errors.iconSvg}
               disabled={createMutation.isPending}
               rows={8}
-              placeholder="<svg>...</svg>"
+              placeholder="emoji"
             />
           </div>
           <div className="flex items-center justify-center border border-gray-300 rounded-lg bg-gray-50">

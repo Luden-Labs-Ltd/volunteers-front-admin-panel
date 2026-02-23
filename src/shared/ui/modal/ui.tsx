@@ -61,7 +61,7 @@ export const Modal: FC<ModalProps> = ({
             </Button>
           </div>
         )}
-        <div className="p-6">{children}</div>
+        <div className="p-6 max-h-[70vh] overflow-y-auto">{children}</div>
         {footer && (
           <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-2">
             {footer}
