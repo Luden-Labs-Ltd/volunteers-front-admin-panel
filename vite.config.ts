@@ -11,8 +11,15 @@ export default defineConfig({
     extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
   },
   server: {
-    port: 3001,
+    port: 3005,
+    host: true,
     open: true,
+    hmr: {
+      port: 3005,
+    },
+    watch: {
+      usePolling: false,
+    },
   },
   build: {
     outDir: "dist",
