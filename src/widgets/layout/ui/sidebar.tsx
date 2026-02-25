@@ -18,7 +18,6 @@ export const Sidebar: FC<SidebarProps> = ({ onNavigate }) => {
   const { t } = useI18n();
 
   const navItems: NavItem[] = [
-    { path: '/', label: t('nav.home'), icon: '🏠' },
     { path: '/programs', label: t('nav.programs'), icon: '📋' },
     { path: '/categories', label: t('nav.categories'), icon: '📁' },
     { path: '/skills', label: t('nav.skills'), icon: '🎯' },
