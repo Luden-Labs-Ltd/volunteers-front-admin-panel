@@ -211,7 +211,8 @@
     },
     "filters": {
       "all": "Все",
-      "status": "Статус"
+      "status": "Статус",
+      "role": "Роль"
     },
     "assignPrograms": "Назначить на программы",
     "managePrograms": "Управление программами",

@@ -211,7 +211,8 @@
     },
     "filters": {
       "all": "הכל",
-      "status": "סטטוס"
+      "status": "סטטוס",
+      "role": "תפקיד"
     },
     "assignPrograms": "הקצה לתוכניות",
     "managePrograms": "ניהול תוכניות",
