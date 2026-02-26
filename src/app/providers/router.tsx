@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { HomePage } from '@/pages/home/ui';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthPage } from '@/pages/auth/ui';
 import { ProgramsPage } from '@/pages/programs/ui';
 import { CategoriesPage } from '@/pages/categories/ui';
@@ -22,7 +21,7 @@ export const Router: FC = () => {
           element={
             <PrivateRoute>
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<Navigate to="/programs" replace />} />
                 <Route path="/programs" element={<ProgramsPage />} />
                 <Route path="/categories" element={<CategoriesPage />} />
                 <Route path="/skills" element={<SkillsPage />} />

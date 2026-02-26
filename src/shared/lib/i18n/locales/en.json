@@ -212,7 +212,8 @@
     },
     "filters": {
       "all": "All",
-      "status": "Status"
+      "status": "Status",
+      "role": "Role"
     },
     "assignPrograms": "Assign to programs",
     "managePrograms": "Manage programs",
