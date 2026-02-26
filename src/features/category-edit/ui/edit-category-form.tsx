@@ -1,9 +1,24 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useUpdateCategory, type Category } from '@/entities/category';
-import { Button, Input, ImageUpload } from '@/shared/ui';
-import { useUploadImage } from '@/entities/image';
-import { imageApi } from '@/entities/image';
+import { imageApi, useUploadImage } from '@/entities/image';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
+import { Button, Input, ImageUpload } from '@/shared/ui';
+import { z } from 'zod';
+
+const editCategorySchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: 'categories.form.nameRequired' })
+    .max(255, { message: 'categories.form.nameTooLong' }),
+});
+
+type EditCategoryFormValues = z.infer<typeof editCategorySchema>;
+
+function toDefaultValues(category: Category): EditCategoryFormValues {
+  return { name: category.name };
+}
 
 export interface EditCategoryFormProps {
   category: Category;
@@ -16,119 +31,93 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const [name, setName] = useState(category.name);
-  const [imageId, setImageId] = useState<string>(category.imageId || category.image?.id || '');
-  const [imageUrl, setImageUrl] = useState<string>(category.image?.url || '');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
   const { t } = useI18n();
+  const [imageId, setImageId] = useState<string>(
+    category.imageId || category.image?.id || '',
+  );
+  const [imageUrl, setImageUrl] = useState<string>(
+    category.image?.url || '',
+  );
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const form = useZodForm<EditCategoryFormValues>({
+    schema: editCategorySchema,
+    defaultValues: toDefaultValues(category),
+  });
   const updateMutation = useUpdateCategory();
   const uploadImageMutation = useUploadImage();
 
   useEffect(() => {
-    setName(category.name);
+    form.reset(toDefaultValues(category));
     setImageId(category.imageId || category.image?.id || '');
     setImageUrl(category.image?.url || '');
     setSelectedFile(null);
-    setErrors({});
-  }, [category]);
+  }, [category.id, category.name, category.imageId, category.image?.id, category.image?.url, form]);
 
-  // Загружаем URL изображения если есть imageId
   useEffect(() => {
     if (imageId && !imageUrl) {
-      imageApi.getById(imageId).then((image) => {
-        setImageUrl(image.url);
-      }).catch(() => {
-        // Игнорируем ошибки загрузки
-      });
+      imageApi
+        .getById(imageId)
+        .then((image) => setImageUrl(image.url))
+        .catch(() => {});
     }
   }, [imageId, imageUrl]);
 
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!name.trim()) {
-      newErrors.name = t('categories.form.nameRequired');
-    } else if (name.length > 255) {
-      newErrors.name = t('categories.form.nameTooLong');
-    }
-
-    // Изображение не обязательно при редактировании (может остаться старое)
-    // Но если выбрано новое, оно должно быть валидным
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
+  const onSubmit = form.handleSubmit(async (data) => {
+    let finalImageId = imageId;
+    if (selectedFile) {
+      const uploadedImage = await uploadImageMutation.mutateAsync({
+        file: selectedFile,
+        folder: 'categories',
+      });
+      finalImageId = uploadedImage.id;
     }
 
     try {
-      // Если есть выбранный файл, загружаем его
-      let finalImageId = imageId;
-      if (selectedFile) {
-        const uploadedImage = await uploadImageMutation.mutateAsync({
-          file: selectedFile,
-          folder: 'categories',
-        });
-        finalImageId = uploadedImage.id;
-      }
-
       await updateMutation.mutateAsync({
         id: category.id,
         data: {
-          name: name.trim(),
+          name: data.name,
           ...(finalImageId ? { imageId: finalImageId } : {}),
         },
       });
       onSuccess();
-    } catch (error) {
-      // Ошибка обрабатывается в хуке
+    } catch {
+      // Backend errors handled in mutation
     }
-  };
+  });
+
+  const err = form.formState.errors;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <FormField
+        labelKey="categories.form.nameLabel"
+        name="name"
+        isRequired
+        error={getDisplayErrorMessage(err.name?.message, t)}
+      >
         <Input
-          label={t('categories.form.nameLabel')}
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (errors.name) {
-              setErrors((prev) => ({ ...prev, name: '' }));
-            }
-          }}
-          error={errors.name}
-          required
+          id="name"
+          {...form.register('name')}
           disabled={updateMutation.isPending}
         />
-      </div>
+      </FormField>
 
-      <ImageUpload
-        label={t('categories.form.imageLabel')}
-        value={imageUrl}
-        onChange={(url) => {
-          // Если это URL, сохраняем его для preview
-          if (url && !url.startsWith('data:')) {
-            setImageUrl(url);
-          }
-        }}
-        onFileSelect={(file) => {
-          setSelectedFile(file);
-          if (errors.image) {
-            setErrors((prev) => ({ ...prev, image: '' }));
-          }
-        }}
-        disabled={updateMutation.isPending || uploadImageMutation.isPending}
-        folder="categories"
-        error={errors.image}
-      />
+      <FormField
+        labelKey="categories.form.imageLabel"
+        name="image"
+      >
+        <ImageUpload
+          value={imageUrl}
+          onChange={(url) => {
+            if (url && !url.startsWith('data:')) setImageUrl(url);
+          }}
+          onFileSelect={(file) => setSelectedFile(file)}
+          disabled={updateMutation.isPending || uploadImageMutation.isPending}
+          folder="categories"
+        />
+      </FormField>
 
       <div className="flex justify-end gap-2 pt-4">
         {onCancel && (
@@ -141,8 +130,13 @@ export const EditCategoryForm: FC<EditCategoryFormProps> = ({
             {t('common.cancel')}
           </Button>
         )}
-        <Button type="submit" disabled={updateMutation.isPending || uploadImageMutation.isPending}>
-          {updateMutation.isPending || uploadImageMutation.isPending ? t('common.saving') : t('common.save')}
+        <Button
+          type="submit"
+          disabled={updateMutation.isPending || uploadImageMutation.isPending}
+        >
+          {updateMutation.isPending || uploadImageMutation.isPending
+            ? t('common.saving')
+            : t('common.save')}
         </Button>
       </div>
     </form>

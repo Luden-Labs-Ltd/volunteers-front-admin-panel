@@ -1,68 +1,69 @@
-import { FC, useState } from 'react';
-import { Button, Input } from '@/shared/ui';
+import { FC } from 'react';
 import { useAdminLogin } from '@/entities/auth';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
+import { Button, Input } from '@/shared/ui';
+import { z } from 'zod';
+
+const loginSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, { message: 'auth.form.emailRequired' })
+    .refine((v: string) => /\S+@\S+\.\S+/.test(v), { message: 'auth.form.emailInvalid' }),
+  password: z
+    .string()
+    .min(1, { message: 'auth.form.passwordRequired' })
+    .refine((v: string) => v.length >= 6, { message: 'auth.form.passwordMinLength' }),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const LoginForm: FC = () => {
   const { t } = useI18n();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
-
+  const form = useZodForm<LoginFormValues>({
+    schema: loginSchema,
+    defaultValues: { email: '', password: '' },
+  });
   const loginMutation = useAdminLogin();
 
-  const validate = () => {
-    const newErrors: { email?: string; password?: string } = {};
+  const onSubmit = form.handleSubmit((data) => {
+    loginMutation.mutate({ email: data.email, password: data.password });
+  });
 
-    if (!email) {
-      newErrors.email = t('auth.form.emailRequired');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = t('auth.form.emailInvalid');
-    }
-
-    if (!password) {
-      newErrors.password = t('auth.form.passwordRequired');
-    } else if (password.length < 6) {
-      newErrors.password = t('auth.form.passwordMinLength');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
-    loginMutation.mutate({ email, password });
-  };
+  const err = form.formState.errors;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        type="email"
-        label={t('auth.form.email')}
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        error={errors.email}
-        disabled={loginMutation.isPending}
-        placeholder={t('auth.form.emailPlaceholder')}
-        required
-      />
+    <form onSubmit={onSubmit} className="space-y-4">
+      <FormField
+        labelKey="auth.form.email"
+        name="email"
+        isRequired
+        error={getDisplayErrorMessage(err.email?.message, t)}
+      >
+        <Input
+          id="email"
+          type="email"
+          {...form.register('email')}
+          disabled={loginMutation.isPending}
+          placeholder={t('auth.form.emailPlaceholder')}
+        />
+      </FormField>
 
-      <Input
-        type="password"
-        label={t('auth.form.password')}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        error={errors.password}
-        disabled={loginMutation.isPending}
-        placeholder={t('auth.form.passwordPlaceholder')}
-        required
-      />
+      <FormField
+        labelKey="auth.form.password"
+        name="password"
+        isRequired
+        error={getDisplayErrorMessage(err.password?.message, t)}
+      >
+        <Input
+          id="password"
+          type="password"
+          {...form.register('password')}
+          disabled={loginMutation.isPending}
+          placeholder={t('auth.form.passwordPlaceholder')}
+        />
+      </FormField>
 
       <Button
         type="submit"

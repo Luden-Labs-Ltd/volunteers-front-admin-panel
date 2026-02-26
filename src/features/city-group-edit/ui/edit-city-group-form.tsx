@@ -1,9 +1,24 @@
-import { FC, useState, useEffect } from 'react';
-import { useUpdateCityGroup } from '@/entities/city-group';
-import { Button, Input } from '@/shared/ui';
+import { FC, useEffect } from 'react';
+import { useUpdateCityGroup, type CityGroup } from '@/entities/city-group';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
 import { showToast } from '@/shared/lib/toast';
-import type { CityGroup } from '@/entities/city-group';
+import { Button, Input } from '@/shared/ui';
+import { z } from 'zod';
+
+const editCityGroupSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: 'cityGroups.form.nameRequired' })
+    .max(255, { message: 'cityGroups.form.nameTooLong' }),
+});
+
+type EditCityGroupFormValues = z.infer<typeof editCityGroupSchema>;
+
+function toDefaultValues(group: CityGroup): EditCityGroupFormValues {
+  return { name: group.name };
+}
 
 export interface EditCityGroupFormProps {
   group: CityGroup;
@@ -17,47 +32,45 @@ export const EditCityGroupForm: FC<EditCityGroupFormProps> = ({
   onCancel,
 }) => {
   const { t } = useI18n();
-  const [name, setName] = useState(group.name);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const form = useZodForm<EditCityGroupFormValues>({
+    schema: editCityGroupSchema,
+    defaultValues: toDefaultValues(group),
+  });
   const updateMutation = useUpdateCityGroup();
 
   useEffect(() => {
-    setName(group.name);
-  }, [group.id, group.name]);
+    form.reset(toDefaultValues(group));
+  }, [group.id, group.name, form]);
 
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-    if (!name.trim()) {
-      newErrors.name = t('cityGroups.form.nameRequired');
-    } else if (name.length > 255) {
-      newErrors.name = t('cityGroups.form.nameTooLong');
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
+  const onSubmit = form.handleSubmit(async (data) => {
     try {
-      await updateMutation.mutateAsync({ id: group.id, data: { name: name.trim() } });
+      await updateMutation.mutateAsync({
+        id: group.id,
+        data: { name: data.name },
+      });
       showToast.success(t('cityGroups.updateSuccess'));
       onSuccess();
     } catch (err) {
       showToast.error((err as Error).message || t('common.error'));
     }
-  };
+  });
+
+  const err = form.formState.errors;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        label={t('cityGroups.form.nameLabel')}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        error={errors.name}
-        required
-      />
+    <form onSubmit={onSubmit} className="space-y-4">
+      <FormField
+        labelKey="cityGroups.form.nameLabel"
+        name="name"
+        isRequired
+        error={getDisplayErrorMessage(err.name?.message, t)}
+      >
+        <Input
+          id="name"
+          {...form.register('name')}
+          disabled={updateMutation.isPending}
+        />
+      </FormField>
       <div className="flex gap-2 justify-end">
         {onCancel && (
           <Button type="button" variant="secondary" onClick={onCancel}>

@@ -1,7 +1,27 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useCreateProgram } from '@/entities/program';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
 import { Button, Input, Textarea } from '@/shared/ui';
+import { z } from 'zod';
+
+const createProgramSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: 'programs.form.nameRequired' })
+    .max(255, { message: 'programs.form.nameTooLong' }),
+  description: z.string().max(2000),
+  isActive: z.boolean(),
+});
+
+type CreateProgramFormValues = z.infer<typeof createProgramSchema>;
+
+const defaultValues: CreateProgramFormValues = {
+  name: '',
+  description: '',
+  isActive: true,
+};
 
 export interface CreateProgramFormProps {
   onSuccess: () => void;
@@ -13,90 +33,61 @@ export const CreateProgramForm: FC<CreateProgramFormProps> = ({
   onCancel,
 }) => {
   const { t } = useI18n();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [isActive, setIsActive] = useState(true);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const form = useZodForm<CreateProgramFormValues>({
+    schema: createProgramSchema,
+    defaultValues,
+  });
   const createMutation = useCreateProgram();
 
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!name.trim()) {
-      newErrors.name = t('programs.form.nameRequired');
-    } else if (name.length > 255) {
-      newErrors.name = t('programs.form.nameTooLong');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
+  const onSubmit = form.handleSubmit(async (data) => {
     try {
       await createMutation.mutateAsync({
-        name: name.trim(),
-        description: description.trim() || undefined,
-        isActive,
+        name: data.name,
+        description: data.description?.trim() || undefined,
+        isActive: data.isActive,
       });
+      form.reset(defaultValues);
       onSuccess();
-      // Сброс формы
-      setName('');
-      setDescription('');
-      setIsActive(true);
-      setErrors({});
-    } catch (error) {
-      // Ошибка обрабатывается в хуке
+    } catch {
+      // Backend errors handled in mutation / setError in hook if needed
     }
-  };
+  });
+
+  const err = form.formState.errors;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <FormField
+        labelKey="programs.form.nameLabel"
+        name="name"
+        isRequired
+        error={getDisplayErrorMessage(err.name?.message, t)}
+      >
         <Input
-          label={t('programs.form.nameLabel')}
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (errors.name) {
-              setErrors((prev) => ({ ...prev, name: '' }));
-            }
-          }}
-          error={errors.name}
-          required
+          id="name"
+          {...form.register('name')}
           disabled={createMutation.isPending}
         />
-      </div>
+      </FormField>
 
-      <div>
+      <FormField
+        labelKey="programs.form.descriptionLabel"
+        name="description"
+        error={getDisplayErrorMessage(err.description?.message, t)}
+      >
         <Textarea
-          label={t('programs.form.descriptionLabel')}
-          value={description}
-          onChange={(e) => {
-            setDescription(e.target.value);
-            if (errors.description) {
-              setErrors((prev) => ({ ...prev, description: '' }));
-            }
-          }}
-          error={errors.description}
+          id="description"
+          {...form.register('description')}
           disabled={createMutation.isPending}
           rows={4}
         />
-      </div>
+      </FormField>
 
       <div className="flex items-center gap-2">
         <input
           type="checkbox"
           id="isActive"
-          checked={isActive}
-          onChange={(e) => setIsActive(e.target.checked)}
+          {...form.register('isActive')}
           disabled={createMutation.isPending}
           className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
         />

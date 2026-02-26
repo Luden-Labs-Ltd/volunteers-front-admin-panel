@@ -1,8 +1,24 @@
 import { FC, useState } from 'react';
 import { useCreateCategory } from '@/entities/category';
-import { Button, Input, ImageUpload } from '@/shared/ui';
 import { useUploadImage } from '@/entities/image';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
+import { Button, Input, ImageUpload } from '@/shared/ui';
+import { z } from 'zod';
+
+const createCategorySchema = z.object({
+  name: z.preprocess(
+    (v: unknown) => (v === undefined || v === null ? '' : v),
+    z
+      .string()
+      .trim()
+      .min(1, { message: 'categories.form.nameRequired' })
+      .max(255, { message: 'categories.form.nameTooLong' }),
+  ),
+  image: z.string().optional(), // not registered; setError used for validation
+});
+
+type CreateCategoryFormValues = z.infer<typeof createCategorySchema>;
 
 export interface CreateCategoryFormProps {
   onSuccess: () => void;
@@ -14,106 +30,93 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
   onCancel,
 }) => {
   const { t } = useI18n();
-  const [name, setName] = useState('');
   const [imageId, setImageId] = useState<string>('');
   const [imagePreview, setImagePreview] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const form = useZodForm<CreateCategoryFormValues>({
+    schema: createCategorySchema,
+    defaultValues: { name: '', image: undefined },
+  });
   const createMutation = useCreateCategory();
   const uploadImageMutation = useUploadImage();
 
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!name.trim()) {
-      newErrors.name = t('categories.form.nameRequired');
-    } else if (name.length > 255) {
-      newErrors.name = t('categories.form.nameTooLong');
-    }
-
+  const onSubmit = form.handleSubmit(async (data) => {
     if (!imageId && !selectedFile) {
-      newErrors.image = t('categories.form.imageRequired');
+      form.setError('image', {
+        type: 'manual',
+        message: 'categories.form.imageRequired',
+      });
+      return;
+    }
+    form.clearErrors('image');
+
+    let finalImageId = imageId;
+    if (selectedFile) {
+      const uploadedImage = await uploadImageMutation.mutateAsync({
+        file: selectedFile,
+        folder: 'categories',
+      });
+      finalImageId = uploadedImage.id;
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
+    if (!finalImageId) {
+      form.setError('image', {
+        type: 'manual',
+        message: 'categories.form.imageRequired',
+      });
       return;
     }
 
     try {
-      // Если есть выбранный файл, загружаем его
-      let finalImageId = imageId;
-      if (selectedFile) {
-        const uploadedImage = await uploadImageMutation.mutateAsync({
-          file: selectedFile,
-          folder: 'categories',
-        });
-        finalImageId = uploadedImage.id;
-      }
-
-      if (!finalImageId) {
-        setErrors({ image: t('categories.form.imageRequired') });
-        return;
-      }
-
       await createMutation.mutateAsync({
-        name: name.trim(),
+        name: data.name,
         imageId: finalImageId,
       });
-      onSuccess();
-      // Сброс формы
-      setName('');
+      form.reset({ name: '', image: undefined });
       setImageId('');
       setImagePreview('');
       setSelectedFile(null);
-      setErrors({});
-    } catch (error) {
-      // Ошибка обрабатывается в хуке
+      onSuccess();
+    } catch {
+      // Backend errors handled in mutation
     }
-  };
+  });
+
+  const err = form.formState.errors;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <FormField
+        labelKey="categories.form.nameLabel"
+        name="name"
+        isRequired
+        error={getDisplayErrorMessage(err.name?.message, t)}
+      >
         <Input
-          label={t('categories.form.nameLabel')}
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (errors.name) {
-              setErrors((prev) => ({ ...prev, name: '' }));
-            }
-          }}
-          error={errors.name}
-          required
+          id="name"
+          {...form.register('name')}
           disabled={createMutation.isPending}
         />
-      </div>
+      </FormField>
 
-      <ImageUpload
-        label={t('categories.form.imageLabel')}
-        value={imagePreview}
-        onChange={(url) => {
-          // Сохраняем preview URL
-          setImagePreview(url);
-        }}
-        onFileSelect={(file) => {
-          setSelectedFile(file);
-          if (errors.image) {
-            setErrors((prev) => ({ ...prev, image: '' }));
-          }
-        }}
-        disabled={createMutation.isPending || uploadImageMutation.isPending}
-        folder="categories"
-        error={errors.image}
-      />
+      <FormField
+        labelKey="categories.form.imageLabel"
+        name="image"
+        isRequired
+        error={getDisplayErrorMessage(err.image?.message, t)}
+      >
+        <ImageUpload
+          value={imagePreview}
+          onChange={(url) => setImagePreview(url)}
+          onFileSelect={(file) => {
+            setSelectedFile(file);
+            form.clearErrors('image');
+          }}
+          disabled={createMutation.isPending || uploadImageMutation.isPending}
+          folder="categories"
+        />
+      </FormField>
 
       <div className="flex justify-end gap-2 pt-4">
         {onCancel && (
@@ -126,8 +129,13 @@ export const CreateCategoryForm: FC<CreateCategoryFormProps> = ({
             {t('common.cancel')}
           </Button>
         )}
-        <Button type="submit" disabled={createMutation.isPending || uploadImageMutation.isPending}>
-          {createMutation.isPending || uploadImageMutation.isPending ? t('common.creating') : t('common.create')}
+        <Button
+          type="submit"
+          disabled={createMutation.isPending || uploadImageMutation.isPending}
+        >
+          {createMutation.isPending || uploadImageMutation.isPending
+            ? t('common.creating')
+            : t('common.create')}
         </Button>
       </div>
     </form>

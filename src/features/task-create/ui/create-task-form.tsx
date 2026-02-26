@@ -1,9 +1,41 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useCreateTask } from '@/entities/task';
 import { usePrograms } from '@/entities/program';
 import { useCategories } from '@/entities/category';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
 import { Button, Input, Select, Textarea } from '@/shared/ui';
+import { z } from 'zod';
+
+const createTaskSchema = z.object({
+  programId: z.string().min(1, { message: 'tasks.form.programRequired' }),
+  needyId: z.string().trim().min(1, { message: 'tasks.form.needyRequired' }),
+  type: z.string().trim().min(1, { message: 'tasks.form.typeRequired' }),
+  title: z
+    .string()
+    .trim()
+    .min(1, { message: 'tasks.form.titleRequired' })
+    .max(500, { message: 'tasks.form.titleTooLong' }),
+  description: z.string().trim().min(1, { message: 'tasks.form.descriptionRequired' }),
+  details: z.string().optional(),
+  points: z.number().min(0),
+  categoryId: z.string().optional(),
+  firstResponseMode: z.boolean(),
+});
+
+type CreateTaskFormValues = z.infer<typeof createTaskSchema>;
+
+const defaultValues: CreateTaskFormValues = {
+  programId: '',
+  needyId: '',
+  type: '',
+  title: '',
+  description: '',
+  details: '',
+  points: 10,
+  categoryId: '',
+  firstResponseMode: false,
+};
 
 export interface CreateTaskFormProps {
   onSuccess: () => void;
@@ -15,96 +47,47 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
   onCancel,
 }) => {
   const { t } = useI18n();
-  const [programId, setProgramId] = useState('');
-  const [needyId, setNeedyId] = useState('');
-  const [type, setType] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [details, setDetails] = useState('');
-  const [points, setPoints] = useState<number>(10);
-  const [categoryId, setCategoryId] = useState('');
-  const [firstResponseMode, setFirstResponseMode] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const form = useZodForm<CreateTaskFormValues>({
+    schema: createTaskSchema,
+    defaultValues,
+  });
   const createMutation = useCreateTask();
   const { data: programs = [] } = usePrograms();
   const { data: categories = [] } = useCategories();
 
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!programId.trim()) {
-      newErrors.programId = t('tasks.form.programRequired');
-    }
-    if (!needyId.trim()) {
-      newErrors.needyId = t('tasks.form.needyRequired');
-    }
-    if (!type.trim()) {
-      newErrors.type = t('tasks.form.typeRequired');
-    }
-    if (!title.trim()) {
-      newErrors.title = t('tasks.form.titleRequired');
-    } else if (title.length > 500) {
-      newErrors.title = t('tasks.form.titleTooLong');
-    }
-    if (!description.trim()) {
-      newErrors.description = t('tasks.form.descriptionRequired');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
+  const onSubmit = form.handleSubmit(async (data) => {
     try {
       await createMutation.mutateAsync({
-        programId: programId.trim(),
-        needyId: needyId.trim(),
-        type: type.trim(),
-        title: title.trim(),
-        description: description.trim(),
-        details: details.trim() || undefined,
-        points: points || 10,
-        categoryId: categoryId || undefined,
-        firstResponseMode,
+        programId: data.programId,
+        needyId: data.needyId,
+        type: data.type,
+        title: data.title,
+        description: data.description,
+        details: data.details?.trim() || undefined,
+        points: data.points ?? 10,
+        categoryId: data.categoryId || undefined,
+        firstResponseMode: data.firstResponseMode,
       });
+      form.reset(defaultValues);
       onSuccess();
-      // Сброс формы
-      setProgramId('');
-      setNeedyId('');
-      setType('');
-      setTitle('');
-      setDescription('');
-      setDetails('');
-      setPoints(10);
-      setCategoryId('');
-      setFirstResponseMode(false);
-      setErrors({});
-    } catch (error) {
-      // Ошибка обрабатывается в хуке
+    } catch {
+      // Backend errors handled in mutation
     }
-  };
+  });
+
+  const err = form.formState.errors;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <FormField
+        labelKey="tasks.form.program"
+        name="programId"
+        isRequired
+        error={getDisplayErrorMessage(err.programId?.message, t)}
+      >
         <Select
-          label={t('tasks.form.program')}
-          value={programId}
-          onChange={(e) => {
-            setProgramId(e.target.value);
-            if (errors.programId) {
-              setErrors((prev) => ({ ...prev, programId: '' }));
-            }
-          }}
-          error={errors.programId}
-          required
+          id="programId"
+          {...form.register('programId')}
           disabled={createMutation.isPending}
           options={[
             { value: '', label: t('tasks.form.selectProgram') },
@@ -114,102 +97,87 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
             })),
           ]}
         />
-      </div>
+      </FormField>
 
-      <div>
+      <FormField
+        labelKey="tasks.form.needyId"
+        name="needyId"
+        isRequired
+        error={getDisplayErrorMessage(err.needyId?.message, t)}
+      >
         <Input
-          label={t('tasks.form.needyId')}
-          value={needyId}
-          onChange={(e) => {
-            setNeedyId(e.target.value);
-            if (errors.needyId) {
-              setErrors((prev) => ({ ...prev, needyId: '' }));
-            }
-          }}
-          error={errors.needyId}
-          required
+          id="needyId"
+          {...form.register('needyId')}
           disabled={createMutation.isPending}
           placeholder="UUID"
         />
-      </div>
+      </FormField>
 
-      <div>
+      <FormField
+        labelKey="tasks.form.type"
+        name="type"
+        isRequired
+        error={getDisplayErrorMessage(err.type?.message, t)}
+      >
         <Input
-          label={t('tasks.form.type')}
-          value={type}
-          onChange={(e) => {
-            setType(e.target.value);
-            if (errors.type) {
-              setErrors((prev) => ({ ...prev, type: '' }));
-            }
-          }}
-          error={errors.type}
-          required
+          id="type"
+          {...form.register('type')}
           disabled={createMutation.isPending}
           placeholder={t('tasks.form.typePlaceholder')}
         />
-      </div>
+      </FormField>
 
-      <div>
+      <FormField
+        labelKey="tasks.form.title"
+        name="title"
+        isRequired
+        error={getDisplayErrorMessage(err.title?.message, t)}
+      >
         <Input
-          label={t('tasks.form.title')}
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-            if (errors.title) {
-              setErrors((prev) => ({ ...prev, title: '' }));
-            }
-          }}
-          error={errors.title}
-          required
+          id="title"
+          {...form.register('title')}
           disabled={createMutation.isPending}
         />
-      </div>
+      </FormField>
 
-      <div>
+      <FormField
+        labelKey="tasks.form.description"
+        name="description"
+        isRequired
+        error={getDisplayErrorMessage(err.description?.message, t)}
+      >
         <Textarea
-          label={t('tasks.form.description')}
-          value={description}
-          onChange={(e) => {
-            setDescription(e.target.value);
-            if (errors.description) {
-              setErrors((prev) => ({ ...prev, description: '' }));
-            }
-          }}
-          error={errors.description}
-          required
+          id="description"
+          {...form.register('description')}
           disabled={createMutation.isPending}
           rows={4}
         />
-      </div>
+      </FormField>
 
-      <div>
+      <FormField labelKey="tasks.form.details" name="details">
         <Textarea
-          label={t('tasks.form.details')}
-          value={details}
-          onChange={(e) => setDetails(e.target.value)}
+          id="details"
+          {...form.register('details')}
           disabled={createMutation.isPending}
           rows={3}
         />
-      </div>
+      </FormField>
 
       <div className="grid grid-cols-2 gap-4">
-        <div>
+        <FormField labelKey="tasks.form.points" name="points">
           <Input
-            label={t('tasks.form.points')}
+            id="points"
             type="number"
-            value={points}
-            onChange={(e) => setPoints(Number(e.target.value) || 10)}
+            {...form.register('points', { valueAsNumber: true })}
             disabled={createMutation.isPending}
             min={0}
           />
-        </div>
+        </FormField>
 
-        <div>
+        <FormField labelKey="tasks.form.category" name="categoryId">
           <Select
-            label={t('tasks.form.category')}
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
+            id="categoryId"
+            {...form.register('categoryId')}
             disabled={createMutation.isPending}
             options={[
               { value: '', label: t('tasks.form.selectCategory') },
@@ -219,15 +187,14 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
               })),
             ]}
           />
-        </div>
+        </FormField>
       </div>
 
       <div className="flex items-center gap-2">
         <input
           type="checkbox"
           id="firstResponseMode"
-          checked={firstResponseMode}
-          onChange={(e) => setFirstResponseMode(e.target.checked)}
+          {...form.register('firstResponseMode')}
           disabled={createMutation.isPending}
           className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
         />
@@ -248,9 +215,7 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
           </Button>
         )}
         <Button type="submit" disabled={createMutation.isPending}>
-          {createMutation.isPending
-            ? t('common.creating')
-            : t('tasks.create')}
+          {createMutation.isPending ? t('common.creating') : t('tasks.create')}
         </Button>
       </div>
     </form>

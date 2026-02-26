@@ -1,9 +1,53 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useCreateNeedy } from '../model';
-import { usePrograms } from '@/entities/program';
-import { Button, Input, Select, Textarea } from '@/shared/ui';
-import { useI18n } from '@/shared/lib/i18n';
 import { useGetCities } from '@/entities/city';
+import { usePrograms } from '@/entities/program';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
+import { useI18n } from '@/shared/lib/i18n';
+import { Button, Input, Select, Textarea } from '@/shared/ui';
+import { z } from 'zod';
+
+const createNeedySchema = z.object({
+  firstName: z
+    .string()
+    .trim()
+    .min(1, { message: 'needy.form.firstNameRequired' })
+    .max(100, { message: 'needy.form.firstNameTooLong' }),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, { message: 'needy.form.lastNameRequired' })
+    .max(100, { message: 'needy.form.lastNameTooLong' }),
+  phone: z.string().trim().min(1, { message: 'needy.form.phoneRequired' }),
+  programId: z.preprocess(
+    (v: unknown) => (v === undefined || v === null ? '' : v),
+    z.string().min(1, { message: 'needy.form.programRequired' }),
+  ),
+  cityId: z.preprocess(
+    (v: unknown) => (v === undefined || v === null ? '' : v),
+    z.string().min(1, { message: 'needy.form.cityRequired' }),
+  ),
+  address: z
+    .string()
+    .trim()
+    .min(1, { message: 'needy.form.addressRequired' })
+    .max(500, { message: 'needy.form.addressTooLong' }),
+  photo: z.string().optional(),
+  about: z.string().optional(),
+});
+
+type CreateNeedyFormValues = z.infer<typeof createNeedySchema>;
+
+const defaultValues: CreateNeedyFormValues = {
+  firstName: '',
+  lastName: '',
+  phone: '',
+  programId: '',
+  cityId: '',
+  address: '',
+  photo: '',
+  about: '',
+};
 
 export interface CreateNeedyFormProps {
   onSuccess: () => void;
@@ -15,99 +59,33 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
   onCancel,
 }) => {
   const { t } = useI18n();
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [programId, setProgramId] = useState('');
-  const [cityId, setCityId] = useState('');
-  const [address, setAddress] = useState('');
-  const [photo, setPhoto] = useState('');
-  const [about, setAbout] = useState('');
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const form = useZodForm<CreateNeedyFormValues>({
+    schema: createNeedySchema,
+    defaultValues,
+  });
   const createMutation = useCreateNeedy();
   const { data: programs = [], isLoading: programsLoading } = usePrograms();
   const { data: cities = [], isLoading: citiesLoading } = useGetCities();
 
-  // Фильтруем только активные программы
-  const activePrograms = programs.filter((program) => program.isActive);
+  const activePrograms = programs.filter((p) => p.isActive);
 
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!firstName.trim()) {
-      newErrors.firstName = t('needy.form.firstNameRequired');
-    } else if (firstName.length > 100) {
-      newErrors.firstName =
-        t('needy.form.firstNameTooLong');
-    }
-
-    if (!lastName.trim()) {
-      newErrors.lastName =
-        t('needy.form.lastNameRequired');
-    } else if (lastName.length > 100) {
-      newErrors.lastName = t('needy.form.lastNameTooLong');
-    }
-
-    if (!phone.trim()) {
-      newErrors.phone = t('needy.form.phoneRequired');
-    }
-
-    if (!programId) {
-      newErrors.programId =
-        t('needy.form.programRequired');
-    }
-
-    if (!cityId) {
-      newErrors.cityId =
-        t('needy.form.cityRequired');
-    }
-
-    if (!address.trim()) {
-      newErrors.address =
-        t('needy.form.addressRequired');
-    } else if (address.length > 500) {
-      newErrors.address =
-        t('needy.form.addressTooLong');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
+  const onSubmit = form.handleSubmit(async (data) => {
     try {
       await createMutation.mutateAsync({
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        phone: phone.trim(),
-        programId,
-        cityId,
-        address: address.trim(),
-        photo: photo.trim() || undefined,
-        about: about.trim() || undefined,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phone,
+        programId: data.programId,
+        cityId: data.cityId,
+        address: data.address,
+        photo: data.photo?.trim() || undefined,
+        about: data.about?.trim() || undefined,
         role: 'needy',
         status: 'approved',
       });
+      form.reset(defaultValues);
       onSuccess();
-      // Сброс формы
-      setFirstName('');
-      setLastName('');
-      setPhone('');
-      setProgramId('');
-      setCityId('');
-      setAddress('');
-      setPhoto('');
-      setAbout('');
-      setErrors({});
     } catch (error: unknown) {
-      // Обработка ошибки уникальности телефона
       if (
         error instanceof Error &&
         'response' in error &&
@@ -117,156 +95,147 @@ export const CreateNeedyForm: FC<CreateNeedyFormProps> = ({
         error.response.data &&
         typeof error.response.data === 'object' &&
         'message' in error.response.data &&
-        typeof error.response.data.message === 'string' &&
-        (error.response.data.message.includes('already exists') ||
-          error.response.data.message.includes('уже существует'))
+        typeof (error.response.data as { message: string }).message === 'string' &&
+        ((error.response.data as { message: string }).message.includes('already exists') ||
+          (error.response.data as { message: string }).message.includes('уже существует'))
       ) {
-        setErrors({ phone: t('needy.form.phoneExists') });
+        form.setError('phone', {
+          type: 'manual',
+          message: 'needy.form.phoneExists',
+        });
       }
-      // Остальные ошибки обрабатываются в хуке через toast
     }
-  };
+  });
 
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel();
-    }
-  };
+  const handleCancel = () => onCancel?.();
+  const err = form.formState.errors;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
-        <Input
-          label={t('needy.form.firstName')}
-          value={firstName}
-          onChange={(e) => {
-            setFirstName(e.target.value);
-            if (errors.firstName) {
-              setErrors((prev) => ({ ...prev, firstName: '' }));
-            }
-          }}
-          error={errors.firstName}
-          required
-          disabled={createMutation.isPending}
-          maxLength={100}
-        />
+        <FormField
+          labelKey="needy.form.firstName"
+          name="firstName"
+          isRequired
+          error={getDisplayErrorMessage(err.firstName?.message, t)}
+        >
+          <Input
+            id="firstName"
+            {...form.register('firstName')}
+            disabled={createMutation.isPending}
+            maxLength={100}
+          />
+        </FormField>
 
-        <Input
-          label={t('needy.form.lastName')}
-          value={lastName}
-          onChange={(e) => {
-            setLastName(e.target.value);
-            if (errors.lastName) {
-              setErrors((prev) => ({ ...prev, lastName: '' }));
-            }
-          }}
-          error={errors.lastName}
-          required
-          disabled={createMutation.isPending}
-          maxLength={100}
-        />
+        <FormField
+          labelKey="needy.form.lastName"
+          name="lastName"
+          isRequired
+          error={getDisplayErrorMessage(err.lastName?.message, t)}
+        >
+          <Input
+            id="lastName"
+            {...form.register('lastName')}
+            disabled={createMutation.isPending}
+            maxLength={100}
+          />
+        </FormField>
       </div>
 
-      <Input
-        label={t('needy.form.phone')}
-        value={phone}
-        onChange={(e) => {
-          setPhone(e.target.value);
-          if (errors.phone) {
-            setErrors((prev) => ({ ...prev, phone: '' }));
-          }
-        }}
-        error={errors.phone}
-        required
-        disabled={createMutation.isPending}
-        placeholder={t('needy.form.phonePlaceholder')}
-      />
+      <FormField
+        labelKey="needy.form.phone"
+        name="phone"
+        isRequired
+        error={getDisplayErrorMessage(err.phone?.message, t)}
+      >
+        <Input
+          id="phone"
+          {...form.register('phone')}
+          disabled={createMutation.isPending}
+          placeholder={t('needy.form.phonePlaceholder')}
+        />
+      </FormField>
 
-      <Select
-        label={t('needy.form.program')}
-        value={programId}
-        onChange={(e) => {
-          setProgramId(e.target.value);
-          if (errors.programId) {
-            setErrors((prev) => ({ ...prev, programId: '' }));
-          }
-        }}
-        error={errors.programId}
-        required
-        disabled={createMutation.isPending || programsLoading}
-        options={[
-          { value: '', label: t('needy.form.selectProgram') },
-          ...activePrograms.map((program) => ({
-            value: program.id,
-            label: program.name,
-          })),
-        ]}
-      />
+      <FormField
+        labelKey="needy.form.program"
+        name="programId"
+        isRequired
+        error={getDisplayErrorMessage(err.programId?.message, t)}
+      >
+        <Select
+          id="programId"
+          {...form.register('programId')}
+          disabled={createMutation.isPending || programsLoading}
+          options={[
+            { value: '', label: t('needy.form.selectProgram') },
+            ...activePrograms.map((program) => ({
+              value: program.id,
+              label: program.name,
+            })),
+          ]}
+        />
+      </FormField>
 
       {activePrograms.length === 0 && !programsLoading && (
-        <p className="text-sm text-gray-500">
-          {t('needy.form.noPrograms')}
-        </p>
+        <p className="text-sm text-gray-500">{t('needy.form.noPrograms')}</p>
       )}
 
-      <Select
-        label={t('needy.form.city')}
-        value={cityId}
-        onChange={(e) => {
-          setCityId(e.target.value);
-          if (errors.cityId) {
-            setErrors((prev) => ({ ...prev, cityId: '' }));
-          }
-        }}
-        error={errors.cityId}
-        required
-        disabled={createMutation.isPending || citiesLoading}
-        options={[
-          { value: '', label: t('needy.form.selectCity') },
-          ...cities.map((city) => ({
-            value: city.id,
-            label: city.name,
-          })),
-        ]}
-      />
+      <FormField
+        labelKey="needy.form.city"
+        name="cityId"
+        isRequired
+        error={getDisplayErrorMessage(err.cityId?.message, t)}
+      >
+        <Select
+          id="cityId"
+          {...form.register('cityId')}
+          disabled={createMutation.isPending || citiesLoading}
+          options={[
+            { value: '', label: t('needy.form.selectCity') },
+            ...cities.map((city) => ({
+              value: city.id,
+              label: city.name,
+            })),
+          ]}
+        />
+      </FormField>
 
       {cities.length === 0 && !citiesLoading && (
-        <p className="text-sm text-gray-500">
-          {t('needy.form.noCities')}
-        </p>
+        <p className="text-sm text-gray-500">{t('needy.form.noCities')}</p>
       )}
 
-      <Input
-        label={t('needy.form.address')}
-        value={address}
-        onChange={(e) => {
-          setAddress(e.target.value);
-          if (errors.address) {
-            setErrors((prev) => ({ ...prev, address: '' }));
-          }
-        }}
-        error={errors.address}
-        required
-        disabled={createMutation.isPending}
-        placeholder={t('needy.form.addressPlaceholder')}
-        maxLength={500}
-      />
+      <FormField
+        labelKey="needy.form.address"
+        name="address"
+        isRequired
+        error={getDisplayErrorMessage(err.address?.message, t)}
+      >
+        <Input
+          id="address"
+          {...form.register('address')}
+          disabled={createMutation.isPending}
+          placeholder={t('needy.form.addressPlaceholder')}
+          maxLength={500}
+        />
+      </FormField>
 
-      <Input
-        label={t('needy.form.photo')}
-        value={photo}
-        onChange={(e) => setPhoto(e.target.value)}
-        disabled={createMutation.isPending}
-        placeholder={t('needy.form.photoPlaceholder')}
-      />
+      <FormField labelKey="needy.form.photo" name="photo">
+        <Input
+          id="photo"
+          {...form.register('photo')}
+          disabled={createMutation.isPending}
+          placeholder={t('needy.form.photoPlaceholder')}
+        />
+      </FormField>
 
-      <Textarea
-        label={t('needy.form.about')}
-        value={about}
-        onChange={(e) => setAbout(e.target.value)}
-        disabled={createMutation.isPending}
-        rows={4}
-      />
+      <FormField labelKey="needy.form.about" name="about">
+        <Textarea
+          id="about"
+          {...form.register('about')}
+          disabled={createMutation.isPending}
+          rows={4}
+        />
+      </FormField>
 
       <div className="flex justify-end gap-2 pt-4">
         {onCancel && (

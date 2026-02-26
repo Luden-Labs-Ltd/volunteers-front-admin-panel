@@ -7,7 +7,6 @@ import { DeleteCategoryButton } from '@/features/category-delete';
 import { useI18n } from '@/shared/lib/i18n';
 import { Button, Modal, Pagination, Table } from '@/shared/ui';
 import { paginate } from '@/shared/lib/utils';
-import { SvgPreview } from '@/features/svg-preview';
 import { Layout } from '@/widgets/layout';
 import type { Category } from '@/entities/category';
 import { ImagePreview } from '@/features/image-preview';

@@ -1,9 +1,21 @@
 import { FC, useState } from 'react';
 import { useCreateCityGroup } from '@/entities/city-group';
 import { useGetCities } from '@/entities/city';
-import { Button, Input } from '@/shared/ui';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
 import { showToast } from '@/shared/lib/toast';
+import { Button, Input } from '@/shared/ui';
+import { z } from 'zod';
+
+const createCityGroupSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: 'cityGroups.form.nameRequired' })
+    .max(255, { message: 'cityGroups.form.nameTooLong' }),
+});
+
+type CreateCityGroupFormValues = z.infer<typeof createCityGroupSchema>;
 
 export interface CreateCityGroupFormProps {
   onSuccess: () => void;
@@ -15,61 +27,62 @@ export const CreateCityGroupForm: FC<CreateCityGroupFormProps> = ({
   onCancel,
 }) => {
   const { t } = useI18n();
-  const [name, setName] = useState('');
   const [selectedCityIds, setSelectedCityIds] = useState<string[]>([]);
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const form = useZodForm<CreateCityGroupFormValues>({
+    schema: createCityGroupSchema,
+    defaultValues: { name: '' },
+  });
   const createMutation = useCreateCityGroup();
   const { data: cities = [] } = useGetCities();
 
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-    if (!name.trim()) {
-      newErrors.name = t('cityGroups.form.nameRequired');
-    } else if (name.length > 255) {
-      newErrors.name = t('cityGroups.form.nameTooLong');
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
+  const onSubmit = form.handleSubmit(async (data) => {
     try {
       await createMutation.mutateAsync({
-        name: name.trim(),
+        name: data.name,
         cityIds: selectedCityIds.length ? selectedCityIds : undefined,
       });
       showToast.success(t('cityGroups.createSuccess'));
+      form.reset({ name: '' });
+      setSelectedCityIds([]);
       onSuccess();
     } catch (err) {
       showToast.error((err as Error).message || t('common.error'));
     }
-  };
+  });
 
   const toggleCity = (id: string) => {
     setSelectedCityIds((prev) =>
-      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id],
     );
   };
 
+  const err = form.formState.errors;
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        label={t('cityGroups.form.nameLabel')}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        error={errors.name}
-        required
-      />
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          {t('cityGroups.form.citiesLabel')}
-        </label>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <FormField
+        labelKey="cityGroups.form.nameLabel"
+        name="name"
+        isRequired
+        error={getDisplayErrorMessage(err.name?.message, t)}
+      >
+        <Input
+          id="name"
+          {...form.register('name')}
+          disabled={createMutation.isPending}
+        />
+      </FormField>
+      <FormField
+        labelKey="cityGroups.form.citiesLabel"
+        name="cities"
+      >
         <div className="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-1">
           {cities.map((city) => (
-            <label key={city.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
+            <label
+              key={city.id}
+              className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded"
+            >
               <input
                 type="checkbox"
                 checked={selectedCityIds.includes(city.id)}
@@ -80,7 +93,7 @@ export const CreateCityGroupForm: FC<CreateCityGroupFormProps> = ({
             </label>
           ))}
         </div>
-      </div>
+      </FormField>
       <div className="flex gap-2 justify-end">
         {onCancel && (
           <Button type="button" variant="secondary" onClick={onCancel}>

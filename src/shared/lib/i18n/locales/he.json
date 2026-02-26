@@ -23,7 +23,8 @@
     "create": "צור",
     "selectImage": "אנא בחר תמונה",
     "fileSizeMax": "גודל הקובץ לא יכול לעלות על 10MB",
-    "toggleMenu": "הצג/הסתר תפריט"
+    "toggleMenu": "הצג/הסתר תפריט",
+    "validationErrorFallback": "שגיאת אימות שדה"
   },
   "home": {
     "title": "ברוכים הבאים!",

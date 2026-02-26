@@ -1,129 +1,133 @@
-import { FC, useState } from 'react';
-import { Button, Input } from '@/shared/ui';
+import { FC } from 'react';
 import { useAdminRegister } from '@/entities/auth';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
+import { Button, Input } from '@/shared/ui';
+import { z } from 'zod';
+
+const registerSchema = z
+  .object({
+    email: z
+      .string()
+      .trim()
+      .min(1, { message: 'auth.form.emailRequired' })
+      .refine((v: string) => /\S+@\S+\.\S+/.test(v), { message: 'auth.form.emailInvalid' }),
+    password: z
+      .string()
+      .min(1, { message: 'auth.form.passwordRequired' })
+      .refine((v: string) => v.length >= 6, { message: 'auth.form.passwordMinLength' }),
+    confirmPassword: z.string().min(1, { message: 'auth.form.confirmPasswordRequired' }),
+    firstName: z.string().trim().min(1, { message: 'auth.form.firstNameRequired' }),
+    lastName: z.string().trim().min(1, { message: 'auth.form.lastNameRequired' }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'auth.form.passwordsMismatch',
+    path: ['confirmPassword'],
+  });
+
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export const RegisterForm: FC = () => {
   const { t } = useI18n();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [errors, setErrors] = useState<{
-    email?: string;
-    password?: string;
-    confirmPassword?: string;
-    firstName?: string;
-    lastName?: string;
-  }>({});
-
+  const form = useZodForm<RegisterFormValues>({
+    schema: registerSchema,
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      firstName: '',
+      lastName: '',
+    },
+  });
   const registerMutation = useAdminRegister();
 
-  const validate = () => {
-    const newErrors: typeof errors = {};
-
-    if (!email) {
-      newErrors.email = t('auth.form.emailRequired');
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = t('auth.form.emailInvalid');
-    }
-
-    if (!password) {
-      newErrors.password = t('auth.form.passwordRequired');
-    } else if (password.length < 6) {
-      newErrors.password = t('auth.form.passwordMinLength');
-    }
-
-    if (!confirmPassword) {
-      newErrors.confirmPassword = t('auth.form.confirmPasswordRequired');
-    } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = t('auth.form.passwordsMismatch');
-    }
-
-    if (!firstName) {
-      newErrors.firstName = t('auth.form.firstNameRequired');
-    }
-
-    if (!lastName) {
-      newErrors.lastName = t('auth.form.lastNameRequired');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
+  const onSubmit = form.handleSubmit((data) => {
     registerMutation.mutate({
-      email,
-      password,
-      firstName,
-      lastName,
+      email: data.email,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
     });
-  };
+  });
+
+  const err = form.formState.errors;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
-        <Input
-          label={t('auth.form.firstName')}
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          error={errors.firstName}
-          disabled={registerMutation.isPending}
-          placeholder={t('auth.form.firstNamePlaceholder')}
-          required
-        />
+        <FormField
+          labelKey="auth.form.firstName"
+          name="firstName"
+          isRequired
+          error={getDisplayErrorMessage(err.firstName?.message, t)}
+        >
+          <Input
+            id="firstName"
+            {...form.register('firstName')}
+            disabled={registerMutation.isPending}
+            placeholder={t('auth.form.firstNamePlaceholder')}
+          />
+        </FormField>
 
-        <Input
-          label={t('auth.form.lastName')}
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          error={errors.lastName}
-          disabled={registerMutation.isPending}
-          placeholder={t('auth.form.lastNamePlaceholder')}
-          required
-        />
+        <FormField
+          labelKey="auth.form.lastName"
+          name="lastName"
+          isRequired
+          error={getDisplayErrorMessage(err.lastName?.message, t)}
+        >
+          <Input
+            id="lastName"
+            {...form.register('lastName')}
+            disabled={registerMutation.isPending}
+            placeholder={t('auth.form.lastNamePlaceholder')}
+          />
+        </FormField>
       </div>
 
-      <Input
-        type="email"
-        label={t('auth.form.email')}
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        error={errors.email}
-        disabled={registerMutation.isPending}
-        placeholder={t('auth.form.emailPlaceholder')}
-        required
-      />
+      <FormField
+        labelKey="auth.form.email"
+        name="email"
+        isRequired
+        error={getDisplayErrorMessage(err.email?.message, t)}
+      >
+        <Input
+          id="email"
+          type="email"
+          {...form.register('email')}
+          disabled={registerMutation.isPending}
+          placeholder={t('auth.form.emailPlaceholder')}
+        />
+      </FormField>
 
-      <Input
-        type="password"
-        label={t('auth.form.password')}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        error={errors.password}
-        disabled={registerMutation.isPending}
-        placeholder={t('auth.form.passwordPlaceholder')}
-        required
-      />
+      <FormField
+        labelKey="auth.form.password"
+        name="password"
+        isRequired
+        error={getDisplayErrorMessage(err.password?.message, t)}
+      >
+        <Input
+          id="password"
+          type="password"
+          {...form.register('password')}
+          disabled={registerMutation.isPending}
+          placeholder={t('auth.form.passwordPlaceholder')}
+        />
+      </FormField>
 
-      <Input
-        type="password"
-        label={t('auth.form.confirmPassword')}
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        error={errors.confirmPassword}
-        disabled={registerMutation.isPending}
-        placeholder={t('auth.form.passwordPlaceholder')}
-        required
-      />
+      <FormField
+        labelKey="auth.form.confirmPassword"
+        name="confirmPassword"
+        isRequired
+        error={getDisplayErrorMessage(err.confirmPassword?.message, t)}
+      >
+        <Input
+          id="confirmPassword"
+          type="password"
+          {...form.register('confirmPassword')}
+          disabled={registerMutation.isPending}
+          placeholder={t('auth.form.passwordPlaceholder')}
+        />
+      </FormField>
 
       <Button
         type="submit"

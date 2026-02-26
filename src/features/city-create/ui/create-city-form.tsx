@@ -1,7 +1,51 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useCreateCity } from '../model';
-import { Button, Input } from '@/shared/ui';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
+import { Button, Input } from '@/shared/ui';
+import { z } from 'zod';
+
+const latLongSchema = z
+  .string()
+  .trim()
+  .min(1, { message: 'cities.form.latitudeRequired' })
+  .refine((v) => !Number.isNaN(Number(v)), {
+    message: 'cities.form.latitudeInvalid',
+  })
+  .refine((v) => {
+    const n = Number(v);
+    return n >= -90 && n <= 90;
+  }, { message: 'cities.form.latitudeInvalid' });
+
+const lngSchema = z
+  .string()
+  .trim()
+  .min(1, { message: 'cities.form.longitudeRequired' })
+  .refine((v) => !Number.isNaN(Number(v)), {
+    message: 'cities.form.longitudeInvalid',
+  })
+  .refine((v) => {
+    const n = Number(v);
+    return n >= -180 && n <= 180;
+  }, { message: 'cities.form.longitudeInvalid' });
+
+const createCitySchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: 'cities.form.nameRequired' })
+    .max(100, { message: 'cities.form.nameTooLong' }),
+  latitude: latLongSchema,
+  longitude: lngSchema,
+});
+
+type CreateCityFormValues = z.infer<typeof createCitySchema>;
+
+const defaultValues: CreateCityFormValues = {
+  name: '',
+  latitude: '',
+  longitude: '',
+};
 
 export interface CreateCityFormProps {
   onSuccess: () => void;
@@ -13,134 +57,82 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
   onCancel,
 }) => {
   const { t } = useI18n();
-  const [name, setName] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const form = useZodForm<CreateCityFormValues>({
+    schema: createCitySchema,
+    defaultValues,
+  });
   const createMutation = useCreateCity();
 
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!name.trim()) {
-      newErrors.name = t('cities.form.nameRequired');
-    } else if (name.length > 100) {
-      newErrors.name = t('cities.form.nameTooLong');
-    }
-
-    const latNum = parseFloat(latitude);
-    if (!latitude.trim()) {
-      newErrors.latitude = t('cities.form.latitudeRequired');
-    } else if (isNaN(latNum)) {
-      newErrors.latitude = t('cities.form.latitudeInvalid');
-    } else if (latNum < -90 || latNum > 90) {
-      newErrors.latitude = t('cities.form.latitudeInvalid');
-    }
-
-    const lngNum = parseFloat(longitude);
-    if (!longitude.trim()) {
-      newErrors.longitude = t('cities.form.longitudeRequired');
-    } else if (isNaN(lngNum)) {
-      newErrors.longitude = t('cities.form.longitudeInvalid');
-    } else if (lngNum < -180 || lngNum > 180) {
-      newErrors.longitude = t('cities.form.longitudeInvalid');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
+  const onSubmit = form.handleSubmit(async (data) => {
     try {
       await createMutation.mutateAsync({
-        name: name.trim(),
-        latitude: parseFloat(latitude),
-        longitude: parseFloat(longitude),
+        name: data.name,
+        latitude: Number(data.latitude),
+        longitude: Number(data.longitude),
       });
+      form.reset(defaultValues);
       onSuccess();
-      // Сброс формы
-      setName('');
-      setLatitude('');
-      setLongitude('');
-      setErrors({});
-    } catch (error) {
-      // Ошибка обрабатывается в хуке
+    } catch {
+      // Backend errors handled in mutation
     }
-  };
+  });
 
   const handleCancel = () => {
-    setName('');
-    setLatitude('');
-    setLongitude('');
-    setErrors({});
+    form.reset(defaultValues);
     onCancel?.();
   };
 
+  const err = form.formState.errors;
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <FormField
+        labelKey="cities.form.name"
+        name="name"
+        isRequired
+        error={getDisplayErrorMessage(err.name?.message, t)}
+      >
         <Input
-          label={t('cities.form.name')}
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (errors.name) {
-              setErrors((prev) => ({ ...prev, name: '' }));
-            }
-          }}
-          error={errors.name}
-          required
+          id="name"
+          {...form.register('name')}
           disabled={createMutation.isPending}
           placeholder={t('cities.form.namePlaceholder')}
           maxLength={100}
         />
-      </div>
+      </FormField>
 
       <div className="grid grid-cols-2 gap-4">
-        <div>
+        <FormField
+          labelKey="cities.form.latitude"
+          name="latitude"
+          isRequired
+          error={getDisplayErrorMessage(err.latitude?.message, t)}
+        >
           <Input
-            label={t('cities.form.latitude')}
+            id="latitude"
             type="number"
             step="any"
-            value={latitude}
-            onChange={(e) => {
-              setLatitude(e.target.value);
-              if (errors.latitude) {
-                setErrors((prev) => ({ ...prev, latitude: '' }));
-              }
-            }}
-            error={errors.latitude}
-            required
+            {...form.register('latitude')}
             disabled={createMutation.isPending}
             placeholder={t('cities.form.latitudePlaceholder')}
           />
-        </div>
+        </FormField>
 
-        <div>
+        <FormField
+          labelKey="cities.form.longitude"
+          name="longitude"
+          isRequired
+          error={getDisplayErrorMessage(err.longitude?.message, t)}
+        >
           <Input
-            label={t('cities.form.longitude')}
+            id="longitude"
             type="number"
             step="any"
-            value={longitude}
-            onChange={(e) => {
-              setLongitude(e.target.value);
-              if (errors.longitude) {
-                setErrors((prev) => ({ ...prev, longitude: '' }));
-              }
-            }}
-            error={errors.longitude}
-            required
+            {...form.register('longitude')}
             disabled={createMutation.isPending}
             placeholder={t('cities.form.longitudePlaceholder')}
           />
-        </div>
+        </FormField>
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
@@ -167,7 +159,7 @@ export const CreateCityForm: FC<CreateCityFormProps> = ({
           </Button>
         )}
         <Button type="submit" disabled={createMutation.isPending}>
-          {createMutation.isPending 
+          {createMutation.isPending
             ? t('cities.form.creating')
             : t('cities.form.create')}
         </Button>

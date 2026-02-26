@@ -1,10 +1,34 @@
-import { FC, useEffect, useState } from 'react';
-
+import { FC, useEffect } from 'react';
 import { useCategories } from '@/entities/category';
 import { type Skill, useUpdateSkill } from '@/entities/skill';
 import { SvgPreview } from '@/features/svg-preview';
+import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
 import { Button, Input, Select, Textarea } from '@/shared/ui';
+import { z } from 'zod';
+
+const editSkillSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: 'skills.form.nameRequired' })
+    .max(255, { message: 'skills.form.nameTooLong' }),
+  categoryId: z.string().min(1, { message: 'skills.form.categoryRequired' }),
+  iconSvg: z
+    .string()
+    .trim()
+    .min(1, { message: 'skills.form.iconRequired' }),
+});
+
+type EditSkillFormValues = z.infer<typeof editSkillSchema>;
+
+function toDefaultValues(skill: Skill): EditSkillFormValues {
+  return {
+    name: skill.name,
+    categoryId: skill.categoryId,
+    iconSvg: skill.iconSvg,
+  };
+}
 
 export interface EditSkillFormProps {
   skill: Skill;
@@ -18,101 +42,59 @@ export const EditSkillForm: FC<EditSkillFormProps> = ({
   onCancel,
 }) => {
   const { t } = useI18n();
-  const [name, setName] = useState(skill.name);
-  const [iconSvg, setIconSvg] = useState(skill.iconSvg);
-  const [categoryId, setCategoryId] = useState(skill.categoryId);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const form = useZodForm<EditSkillFormValues>({
+    schema: editSkillSchema,
+    defaultValues: toDefaultValues(skill),
+  });
   const updateMutation = useUpdateSkill();
   const { data: categories = [] } = useCategories();
 
   useEffect(() => {
-    setName(skill.name);
-    setIconSvg(skill.iconSvg);
-    setCategoryId(skill.categoryId);
-    setErrors({});
-  }, [skill]);
+    form.reset(toDefaultValues(skill));
+  }, [skill.id, skill.name, skill.categoryId, skill.iconSvg, form]);
 
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!name.trim()) {
-      newErrors.name = t('skills.form.nameRequired');
-    } else if (name.length > 255) {
-      newErrors.name = t('skills.form.nameTooLong');
-    }
-
-    if (!categoryId) {
-      newErrors.categoryId = t('skills.form.categoryRequired');
-    }
-
-    if (!iconSvg.trim()) {
-      newErrors.iconSvg = t('skills.form.iconRequired');
-    } 
-    // else {
-    //   const svgValidation = validateSvg(iconSvg);
-    //   if (!svgValidation.isValid) {
-    //     newErrors.iconSvg =
-    //       svgValidation.error || t('skills.form.iconInvalidFallback');
-    //   }
-    // }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
+  const onSubmit = form.handleSubmit(async (data) => {
     try {
       await updateMutation.mutateAsync({
         id: skill.id,
         data: {
-          name: name.trim(),
-          iconSvg: iconSvg.trim(),
-          categoryId,
+          name: data.name,
+          iconSvg: data.iconSvg,
+          categoryId: data.categoryId,
         },
       });
       onSuccess();
-    } catch (error) {
-      // Ошибка обрабатывается в хуке
+    } catch {
+      // Backend errors handled in mutation
     }
-  };
+  });
+
+  const err = form.formState.errors;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <FormField
+        labelKey="skills.form.name"
+        name="name"
+        isRequired
+        error={getDisplayErrorMessage(err.name?.message, t)}
+      >
         <Input
-          label={`${t('skills.form.name')} *`}
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (errors.name) {
-              setErrors((prev) => ({ ...prev, name: '' }));
-            }
-          }}
-          error={errors.name}
-          required
+          id="name"
+          {...form.register('name')}
           disabled={updateMutation.isPending}
         />
-      </div>
+      </FormField>
 
-      <div>
+      <FormField
+        labelKey="skills.form.category"
+        name="categoryId"
+        isRequired
+        error={getDisplayErrorMessage(err.categoryId?.message, t)}
+      >
         <Select
-          label={`${t('skills.form.category')} *`}
-          value={categoryId}
-          onChange={(e) => {
-            setCategoryId(e.target.value);
-            if (errors.categoryId) {
-              setErrors((prev) => ({ ...prev, categoryId: '' }));
-            }
-          }}
-          error={errors.categoryId}
-          required
+          id="categoryId"
+          {...form.register('categoryId')}
           disabled={updateMutation.isPending}
           options={[
             { value: '', label: t('skills.form.selectCategory') },
@@ -122,36 +104,29 @@ export const EditSkillForm: FC<EditSkillFormProps> = ({
             })),
           ]}
         />
-      </div>
+      </FormField>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          {t('skills.form.iconLabel')}
-        </label>
+      <FormField
+        labelKey="skills.form.iconLabel"
+        name="iconSvg"
+        isRequired
+        error={getDisplayErrorMessage(err.iconSvg?.message, t)}
+      >
         <div className="grid grid-cols-2 gap-4">
           <div>
             <Textarea
-              value={iconSvg}
-              onChange={(e) => {
-                setIconSvg(e.target.value);
-                if (errors.iconSvg) {
-                  setErrors((prev) => ({ ...prev, iconSvg: '' }));
-                }
-              }}
-              error={errors.iconSvg}
+              id="iconSvg"
+              {...form.register('iconSvg')}
               disabled={updateMutation.isPending}
               rows={8}
               placeholder="<svg>...</svg>"
             />
           </div>
           <div className="flex items-center justify-center border border-gray-300 rounded-lg bg-gray-50">
-            <SvgPreview svgCode={iconSvg} size={64} />
+            <SvgPreview svgCode={form.watch('iconSvg')} size={64} />
           </div>
         </div>
-        {errors.iconSvg && (
-          <p className="mt-1 text-sm text-red-600">{errors.iconSvg}</p>
-        )}
-      </div>
+      </FormField>
 
       <div className="flex justify-end gap-2 pt-4">
         {onCancel && (

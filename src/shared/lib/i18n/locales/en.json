@@ -23,7 +23,8 @@
     "create": "Create",
     "selectImage": "Please select an image",
     "fileSizeMax": "File size must not exceed 10MB",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "validationErrorFallback": "Field validation error"
   },
   "home": {
     "title": "Welcome!",

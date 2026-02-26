@@ -1,10 +1,10 @@
 import { FC, useState, useEffect } from 'react';
-import { useSetGroupCities } from '@/entities/city-group';
+import { useSetGroupCities, type CityGroup } from '@/entities/city-group';
 import { useGetCities } from '@/entities/city';
-import { Button } from '@/shared/ui';
+import { FormField } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
 import { showToast } from '@/shared/lib/toast';
-import type { CityGroup } from '@/entities/city-group';
+import { Button } from '@/shared/ui';
 
 export interface ManageCitiesFormProps {
   group: CityGroup;
@@ -49,10 +49,7 @@ export const ManageCitiesForm: FC<ManageCitiesFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          {t('cityGroups.form.citiesLabel')}
-        </label>
+      <FormField labelKey="cityGroups.form.citiesLabel" name="cities">
         <div className="max-h-64 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-1">
           {cities.map((city) => (
             <label
@@ -69,7 +66,7 @@ export const ManageCitiesForm: FC<ManageCitiesFormProps> = ({
             </label>
           ))}
         </div>
-      </div>
+      </FormField>
       <div className="flex gap-2 justify-end">
         {onCancel && (
           <Button type="button" variant="secondary" onClick={onCancel}>
