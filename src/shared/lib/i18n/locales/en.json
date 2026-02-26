@@ -318,6 +318,7 @@
     },
     "form": {
       "program": "Program",
+      "needy": "Needy",
       "needyId": "Needy ID",
       "type": "Help type",
       "title": "Title",
@@ -327,6 +328,7 @@
       "category": "Category",
       "firstResponseMode": "First response mode",
       "selectProgram": "Select program",
+      "selectNeedy": "Select needy",
       "selectCategory": "Select category",
       "typePlaceholder": "e.g. Shopping/Delivery",
       "programRequired": "Program is required",

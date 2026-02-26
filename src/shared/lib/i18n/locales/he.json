@@ -318,6 +318,7 @@
     },
     "form": {
       "program": "תוכנית",
+      "needy": "נזקק",
       "needyId": "מזהה נזקק",
       "type": "סוג עזרה",
       "title": "כותרת",
@@ -327,6 +328,7 @@
       "category": "קטגוריה",
       "firstResponseMode": "מצב תגובה ראשונה",
       "selectProgram": "בחר תוכנית",
+      "selectNeedy": "בחר נזקק",
       "selectCategory": "בחר קטגוריה",
       "typePlaceholder": "לדוגמה: קניות/משלוח",
       "programRequired": "תוכנית נדרשת",

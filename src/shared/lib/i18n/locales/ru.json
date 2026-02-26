@@ -318,6 +318,7 @@
     },
     "form": {
       "program": "Программа",
+      "needy": "Нуждающийся",
       "needyId": "ID нуждающегося",
       "type": "Тип помощи",
       "title": "Название",
@@ -327,6 +328,7 @@
       "category": "Категория",
       "firstResponseMode": "Режим первого отклика",
       "selectProgram": "Выберите программу",
+      "selectNeedy": "Выберите нуждающегося",
       "selectCategory": "Выберите категорию",
       "typePlaceholder": "Например: Покупки/Доставка",
       "programRequired": "Программа обязательна",

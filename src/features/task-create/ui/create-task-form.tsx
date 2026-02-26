@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { useCreateTask } from '@/entities/task';
 import { usePrograms } from '@/entities/program';
 import { useCategories } from '@/entities/category';
+import { useUsers } from '@/entities/user';
 import { FormField, getDisplayErrorMessage, useZodForm } from '@/shared/form';
 import { useI18n } from '@/shared/lib/i18n';
 import { Button, Input, Select, Textarea } from '@/shared/ui';
@@ -54,6 +55,9 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
   const createMutation = useCreateTask();
   const { data: programs = [] } = usePrograms();
   const { data: categories = [] } = useCategories();
+  const { data: users = [] } = useUsers('approved');
+
+  const needyUsers = users.filter((user) => user.role === 'needy');
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
@@ -100,16 +104,27 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
       </FormField>
 
       <FormField
-        labelKey="tasks.form.needyId"
+        labelKey="tasks.form.needy"
         name="needyId"
         isRequired
         error={getDisplayErrorMessage(err.needyId?.message, t)}
       >
-        <Input
+        <Select
           id="needyId"
           {...form.register('needyId')}
           disabled={createMutation.isPending}
-          placeholder="UUID"
+          options={[
+            { value: '', label: t('tasks.form.selectNeedy') },
+            ...needyUsers.map((user) => {
+              const name = [user.firstName, user.lastName].filter(Boolean).join(' ').trim();
+              const contact = user.phone ?? user.email ?? user.id;
+              const label = name ? `${name} (${contact})` : contact;
+              return {
+                value: user.id,
+                label,
+              };
+            }),
+          ]}
         />
       </FormField>
 
