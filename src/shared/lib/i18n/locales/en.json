@@ -192,6 +192,14 @@
     "title": "Users",
     "empty": "No users found",
     "addNeedy": "Add Needy",
+    "inviteNeedyLink": "Send registration form",
+    "inviteModal": {
+      "title": "Needy registration link",
+      "description": "Copy the link and send it to the needy person. They will fill out the form themselves.",
+      "copy": "Copy link",
+      "copied": "Link copied",
+      "generating": "Generating..."
+    },
     "columns": {
       "name": "Name",
       "phone": "Phone",

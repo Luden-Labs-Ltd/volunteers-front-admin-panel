@@ -6,6 +6,7 @@ import { Badge, Button, Card, Modal, Pagination, Select, Table } from '@/shared/
 import { paginate } from '@/shared/lib/utils';
 import { Layout } from '@/widgets/layout';
 import { CreateNeedyForm } from '@/features/needy-create';
+import { InviteNeedyButton } from '@/features/needy-invite-link';
 import { AssignProgramsButton } from '@/features/volunteer-assign-programs';
 import { UserDetailsModal } from '@/features/user-details';
 import type { User, UserRole, UserStatus } from '@/entities/user';
@@ -124,12 +125,15 @@ export const UsersPage: FC = () => {
                 className="w-full sm:w-36 min-w-0"
               />
             </div>
-            <Button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"
-            >
-              {t('users.addNeedy')}
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <InviteNeedyButton />
+              <Button
+                onClick={() => setIsCreateModalOpen(true)}
+                className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"
+              >
+                {t('users.addNeedy')}
+              </Button>
+            </div>
           </div>
         </div>
 
