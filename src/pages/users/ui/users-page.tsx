@@ -6,6 +6,7 @@ import { Badge, Button, Card, Modal, Pagination, Select, Table } from '@/shared/
 import { paginate } from '@/shared/lib/utils';
 import { Layout } from '@/widgets/layout';
 import { CreateNeedyForm } from '@/features/needy-create';
+import { CreateVolunteerForm } from '@/features/volunteer-create';
 import { InviteNeedyButton } from '@/features/needy-invite-link';
 import { AssignProgramsButton } from '@/features/volunteer-assign-programs';
 import { UserDetailsModal } from '@/features/user-details';
@@ -49,6 +50,7 @@ export const UsersPage: FC = () => {
   const [statusFilter, setStatusFilter] = useState<StatusFilterValue>('all');
   const [roleFilter, setRoleFilter] = useState<RoleFilterValue>('all');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateVolunteerModalOpen, setIsCreateVolunteerModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   const statusParam = statusFilter === 'all' ? undefined : statusFilter;
@@ -82,6 +84,7 @@ export const UsersPage: FC = () => {
 
   const handleCreateSuccess = () => {
     setIsCreateModalOpen(false);
+    setIsCreateVolunteerModalOpen(false);
     refetch();
   };
 
@@ -127,6 +130,13 @@ export const UsersPage: FC = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
               <InviteNeedyButton />
+              <Button
+                onClick={() => setIsCreateVolunteerModalOpen(true)}
+                className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"
+                variant="outline"
+              >
+                {t('users.addVolunteer')}
+              </Button>
               <Button
                 onClick={() => setIsCreateModalOpen(true)}
                 className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"
@@ -293,6 +303,18 @@ export const UsersPage: FC = () => {
           <CreateNeedyForm
             onSuccess={handleCreateSuccess}
             onCancel={() => setIsCreateModalOpen(false)}
+          />
+        </Modal>
+
+        <Modal
+          isOpen={isCreateVolunteerModalOpen}
+          onClose={() => setIsCreateVolunteerModalOpen(false)}
+          title={t('users.addVolunteer')}
+          size="lg"
+        >
+          <CreateVolunteerForm
+            onSuccess={handleCreateSuccess}
+            onCancel={() => setIsCreateVolunteerModalOpen(false)}
           />
         </Modal>
 

@@ -192,6 +192,7 @@
     "title": "משתמשים",
     "empty": "לא נמצאו משתמשים",
     "addNeedy": "הוסף נזקק",
+    "addVolunteer": "הוסף מתנדב",
     "inviteNeedyLink": "שלח טופס הרשמה",
     "inviteModal": {
       "title": "קישור להרשמת נזקק",
@@ -265,6 +266,34 @@
     "programsUpdated": "תוכניות עודכנו בהצלחה",
     "programsUpdateError": "שגיאה בעדכון תוכניות",
     "notFound": "משתמש לא נמצא"
+  },
+  "volunteer": {
+    "form": {
+      "firstName": "שם פרטי",
+      "lastName": "שם משפחה",
+      "phone": "טלפון",
+      "phonePlaceholder": "+972501234567",
+      "city": "עיר",
+      "selectCity": "בחר עיר",
+      "noCities": "אין ערים זמינות",
+      "cityRequired": "עיר חובה",
+      "skills": "כישורים",
+      "selectSkills": "בחר כישורים",
+      "noSkills": "אין כישורים זמינים",
+      "photo": "תמונה (URL)",
+      "photoPlaceholder": "https://example.com/photo.jpg",
+      "about": "אודות",
+      "firstNameRequired": "שם פרטי חובה",
+      "lastNameRequired": "שם משפחה חובה",
+      "phoneRequired": "טלפון חובה",
+      "firstNameTooLong": "שם פרטי לא יעבור 100 תווים",
+      "lastNameTooLong": "שם משפחה לא יעבור 100 תווים",
+      "phoneExists": "טלפון כבר בשימוש",
+      "create": "צור",
+      "creating": "יוצר...",
+      "createSuccess": "מתנדב נוצר בהצלחה",
+      "createError": "שגיאה ביצירת מתנדב"
+    }
   },
   "needy": {
     "form": {

@@ -192,6 +192,7 @@
     "title": "Пользователи",
     "empty": "Пользователи не найдены",
     "addNeedy": "Добавить нуждающегося",
+    "addVolunteer": "Добавить волонтёра",
     "inviteNeedyLink": "Отправить форму регистрации",
     "inviteModal": {
       "title": "Ссылка для регистрации нуждающегося",
@@ -265,6 +266,34 @@
     "programsUpdated": "Программы успешно обновлены",
     "programsUpdateError": "Ошибка обновления программ",
     "notFound": "Пользователь не найден"
+  },
+  "volunteer": {
+    "form": {
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "phone": "Телефон",
+      "phonePlaceholder": "+79991234567",
+      "city": "Город",
+      "selectCity": "Выберите город",
+      "noCities": "Нет доступных городов",
+      "cityRequired": "Город обязателен",
+      "skills": "Навыки",
+      "selectSkills": "Выберите навыки",
+      "noSkills": "Нет доступных навыков",
+      "photo": "Фото (URL)",
+      "photoPlaceholder": "https://example.com/photo.jpg",
+      "about": "Описание",
+      "firstNameRequired": "Имя обязательно",
+      "lastNameRequired": "Фамилия обязательна",
+      "phoneRequired": "Телефон обязателен",
+      "firstNameTooLong": "Имя не должно превышать 100 символов",
+      "lastNameTooLong": "Фамилия не должна превышать 100 символов",
+      "phoneExists": "Телефон уже используется другим пользователем",
+      "create": "Создать",
+      "creating": "Создание...",
+      "createSuccess": "Волонтёр успешно создан",
+      "createError": "Ошибка при создании волонтёра"
+    }
   },
   "needy": {
     "form": {
