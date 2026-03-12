@@ -191,12 +191,12 @@
   "users": {
     "title": "Users",
     "empty": "No users found",
-    "addNeedy": "Add Needy",
+    "addNeedy": "Add Supported",
     "addVolunteer": "Add Volunteer",
     "inviteNeedyLink": "Send registration form",
     "inviteModal": {
-      "title": "Needy registration link",
-      "description": "Copy the link and send it to the needy person. They will fill out the form themselves.",
+      "title": "Supported registration link",
+      "description": "Copy the link and send it to the supported person. They will fill out the form themselves.",
       "copy": "Copy link",
       "copied": "Link copied",
       "generating": "Generating..."
@@ -212,7 +212,7 @@
     "roles": {
       "admin": "Admin",
       "volunteer": "Volunteer",
-      "needy": "Needy"
+      "needy": "Supported"
     },
     "status": {
       "pending": "Pending",
@@ -224,6 +224,7 @@
       "status": "Status",
       "role": "Role"
     },
+    "searchPlaceholder": "Search by name or phone",
     "assignPrograms": "Assign to programs",
     "managePrograms": "Manage programs",
     "programs": "Programs",
@@ -324,8 +325,8 @@
       "addressTooLong": "Address must not exceed 500 characters",
       "create": "Create",
       "creating": "Creating...",
-      "createSuccess": "Needy user created successfully",
-      "createError": "Error creating needy user"
+      "createSuccess": "Supported user created successfully",
+      "createError": "Error creating supported user"
     }
   },
   "tasks": {
@@ -355,8 +356,8 @@
     },
     "form": {
       "program": "Program",
-      "needy": "Needy",
-      "needyId": "Needy ID",
+      "needy": "Supported",
+      "needyId": "Supported ID",
       "type": "Help type",
       "title": "Title",
       "description": "Description",
@@ -365,11 +366,11 @@
       "category": "Category",
       "firstResponseMode": "First response mode",
       "selectProgram": "Select program",
-      "selectNeedy": "Select needy",
+      "selectNeedy": "Select supported",
       "selectCategory": "Select category",
       "typePlaceholder": "e.g. Shopping/Delivery",
       "programRequired": "Program is required",
-      "needyRequired": "Needy ID is required",
+      "needyRequired": "Supported ID is required",
       "typeRequired": "Help type is required",
       "titleRequired": "Title is required",
       "titleTooLong": "Title must be at most 500 characters",

@@ -13,5 +13,5 @@ export type {
   AdminProfile,
 } from './model';
 export { userApi } from './api';
-export { useUsers, useUser, useUpdateUserStatus, useUpdateUserPrograms } from './model';
+export { useUsers, useUsersPaginated, useUser, useUpdateUserStatus, useUpdateUserPrograms } from './model';
 

@@ -191,12 +191,12 @@
   "users": {
     "title": "משתמשים",
     "empty": "לא נמצאו משתמשים",
-    "addNeedy": "הוסף נזקק",
+    "addNeedy": "הוסף נתמך",
     "addVolunteer": "הוסף מתנדב",
     "inviteNeedyLink": "שלח טופס הרשמה",
     "inviteModal": {
-      "title": "קישור להרשמת נזקק",
-      "description": "העתק את הקישור ושלח לנזקק. הוא ימלא את הטופס בעצמו.",
+      "title": "קישור להרשמת נתמך",
+      "description": "העתק את הקישור ושלח לנתמך. הוא ימלא את הטופס בעצמו.",
       "copy": "העתק קישור",
       "copied": "הקישור הועתק",
       "generating": "מייצר..."
@@ -212,7 +212,7 @@
     "roles": {
       "admin": "מנהל",
       "volunteer": "מתנדב",
-      "needy": "נזקק"
+      "needy": "נתמך"
     },
     "status": {
       "pending": "ממתין",
@@ -224,6 +224,7 @@
       "status": "סטטוס",
       "role": "תפקיד"
     },
+    "searchPlaceholder": "חיפוש לפי שם או טלפון",
     "assignPrograms": "הקצה לתוכניות",
     "managePrograms": "ניהול תוכניות",
     "programs": "תוכניות",
@@ -324,8 +325,8 @@
       "addressTooLong": "כתובת לא יכולה לעלות על 500 תווים",
       "create": "צור",
       "creating": "יוצר...",
-      "createSuccess": "נזקק נוצר בהצלחה",
-      "createError": "שגיאה ביצירת נזקק"
+      "createSuccess": "נתמך נוצר בהצלחה",
+      "createError": "שגיאה ביצירת נתמך"
     }
   },
   "tasks": {
@@ -355,8 +356,8 @@
     },
     "form": {
       "program": "תוכנית",
-      "needy": "נזקק",
-      "needyId": "מזהה נזקק",
+      "needy": "נתמך",
+      "needyId": "מזהה נתמך",
       "type": "סוג עזרה",
       "title": "כותרת",
       "description": "תיאור",
@@ -365,11 +366,11 @@
       "category": "קטגוריה",
       "firstResponseMode": "מצב תגובה ראשונה",
       "selectProgram": "בחר תוכנית",
-      "selectNeedy": "בחר נזקק",
+      "selectNeedy": "בחר נתמך",
       "selectCategory": "בחר קטגוריה",
       "typePlaceholder": "לדוגמה: קניות/משלוח",
       "programRequired": "תוכנית נדרשת",
-      "needyRequired": "מזהה נזקק נדרש",
+      "needyRequired": "מזהה נתמך נדרש",
       "typeRequired": "סוג עזרה נדרש",
       "titleRequired": "כותרת נדרשת",
       "titleTooLong": "הכותרת חייבת להכיל עד 500 תווים",

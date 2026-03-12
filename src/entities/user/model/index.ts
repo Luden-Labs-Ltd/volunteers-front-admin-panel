@@ -12,5 +12,5 @@ export type {
   NeedyProfile,
   AdminProfile,
 } from './types';
-export { useUsers, useUser, useUpdateUserStatus, useUpdateUserPrograms } from './hooks';
+export { useUsers, useUsersPaginated, useUser, useUpdateUserStatus, useUpdateUserPrograms } from './hooks';
 

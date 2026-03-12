@@ -1,9 +1,8 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 
-import { useUsers } from '@/entities/user';
+import { useUsersPaginated } from '@/entities/user';
 import { useI18n } from '@/shared/lib/i18n';
-import { Badge, Button, Card, Modal, Pagination, Select, Table } from '@/shared/ui';
-import { paginate } from '@/shared/lib/utils';
+import { Badge, Button, Card, Modal, Pagination, Select, Table, Input } from '@/shared/ui';
 import { Layout } from '@/widgets/layout';
 import { CreateNeedyForm } from '@/features/needy-create';
 import { CreateVolunteerForm } from '@/features/volunteer-create';
@@ -11,6 +10,8 @@ import { InviteNeedyButton } from '@/features/needy-invite-link';
 import { AssignProgramsButton } from '@/features/volunteer-assign-programs';
 import { UserDetailsModal } from '@/features/user-details';
 import type { User, UserRole, UserStatus } from '@/entities/user';
+
+const SEARCH_DEBOUNCE_MS = 300;
 
 const getRoleKey = (role: UserRole): string =>
   `users.roles.${role as string}`;
@@ -47,40 +48,33 @@ const ROLE_FILTER_OPTIONS: { value: RoleFilterValue; labelKey: string }[] = [
 export const UsersPage: FC = () => {
   const { t } = useI18n();
   const [page, setPage] = useState(1);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchDebounced, setSearchDebounced] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilterValue>('all');
   const [roleFilter, setRoleFilter] = useState<RoleFilterValue>('all');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isCreateVolunteerModalOpen, setIsCreateVolunteerModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setSearchDebounced(searchInput.trim()), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
   const statusParam = statusFilter === 'all' ? undefined : statusFilter;
-  const { data: users = [], isLoading, refetch } = useUsers(statusParam);
+  const roleParam = roleFilter === 'all' ? undefined : roleFilter;
 
-  const filteredUsers =
-    roleFilter === 'all'
-      ? users
-      : users.filter((u) => u.role === roleFilter);
-
-  const sortedUsers = [...filteredUsers].sort((a, b) => {
-    const dateA = new Date(a.createdAt ?? 0).getTime();
-    const dateB = new Date(b.createdAt ?? 0).getTime();
-    if (dateA !== dateB) return dateB - dateA;
-
-    const nameA =
-      `${a.firstName ?? ''} ${a.lastName ?? ''}`.trim() ||
-      a.email ||
-      a.phone ||
-      '';
-    const nameB =
-      `${b.firstName ?? ''} ${b.lastName ?? ''}`.trim() ||
-      b.email ||
-      b.phone ||
-      '';
-
-    return nameA.localeCompare(nameB);
+  const { data, isLoading, refetch } = useUsersPaginated({
+    page,
+    limit: 10,
+    search: searchDebounced || undefined,
+    status: statusParam,
+    role: roleParam,
   });
 
-  const { data: paginatedUsers, pagination } = paginate(sortedUsers, page, 10);
+  const users = data?.items ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = Math.ceil(total / 10) || 1;
 
   const handleCreateSuccess = () => {
     setIsCreateModalOpen(false);
@@ -95,55 +89,73 @@ export const UsersPage: FC = () => {
   return (
     <Layout>
       <div className="p-3 sm:p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-            {t('users.title')}
-          </h1>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-            <div className="grid grid-cols-2 gap-3 sm:flex sm:grid-cols-none sm:gap-2">
-              <Select
-                label={t('users.filters.status')}
-                options={STATUS_FILTER_OPTIONS.map((opt) => ({
-                  value: opt.value,
-                  label: t(opt.labelKey),
-                }))}
-                value={statusFilter}
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
+          {t('users.title')}
+        </h1>
+
+        {/* Фильтры и действия — адаптивная сетка */}
+        <div className="mb-4 sm:mb-6 space-y-4">
+          {/* Мобилка: карточка с фильтрами для лучшего визуального выделения */}
+          <div className="rounded-lg border border-gray-200 bg-gray-50/50 p-4 sm:bg-transparent sm:border-0 sm:p-0">
+            <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:gap-3">
+              <Input
+                placeholder={t('users.searchPlaceholder')}
+                value={searchInput}
                 onChange={(e) => {
-                  setStatusFilter(e.target.value as StatusFilterValue);
+                  setSearchInput(e.target.value);
                   setPage(1);
                 }}
-                className="w-full sm:w-36 min-w-0"
+                className="w-full sm:w-52 min-w-0"
               />
-              <Select
-                label={t('users.filters.role')}
-                options={ROLE_FILTER_OPTIONS.map((opt) => ({
-                  value: opt.value,
-                  label: t(opt.labelKey),
-                }))}
-                value={roleFilter}
-                onChange={(e) => {
-                  setRoleFilter(e.target.value as RoleFilterValue);
-                  setPage(1);
-                }}
-                className="w-full sm:w-36 min-w-0"
-              />
+              <div className="grid grid-cols-2 gap-3 sm:flex sm:grid-cols-none sm:gap-2">
+                <Select
+                  label={t('users.filters.status')}
+                  options={STATUS_FILTER_OPTIONS.map((opt) => ({
+                    value: opt.value,
+                    label: t(opt.labelKey),
+                  }))}
+                  value={statusFilter}
+                  onChange={(e) => {
+                    setStatusFilter(e.target.value as StatusFilterValue);
+                    setPage(1);
+                  }}
+                  className="w-full min-w-0"
+                />
+                <Select
+                  label={t('users.filters.role')}
+                  options={ROLE_FILTER_OPTIONS.map((opt) => ({
+                    value: opt.value,
+                    label: t(opt.labelKey),
+                  }))}
+                  value={roleFilter}
+                  onChange={(e) => {
+                    setRoleFilter(e.target.value as RoleFilterValue);
+                    setPage(1);
+                  }}
+                  className="w-full min-w-0"
+                />
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2">
+          </div>
+
+          {/* Кнопки действий */}
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-2">
+            <div className="w-full sm:w-auto [&>button]:w-full sm:[&>button]:w-auto">
               <InviteNeedyButton />
-              <Button
-                onClick={() => setIsCreateVolunteerModalOpen(true)}
-                className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"
-                variant="outline"
-              >
-                {t('users.addVolunteer')}
-              </Button>
-              <Button
-                onClick={() => setIsCreateModalOpen(true)}
-                className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"
-              >
-                {t('users.addNeedy')}
-              </Button>
             </div>
+            <Button
+              onClick={() => setIsCreateVolunteerModalOpen(true)}
+              className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"
+              variant="outline"
+            >
+              {t('users.addVolunteer')}
+            </Button>
+            <Button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"
+            >
+              {t('users.addNeedy')}
+            </Button>
           </div>
         </div>
 
@@ -151,7 +163,7 @@ export const UsersPage: FC = () => {
           <div className="text-center py-8 text-gray-500">
             {t('common.loading')}
           </div>
-        ) : paginatedUsers.length === 0 ? (
+        ) : users.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500">{t('users.empty')}</p>
           </div>
@@ -183,7 +195,7 @@ export const UsersPage: FC = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {paginatedUsers.map((user: User) => (
+                  {users.map((user: User) => (
                     <tr key={user.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
@@ -238,7 +250,7 @@ export const UsersPage: FC = () => {
 
             {/* Mobile Card View */}
             <div className="md:hidden space-y-3">
-              {paginatedUsers.map((user: User) => (
+              {users.map((user: User) => (
                 <Card key={user.id} className="p-4 shadow-sm border border-gray-100">
                   <div className="space-y-2">
                     <div>
@@ -283,11 +295,11 @@ export const UsersPage: FC = () => {
               ))}
             </div>
 
-            {pagination.totalPages > 1 && (
+            {totalPages > 1 && (
               <div className="mt-4 sm:mt-6 flex justify-center">
                 <Pagination
-                  currentPage={pagination.page}
-                  totalPages={pagination.totalPages}
+                  currentPage={page}
+                  totalPages={totalPages}
                   onPageChange={setPage}
                 />
               </div>
