@@ -252,7 +252,7 @@
       "selectProgram": "Select program",
       "noPrograms": "No programs",
       "noProgramsAvailable": "No available programs",
-      "address": "Address"
+      "address": "Street"
     },
     "actions": {
       "viewDetails": "View Details",
@@ -319,10 +319,10 @@
       "selectCity": "Select city",
       "noCities": "No cities available",
       "cityRequired": "City is required",
-      "address": "Address",
-      "addressPlaceholder": "Enter address",
-      "addressRequired": "Address is required",
-      "addressTooLong": "Address must not exceed 500 characters",
+      "address": "Street",
+      "addressPlaceholder": "Enter street",
+      "addressRequired": "Street is required",
+      "addressTooLong": "Street must not exceed 500 characters",
       "create": "Create",
       "creating": "Creating...",
       "createSuccess": "Supported user created successfully",

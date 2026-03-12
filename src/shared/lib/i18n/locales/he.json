@@ -35,7 +35,7 @@
       "tasksTitle": "משימות",
       "tasksDescription": "צפו ונהלו משימות",
       "usersTitle": "משתמשים",
-      "usersDescription": "נהלו מתנדבים ונזקקים"
+      "usersDescription": "נהלו מתנדבים ונתמכים"
     }
   },
   "programs": {
@@ -63,7 +63,7 @@
     },
     "delete": {
       "confirmMessage": "האם אתה בטוח שברצונך למחוק את התוכנית {{programName}}?",
-      "confirmNote": "לא ניתן לבטל פעולה זו. אם מתנדבים או נזקקים מקושרים לתוכנית זו, המחיקה לא תתאפשר."
+      "confirmNote": "לא ניתן לבטל פעולה זו. אם מתנדבים או נתמכים מקושרים לתוכנית זו, המחיקה לא תתאפשר."
     }
   },
   "categories": {
@@ -252,7 +252,7 @@
       "selectProgram": "בחר תוכנית",
       "noPrograms": "אין תוכניות",
       "noProgramsAvailable": "אין תוכניות זמינות",
-      "address": "כתובת"
+      "address": "רחוב"
     },
     "actions": {
       "viewDetails": "פרטים",
@@ -319,10 +319,10 @@
       "selectCity": "בחר עיר",
       "noCities": "אין ערים זמינות",
       "cityRequired": "עיר חובה",
-      "address": "כתובת",
-      "addressPlaceholder": "הזן כתובת",
-      "addressRequired": "כתובת חובה",
-      "addressTooLong": "כתובת לא יכולה לעלות על 500 תווים",
+      "address": "רחוב",
+      "addressPlaceholder": "הזן רחוב",
+      "addressRequired": "רחוב חובה",
+      "addressTooLong": "רחוב לא יכול לעלות על 500 תווים",
       "create": "צור",
       "creating": "יוצר...",
       "createSuccess": "נתמך נוצר בהצלחה",
