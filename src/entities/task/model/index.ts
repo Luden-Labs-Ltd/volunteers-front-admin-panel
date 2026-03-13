@@ -1,6 +1,7 @@
 export type {
   Task,
   TaskStatus,
+  NeedyContactShared,
   CreateTaskRequest,
   UpdateTaskRequest,
   AssignVolunteerRequest,

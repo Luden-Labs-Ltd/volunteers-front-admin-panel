@@ -5,6 +5,12 @@
 
 export type TaskStatus = 'active' | 'in_progress' | 'completed' | 'cancelled';
 
+/** Контакт семьи (имя и телефон), если семья поделилась с волонтёром */
+export interface NeedyContactShared {
+  name: string;
+  phone: string;
+}
+
 export interface Task {
   id: string;
   title: string;
@@ -23,6 +29,11 @@ export interface Task {
   };
   createdAt: string; // ISO 8601 date string
   updatedAt: string; // ISO 8601 date string
+  /** Семья поделилась контактом с волонтёром */
+  isNeedyContactShared?: boolean;
+  needyContactSharedAt?: string | null;
+  /** Контакт семьи (имя и телефон) — только если isNeedyContactShared */
+  needyContact?: NeedyContactShared | null;
 }
 
 /**
