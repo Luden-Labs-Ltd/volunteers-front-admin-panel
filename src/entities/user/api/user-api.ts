@@ -1,4 +1,5 @@
 import { apiClient } from '@/shared/api';
+import { getToken } from '@/shared/lib/auth';
 import type {
   User,
   UserWithRoleData,
@@ -26,6 +27,9 @@ export interface PaginatedUsersResponse {
   page: number;
   limit: number;
 }
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'https://volunteers-backend-production.up.railway.app';
 
 export const userApi = {
   /**
@@ -89,6 +93,54 @@ export const userApi = {
     await apiClient.request<void>(`/user/${id}`, {
       method: 'DELETE',
     });
+  },
+
+  /**
+   * Экспорт пользователей в Excel с теми же фильтрами, что и список в админке.
+   * Загружает .xlsx-файл через Blob API.
+   */
+  async exportUsers(params?: GetUsersPaginatedParams): Promise<void> {
+    const searchParams = new URLSearchParams();
+    if (params?.status) searchParams.set('status', params.status);
+    if (params?.role) searchParams.set('role', params.role);
+    if (params?.search?.trim()) searchParams.set('search', params.search.trim());
+
+    const query = searchParams.toString();
+    const url = `${API_BASE_URL}/export/xls/users${query ? `?${query}` : ''}`;
+
+    const rawToken = getToken();
+    const token = rawToken?.replace(/^Bearer\s+/i, '');
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to export users: ${response.statusText}`);
+    }
+
+    const blob = await response.blob();
+
+    const contentDisposition = response.headers.get('content-disposition');
+    let filename = 'users.xlsx';
+    if (contentDisposition) {
+      const match = /filename="?([^"]+)"?/.exec(contentDisposition);
+      if (match && match[1]) {
+        filename = match[1];
+      }
+    }
+
+    const blobUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(blobUrl);
   },
 };
 

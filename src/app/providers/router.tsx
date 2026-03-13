@@ -6,6 +6,7 @@ import { CategoriesPage } from '@/pages/categories/ui';
 import { SkillsPage } from '@/pages/skills/ui';
 import { TasksPage } from '@/pages/tasks/ui';
 import { UsersPage } from '@/pages/users/ui';
+import { ReviewsPage } from '@/pages/reviews/ui';
 import { CitiesPage } from '@/pages/cities/ui';
 import { CityGroupsPage } from '@/pages/city-groups/ui';
 import { NotFoundPage } from '@/pages/not-found/ui';
@@ -27,6 +28,7 @@ export const Router: FC = () => {
                 <Route path="/skills" element={<SkillsPage />} />
                 <Route path="/tasks" element={<TasksPage />} />
                 <Route path="/users" element={<UsersPage />} />
+                <Route path="/reviews" element={<ReviewsPage />} />
                 <Route path="/cities" element={<CitiesPage />} />
                 <Route path="/city-groups" element={<CityGroupsPage />} />
                 <Route path="*" element={<NotFoundPage />} />

@@ -1,0 +1,2 @@
+export { ReviewsPage } from './ui';
+

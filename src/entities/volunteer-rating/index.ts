@@ -1,3 +1,3 @@
-export type { VolunteerRating } from './model';
+export type { VolunteerRating, VolunteerRatingsAdminResponse } from './model';
 export { volunteerRatingApi } from './api';
-export { useVolunteerRatings } from './model';
+export { useVolunteerRatings, useVolunteerRatingsAdmin } from './model';

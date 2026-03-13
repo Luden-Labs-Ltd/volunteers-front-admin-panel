@@ -55,6 +55,7 @@ export const UsersPage: FC = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isCreateVolunteerModalOpen, setIsCreateVolunteerModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setSearchDebounced(searchInput.trim()), SEARCH_DEBOUNCE_MS);
@@ -84,6 +85,20 @@ export const UsersPage: FC = () => {
 
   const handleUserDetailsSuccess = () => {
     refetch();
+  };
+
+  const handleExportClick = async () => {
+    try {
+      setIsExporting(true);
+      const { userApi } = await import('@/entities/user');
+      await userApi.exportUsers({
+        status: statusParam,
+        role: roleParam,
+        search: searchDebounced || undefined,
+      });
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
@@ -143,6 +158,14 @@ export const UsersPage: FC = () => {
             <div className="w-full sm:w-auto [&>button]:w-full sm:[&>button]:w-auto">
               <InviteNeedyButton />
             </div>
+            <Button
+              onClick={handleExportClick}
+              className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"
+              variant="outline"
+              disabled={isExporting}
+            >
+              {isExporting ? t('users.exporting') : t('users.export')}
+            </Button>
             <Button
               onClick={() => setIsCreateVolunteerModalOpen(true)}
               className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"

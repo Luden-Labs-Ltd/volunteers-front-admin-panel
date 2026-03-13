@@ -9,7 +9,7 @@ export const InviteNeedyButton: FC = () => {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} variant="outline" size="sm">
+      <Button onClick={() => setIsOpen(true)}   className="w-full sm:w-auto min-h-[44px] sm:min-h-0 shrink-0"  variant="outline">
         {t('users.inviteNeedyLink')}
       </Button>
       <InviteNeedyModal

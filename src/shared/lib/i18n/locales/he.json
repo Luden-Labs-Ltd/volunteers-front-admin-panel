@@ -140,7 +140,8 @@
     "tasks": "משימות",
     "users": "משתמשים",
     "cities": "ערים",
-    "cityGroups": "קבוצות ערים"
+    "cityGroups": "קבוצות ערים",
+    "reviews": "ביקורות"
   },
   "pagination": {
     "prev": "הקודם",
@@ -193,6 +194,8 @@
     "empty": "לא נמצאו משתמשים",
     "addNeedy": "הוסף נתמך",
     "addVolunteer": "הוסף מתנדב",
+    "export": "ייצוא לאקסל",
+    "exporting": "מייצא...",
     "inviteNeedyLink": "שלח טופס הרשמה",
     "inviteModal": {
       "title": "קישור להרשמת נתמך",
@@ -238,7 +241,7 @@
       "createdAt": "תאריך יצירה",
       "actions": "פעולות",
       "profileInfo": "מידע פרופיל",
-      "city": "עיר",
+      "city": "יישוב",
       "points": "נקודות",
       "completedTasks": "משימות שהושלמו",
       "rating": "דירוג",
@@ -274,10 +277,10 @@
       "lastName": "שם משפחה",
       "phone": "טלפון",
       "phonePlaceholder": "+972501234567",
-      "city": "עיר",
-      "selectCity": "בחר עיר",
-      "noCities": "אין ערים זמינות",
-      "cityRequired": "עיר חובה",
+      "city": "יישוב",
+      "selectCity": "בחר יישוב",
+      "noCities": "אין יישובים זמינים",
+      "cityRequired": "יישוב חובה",
       "skills": "כישורים",
       "selectSkills": "בחר כישורים",
       "noSkills": "אין כישורים זמינים",
@@ -315,10 +318,10 @@
       "phoneExists": "טלפון כבר בשימוש על ידי משתמש אחר",
       "selectProgram": "בחר תוכנית",
       "noPrograms": "אין תוכניות זמינות",
-      "city": "עיר",
-      "selectCity": "בחר עיר",
-      "noCities": "אין ערים זמינות",
-      "cityRequired": "עיר חובה",
+      "city": "יישוב",
+      "selectCity": "בחר יישוב",
+      "noCities": "אין יישובים זמינים",
+      "cityRequired": "יישוב חובה",
       "address": "רחוב",
       "addressPlaceholder": "הזן רחוב",
       "addressRequired": "רחוב חובה",
@@ -401,34 +404,34 @@
     "notAssigned": "לא מוקצה"
   },
   "cityGroups": {
-    "title": "קבוצות ערים",
+    "title": "קבוצות יישובים",
     "create": "צור קבוצה",
     "createFirst": "צור קבוצה ראשונה",
-    "empty": "אין קבוצות ערים",
+    "empty": "אין קבוצות יישובים",
     "columns": {
       "name": "שם",
-      "citiesCount": "ערים",
+      "citiesCount": "יישובים",
       "actions": "פעולות"
     },
     "form": {
       "nameLabel": "שם קבוצה *",
       "nameRequired": "שם חובה",
       "nameTooLong": "השם לא יעלה על 255 תווים",
-      "citiesLabel": "ערים בקבוצה"
+      "citiesLabel": "יישובים בקבוצה"
     },
     "createSuccess": "הקבוצה נוצרה",
     "updateSuccess": "הקבוצה עודכנה",
     "deleteSuccess": "הקבוצה נמחקה",
-    "citiesUpdateSuccess": "הרכב הערים עודכן",
-    "deleteConfirmMessage": "למחוק את הקבוצה \"{{name}}\"? הערים יישארו במערכת.",
+    "citiesUpdateSuccess": "הרכב היישובים עודכן",
+    "deleteConfirmMessage": "למחוק את הקבוצה \"{{name}}\"? היישובים יישארו במערכת.",
     "edit": "עריכה",
-    "manageCities": "ניהול ערים"
+    "manageCities": "ניהול יישובים"
   },
   "cities": {
-    "title": "ערים",
-    "create": "צור עיר",
-    "createFirst": "צור עיר ראשונה",
-    "empty": "אין ערים זמינות",
+    "title": "יישובים",
+    "create": "צור יישוב",
+    "createFirst": "צור יישוב ראשון",
+    "empty": "אין יישובים זמינים",
     "columns": {
       "name": "שם",
       "latitude": "קו רוחב",
@@ -440,7 +443,7 @@
       "name": "שם *",
       "latitude": "קו רוחב *",
       "longitude": "קו אורך *",
-      "namePlaceholder": "הכנס שם עיר",
+      "namePlaceholder": "הכנס שם יישוב",
       "latitudePlaceholder": "לדוגמה: 32.0853",
       "longitudePlaceholder": "לדוגמה: 34.7818",
       "nameRequired": "שם נדרש",
@@ -449,21 +452,34 @@
       "latitudeInvalid": "קו רוחב חייב להיות בין -90 ל-90",
       "longitudeRequired": "קו אורך נדרש",
       "longitudeInvalid": "קו אורך חייב להיות בין -180 ל-180",
-      "create": "צור עיר",
+      "create": "צור יישוב",
       "creating": "יוצר...",
-      "coordinatesExamplesTitle": "דוגמאות קואורדינטות לערים בישראל:",
+      "coordinatesExamplesTitle": "דוגמאות קואורדינטות ליישובים בישראל:",
       "exampleTelAviv": "תל אביב: 32.0853, 34.7818",
       "exampleJerusalem": "ירושלים: 31.7683, 35.2137",
       "exampleHaifa": "חיפה: 32.7940, 34.9896",
       "exampleBeerSheva": "באר שבע: 31.2530, 34.7915"
     },
     "toast": {
-      "createSuccess": "העיר נוצרה בהצלחה",
-      "createError": "נכשל ביצירת העיר"
+      "createSuccess": "היישוב נוצר בהצלחה",
+      "createError": "נכשל ביצירת היישוב"
     },
     "viewVolunteers": "מתנדבים ({{count}})",
     "volunteers": "מתנדבים ב-{{city}}",
-    "noVolunteers": "אין מתנדבים רשומים בעיר זו"
+    "noVolunteers": "אין מתנדבים רשומים ביישוב זה"
+  },
+  "reviews": {
+    "title": "ביקורות על מתנדבים",
+    "empty": "לא נמצאו ביקורות",
+    "searchPlaceholder": "חיפוש לפי שם, טלפון או מזהה מתנדב",
+    "columns": {
+      "volunteer": "מתנדב",
+      "contact": "יצירת קשר",
+      "score": "דירוג",
+      "comment": "הערה",
+      "task": "משימה",
+      "createdAt": "נוצר בתאריך"
+    }
   },
   "notFound": {
     "message": "הדף לא נמצא",

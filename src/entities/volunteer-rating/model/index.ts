@@ -1,2 +1,2 @@
-export type { VolunteerRating } from './types';
-export { useVolunteerRatings } from './hooks';
+export type { VolunteerRating, VolunteerRatingsAdminResponse } from './types';
+export { useVolunteerRatings, useVolunteerRatingsAdmin } from './hooks';

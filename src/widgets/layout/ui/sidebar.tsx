@@ -23,6 +23,7 @@ export const Sidebar: FC<SidebarProps> = ({ onNavigate }) => {
     { path: '/skills', label: t('nav.skills'), icon: '🎯' },
     { path: '/tasks', label: t('nav.tasks'), icon: '✅' },
     { path: '/users', label: t('nav.users'), icon: '👥' },
+    { path: '/reviews', label: t('nav.reviews'), icon: '⭐' },
     { path: '/cities', label: t('nav.cities'), icon: '🏙️' },
     { path: '/city-groups', label: t('nav.cityGroups'), icon: '📍' },
   ];

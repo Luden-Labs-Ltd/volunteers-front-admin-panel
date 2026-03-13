@@ -140,7 +140,8 @@
     "tasks": "Tasks",
     "users": "Users",
     "cities": "Cities",
-    "cityGroups": "City groups"
+    "cityGroups": "City groups",
+    "reviews": "Reviews"
   },
   "pagination": {
     "prev": "Prev",
@@ -193,6 +194,8 @@
     "empty": "No users found",
     "addNeedy": "Add Supported",
     "addVolunteer": "Add Volunteer",
+    "export": "Export to Excel",
+    "exporting": "Exporting...",
     "inviteNeedyLink": "Send registration form",
     "inviteModal": {
       "title": "Supported registration link",
@@ -238,7 +241,7 @@
       "createdAt": "Created At",
       "actions": "Actions",
       "profileInfo": "Profile Information",
-      "city": "City",
+      "city": "Settlement",
       "points": "Points",
       "completedTasks": "Completed Tasks",
       "rating": "Rating",
@@ -274,10 +277,10 @@
       "lastName": "Last Name",
       "phone": "Phone",
       "phonePlaceholder": "+1234567890",
-      "city": "City",
-      "selectCity": "Select city",
-      "noCities": "No cities available",
-      "cityRequired": "City is required",
+      "city": "Settlement",
+      "selectCity": "Select settlement",
+      "noCities": "No settlements available",
+      "cityRequired": "Settlement is required",
       "skills": "Skills",
       "selectSkills": "Select skills",
       "noSkills": "No skills available",
@@ -315,10 +318,10 @@
       "phoneExists": "Phone is already used by another user",
       "selectProgram": "Select program",
       "noPrograms": "No available programs",
-      "city": "City",
-      "selectCity": "Select city",
-      "noCities": "No cities available",
-      "cityRequired": "City is required",
+      "city": "Settlement",
+      "selectCity": "Select settlement",
+      "noCities": "No settlements available",
+      "cityRequired": "Settlement is required",
       "address": "Street",
       "addressPlaceholder": "Enter street",
       "addressRequired": "Street is required",
@@ -464,6 +467,19 @@
     "viewVolunteers": "Volunteers ({{count}})",
     "volunteers": "Volunteers in {{city}}",
     "noVolunteers": "No registered volunteers in this city"
+  },
+  "reviews": {
+    "title": "Volunteer reviews",
+    "empty": "No reviews found",
+    "searchPlaceholder": "Search by volunteer name, phone or ID",
+    "columns": {
+      "volunteer": "Volunteer",
+      "contact": "Contact",
+      "score": "Score",
+      "comment": "Comment",
+      "task": "Task",
+      "createdAt": "Created At"
+    }
   },
   "notFound": {
     "message": "Page not found",
