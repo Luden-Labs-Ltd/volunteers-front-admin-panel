@@ -22,7 +22,7 @@ export const volunteerRatingApi = {
     if (params.search?.trim()) searchParams.set('search', params.search.trim());
 
     const query = searchParams.toString();
-    const url = query ? `/volunteers/admin/ratings?${query}` : '/volunteers/admin/ratings';
+    const url = query ? `/volunteers/ratings/admin?${query}` : '/volunteers/ratings/admin';
 
     return apiClient.request<VolunteerRatingsAdminResponse>(url);
   },
