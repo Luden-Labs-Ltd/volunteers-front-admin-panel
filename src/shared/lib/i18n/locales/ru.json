@@ -269,6 +269,8 @@
     "statusUpdateRetryHint": "Нажмите кнопку ещё раз, чтобы повторить.",
     "programsUpdated": "Программы успешно обновлены",
     "programsUpdateError": "Ошибка обновления программ",
+    "cityUpdated": "Город пользователя обновлен",
+    "cityUpdateError": "Ошибка обновления города пользователя",
     "notFound": "Пользователь не найден"
   },
   "volunteer": {

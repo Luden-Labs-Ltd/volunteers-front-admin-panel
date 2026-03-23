@@ -269,6 +269,8 @@
     "statusUpdateRetryHint": "Click the button again to retry.",
     "programsUpdated": "Programs updated successfully",
     "programsUpdateError": "Error updating programs",
+    "cityUpdated": "User city updated successfully",
+    "cityUpdateError": "Error updating user city",
     "notFound": "User not found"
   },
   "volunteer": {

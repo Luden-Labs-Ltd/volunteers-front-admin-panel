@@ -269,6 +269,8 @@
     "statusUpdateRetryHint": "לחץ שוב על הכפתור לניסיון חוזר.",
     "programsUpdated": "תוכניות עודכנו בהצלחה",
     "programsUpdateError": "שגיאה בעדכון תוכניות",
+    "cityUpdated": "העיר של המשתמש עודכנה בהצלחה",
+    "cityUpdateError": "שגיאה בעדכון העיר של המשתמש",
     "notFound": "משתמש לא נמצא"
   },
   "volunteer": {

@@ -1,7 +1,8 @@
-import { FC, useState, useMemo } from 'react';
+import { FC, useState, useMemo, useCallback } from 'react';
 import { useI18n } from '@/shared/lib/i18n';
 import { Modal, Badge, Button, Select } from '@/shared/ui';
-import { useUser, useUpdateUserStatus, useUpdateUserPrograms } from '@/entities/user';
+import { useGetCities } from '@/entities/city';
+import { useUser, useUpdateUserCity, useUpdateUserStatus, useUpdateUserPrograms } from '@/entities/user';
 import { usePrograms } from '@/entities/program';
 import type { UserStatus } from '@/entities/user';
 import { showToast } from '@/shared/lib/toast';
@@ -32,8 +33,10 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
     const { t } = useI18n();
     const { data: user, isLoading } = useUser(userId || '');
     const { data: programs = [] } = usePrograms();
+    const { data: cities = [], isLoading: isCitiesLoading } = useGetCities();
     const { mutate: updateStatus, isPending, error: updateStatusError } = useUpdateUserStatus();
     const { mutate: updatePrograms, isPending: isUpdatingPrograms } = useUpdateUserPrograms();
+    const { mutate: updateCity, isPending: isUpdatingCity } = useUpdateUserCity();
     const { data: ratings = [], isLoading: isRatingsLoading } = useVolunteerRatings(
         user?.role === 'volunteer' ? user.id : null,
         isOpen,
@@ -43,6 +46,22 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
     const [isEditingPrograms, setIsEditingPrograms] = useState(false);
     const [selectedProgramId, setSelectedProgramId] = useState<string>('');
     const [selectedProgramIds, setSelectedProgramIds] = useState<string[]>([]);
+
+    // Состояние для редактирования города
+    const [isEditingCity, setIsEditingCity] = useState(false);
+    const [selectedCityId, setSelectedCityId] = useState<string>('');
+
+    const getCurrentCityId = useCallback(() => {
+        if (!user) return '';
+        if (user.role === 'volunteer') return user.profile.cityId ?? user.profile.city?.id ?? '';
+        if (user.role === 'needy') return user.profile.cityId ?? user.profile.city?.id ?? '';
+        return '';
+    }, [user]);
+
+    // Инициализируем выбранный город при загрузке пользователя
+    useMemo(() => {
+        if (user && !isEditingCity) setSelectedCityId(getCurrentCityId());
+    }, [getCurrentCityId, isEditingCity, user]);
 
     // Инициализируем выбранные программы при загрузке пользователя
     useMemo(() => {
@@ -105,6 +124,25 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                 },
             );
         }
+    };
+
+    const handleSaveCity = () => {
+        if (!userId) return;
+        if (!selectedCityId) return;
+
+        updateCity(
+            { userId, cityId: selectedCityId },
+            {
+                onSuccess: () => {
+                    showToast.successKey(t, 'users.cityUpdated');
+                    setIsEditingCity(false);
+                    onSuccess?.();
+                },
+                onError: () => {
+                    showToast.errorKey(t, 'users.cityUpdateError');
+                },
+            },
+        );
     };
 
     return (
@@ -186,12 +224,62 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                             </h3>
                             {user.role === 'volunteer' && (
                                 <div className="grid grid-cols-2 gap-4">
-                                    {user.profile.city && (
-                                        <div>
+                                    <div>
+                                        <div className="flex items-center justify-between gap-2">
                                             <p className="text-sm text-gray-500">{t('users.details.city')}</p>
-                                            <p className="text-sm font-medium text-gray-900">{user.profile.city.name}</p>
+                                            {!isEditingCity && (
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => setIsEditingCity(true)}
+                                                >
+                                                    {t('common.edit')}
+                                                </Button>
+                                            )}
                                         </div>
-                                    )}
+
+                                        {!isEditingCity ? (
+                                            <p className="text-sm font-medium text-gray-900">
+                                                {user.profile.city?.name || '-'}
+                                            </p>
+                                        ) : (
+                                            <div className="space-y-2">
+                                                <Select
+                                                    value={selectedCityId}
+                                                    onChange={(e) => setSelectedCityId(e.target.value)}
+                                                    options={[
+                                                        { value: '', label: '-' },
+                                                        ...cities.map((city) => ({
+                                                            value: city.id,
+                                                            label: city.name,
+                                                        })),
+                                                    ]}
+                                                    disabled={isCitiesLoading || isUpdatingCity}
+                                                />
+                                                <div className="flex gap-2">
+                                                    <Button
+                                                        variant="primary"
+                                                        size="sm"
+                                                        onClick={handleSaveCity}
+                                                        disabled={isUpdatingCity || isCitiesLoading || !selectedCityId}
+                                                    >
+                                                        {t('common.save')}
+                                                    </Button>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => {
+                                                            setIsEditingCity(false);
+                                                            setSelectedCityId(getCurrentCityId());
+                                                        }}
+                                                        disabled={isUpdatingCity}
+                                                    >
+                                                        {t('common.cancel')}
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                     {user.profile.points !== undefined && (
                                         <div>
                                             <p className="text-sm text-gray-500">{t('users.details.points')}</p>
@@ -410,12 +498,62 @@ export const UserDetailsModal: FC<UserDetailsModalProps> = ({
                                             </p>
                                         )}
                                     </div>
-                                    {user.profile.city && (
-                                        <div>
+                                    <div>
+                                        <div className="flex items-center justify-between gap-2">
                                             <p className="text-sm text-gray-500">{t('users.details.city')}</p>
-                                            <p className="text-sm font-medium text-gray-900">{user.profile.city.name}</p>
+                                            {!isEditingCity && (
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => setIsEditingCity(true)}
+                                                >
+                                                    {t('common.edit')}
+                                                </Button>
+                                            )}
                                         </div>
-                                    )}
+
+                                        {!isEditingCity ? (
+                                            <p className="text-sm font-medium text-gray-900">
+                                                {user.profile.city?.name || '-'}
+                                            </p>
+                                        ) : (
+                                            <div className="space-y-2">
+                                                <Select
+                                                    value={selectedCityId}
+                                                    onChange={(e) => setSelectedCityId(e.target.value)}
+                                                    options={[
+                                                        { value: '', label: '-' },
+                                                        ...cities.map((city) => ({
+                                                            value: city.id,
+                                                            label: city.name,
+                                                        })),
+                                                    ]}
+                                                    disabled={isCitiesLoading || isUpdatingCity}
+                                                />
+                                                <div className="flex gap-2">
+                                                    <Button
+                                                        variant="primary"
+                                                        size="sm"
+                                                        onClick={handleSaveCity}
+                                                        disabled={isUpdatingCity || isCitiesLoading || !selectedCityId}
+                                                    >
+                                                        {t('common.save')}
+                                                    </Button>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => {
+                                                            setIsEditingCity(false);
+                                                            setSelectedCityId(getCurrentCityId());
+                                                        }}
+                                                        disabled={isUpdatingCity}
+                                                    >
+                                                        {t('common.cancel')}
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                     {user.profile.address && (
                                         <div className="col-span-2">
                                             <p className="text-sm text-gray-500">
